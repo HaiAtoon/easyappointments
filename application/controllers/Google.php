@@ -45,9 +45,9 @@ class Google extends EA_Controller {
             $CI = get_instance();
 
             // The user must be logged in.
-            if ($CI->session->userdata('user_id') == FALSE && is_cli() === FALSE)
+            if ( ! $CI->session->userdata('user_id') && ! is_cli())
             {
-                return;
+                show_error('Forbidden', 403);
             }
 
             if ($provider_id === NULL)
@@ -184,7 +184,17 @@ class Google extends EA_Controller {
 
                 if ($google_event->getStart()->getDateTime() === $google_event->getEnd()->getDateTime())
                 {
-                    continue; // Skip all day events
+                    $event_start = new DateTime($google_event->getStart()->getDate());
+                    $event_start->setTimezone($provider_timezone);
+                    $event_end = new DateTime($google_event->getEnd()->getDate());
+                    $event_end->setTimezone($provider_timezone);
+                }
+                else
+                {
+                    $event_start = new DateTime($google_event->getStart()->getDateTime());
+                    $event_start->setTimezone($provider_timezone);
+                    $event_end = new DateTime($google_event->getEnd()->getDateTime());
+                    $event_end->setTimezone($provider_timezone);
                 }
 
                 $results = $CI->appointments_model->get_batch(['id_google_calendar' => $google_event->getId()]);
@@ -193,11 +203,6 @@ class Google extends EA_Controller {
                 {
                     continue;
                 }
-
-                $event_start = new DateTime($google_event->getStart()->getDateTime());
-                $event_start->setTimezone($provider_timezone);
-                $event_end = new DateTime($google_event->getEnd()->getDateTime());
-                $event_end->setTimezone($provider_timezone);
 
                 // Record doesn't exist in the Easy!Appointments, so add the event now.
                 $appointment = [
@@ -242,6 +247,11 @@ class Google extends EA_Controller {
      */
     public function oauth($provider_id)
     {
+        if ( ! $this->session->userdata('user_id'))
+        {
+            show_error('Forbidden', 403);
+        }
+        
         // Store the provider id for use on the callback function.
         $this->session->set_userdata('oauth_provider_id', $provider_id);
 
@@ -262,6 +272,11 @@ class Google extends EA_Controller {
      */
     public function oauth_callback()
     {
+        if ( ! $this->session->userdata('user_id'))
+        {
+            show_error('Forbidden', 403);
+        }
+        
         $code = $this->input->get('code');
 
         if (empty($code))
@@ -292,6 +307,4 @@ class Google extends EA_Controller {
             $this->output->set_output('Sync provider id not specified.');
         }
     }
-
-
 }
