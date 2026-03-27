@@ -37,3 +37,15 @@ if (!function_exists('lang')) {
         return $result ?: $line;
     }
 }
+
+if (!function_exists('is_rtl')) {
+    /**
+     * Check if the current language is RTL.
+     *
+     * @return bool
+     */
+    function is_rtl(): bool
+    {
+        return in_array(config('language_code'), ['he', 'ar', 'fa']);
+    }
+}

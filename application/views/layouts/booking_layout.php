@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="<?= config('language_code') ?>" <?= in_array(config('language_code'), ['he', 'ar', 'fa']) ? 'dir="rtl"' : '' ?>>
+<html lang="<?= config('language_code') ?>" <?= is_rtl() ? 'dir="rtl"' : '' ?>>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,14 +29,14 @@
 
     <?php component('company_color_style', ['company_color' => vars('company_color')]); ?>
 
-    <?php if (in_array(config('language_code'), ['he', 'ar', 'fa'])): ?>
+    <?php if (is_rtl()): ?>
         <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/rtl.css') ?>">
     <?php endif; ?>
 
     <?php slot('styles'); ?>
 </head>
 
-<body class="<?= in_array(config('language_code'), ['he', 'ar', 'fa']) ? 'rtl' : '' ?>">
+<body class="<?= is_rtl() ? 'rtl' : '' ?>">
 <div id="main" class="container">
     <div class="row wrapper">
         <div id="book-appointment-wizard" class="col-12 col-lg-10 col-xl-8 col-xxl-7">
