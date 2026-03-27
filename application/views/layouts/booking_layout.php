@@ -29,10 +29,14 @@
 
     <?php component('company_color_style', ['company_color' => vars('company_color')]); ?>
 
+    <?php if (in_array(config('language_code'), ['he', 'ar', 'fa'])): ?>
+        <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/rtl.css') ?>">
+    <?php endif; ?>
+
     <?php slot('styles'); ?>
 </head>
 
-<body>
+<body class="<?= in_array(config('language_code'), ['he', 'ar', 'fa']) ? 'rtl' : '' ?>">
 <div id="main" class="container">
     <div class="row wrapper">
         <div id="book-appointment-wizard" class="col-12 col-lg-10 col-xl-8 col-xxl-7">

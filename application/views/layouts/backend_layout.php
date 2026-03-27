@@ -25,9 +25,13 @@
 
     <?php component('company_color_style', ['company_color' => setting('company_color')]); ?>
 
+    <?php if (in_array(config('language_code'), ['he', 'ar', 'fa'])): ?>
+        <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/rtl.css') ?>">
+    <?php endif; ?>
+
     <?php slot('styles'); ?>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 <?= in_array(config('language_code'), ['he', 'ar', 'fa']) ? 'rtl' : '' ?>">
 
 <main class="flex-shrink-0">
 

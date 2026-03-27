@@ -5,10 +5,9 @@
  * @var string $active_menu
  * @var string $company_logo
  */
-$rtl = in_array(config('language_code'), ['he', 'ar', 'fa']);
 ?>
 
-<nav id="header" class="navbar navbar-expand-md navbar-dark" dir="ltr">
+<nav id="header" class="navbar navbar-expand-md navbar-dark">
     <div id="header-logo" class="navbar-brand">
         <img src="<?= base_url('assets/img/logo.png') ?>" alt="logo">
         <h6>EASY!APPOINTMENTS</h6>
@@ -53,7 +52,7 @@ $rtl = in_array(config('language_code'), ['he', 'ar', 'fa']);
                     <i class="fas fa-business-time me-2"></i>
                     <?= lang('services') ?>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end" <?= $rtl ? 'dir="rtl"' : '' ?>>
+                <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="<?= site_url('services') ?>">
                         <?= lang('services') ?>
                     </a>
@@ -71,7 +70,7 @@ $rtl = in_array(config('language_code'), ['he', 'ar', 'fa']);
                     <i class="fas fa-users me-2"></i>
                     <?= lang('users') ?>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end" <?= $rtl ? 'dir="rtl"' : '' ?>>
+                <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="<?= site_url('providers') ?>">
                         <?= lang('providers') ?>
                     </a>
@@ -94,7 +93,7 @@ $rtl = in_array(config('language_code'), ['he', 'ar', 'fa']);
                     <i class="fas fa-user me-2"></i>
                     <?= e(vars('user_display_name')) ?>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end" <?= $rtl ? 'dir="rtl"' : '' ?>>
+                <div class="dropdown-menu dropdown-menu-end">
                     <?php if (can('view', PRIV_SYSTEM_SETTINGS)): ?>
                         <a class="dropdown-item" href="<?= site_url('general_settings') ?>">
                             <?= lang('settings') ?>

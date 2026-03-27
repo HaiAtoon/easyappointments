@@ -19,9 +19,13 @@
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/account_layout.css') ?>">
 
+    <?php if (in_array(config('language_code'), ['he', 'ar', 'fa'])): ?>
+        <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/rtl.css') ?>">
+    <?php endif; ?>
+
     <?php slot('styles'); ?>
 </head>
-<body>
+<body class="<?= in_array(config('language_code'), ['he', 'ar', 'fa']) ? 'rtl' : '' ?>">
 <div id="login-frame" class="frame-container">
 
     <?php slot('content'); ?>
