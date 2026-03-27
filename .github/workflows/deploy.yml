@@ -28,6 +28,7 @@ jobs:
             echo "Deploying to /var/www/html/$target ..."
             rsync -rlvz --delete \
               --exclude='config.php' \
+              --exclude='storage/' \
               --exclude='.git/' \
               --exclude='.github/' \
               --exclude='CLAUDE.md' \
