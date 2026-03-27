@@ -26,7 +26,7 @@ jobs:
             [ -z "$target" ] && continue
             [[ "$target" =~ ^# ]] && continue
             echo "Deploying to /var/www/html/$target ..."
-            rsync -avz --delete --no-group --no-owner \
+            rsync -rlvz --delete \
               --exclude='config.php' \
               --exclude='.git/' \
               --exclude='.github/' \
