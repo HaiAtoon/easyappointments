@@ -48,8 +48,8 @@ jobs:
             echo "Done: $target"
           done < deploy-targets.txt
 
-      - name: Restart Apache
+      - name: Fix permissions and restart Apache
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
             ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} \
-            "sudo systemctl restart apache2"
+            "sudo chown -R ${{ secrets.VM_USER }}:www-data /var/www/html && sudo chmod -R 775 /var/www/html/*/storage && sudo systemctl restart apache2"
