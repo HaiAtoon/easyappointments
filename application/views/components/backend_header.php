@@ -7,7 +7,7 @@
  */
 ?>
 
-<nav id="header" class="navbar navbar-expand-md navbar-dark">
+<nav id="header" class="navbar navbar-expand-md navbar-dark" dir="ltr">
     <div id="header-logo" class="navbar-brand">
         <img src="<?= base_url('assets/img/logo.png') ?>" alt="logo">
         <h6>EASY!APPOINTMENTS</h6>
@@ -19,7 +19,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="header-menu" class="collapse navbar-collapse <?= in_array(config('language_code'), ['he', 'ar', 'fa']) ? '' : 'flex-row-reverse' ?> px-2">
+    <div id="header-menu" class="collapse navbar-collapse flex-row-reverse px-2">
         <ul class="navbar-nav">
             <?php $hidden = can('view', PRIV_APPOINTMENTS) ? '' : 'd-none'; ?>
             <?php $active = $active_menu == PRIV_APPOINTMENTS ? 'active' : ''; ?>
