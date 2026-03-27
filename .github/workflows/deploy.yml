@@ -27,17 +27,24 @@ jobs:
             [[ "$target" =~ ^# ]] && continue
             echo "Deploying to /var/www/html/$target ..."
             rsync -rlvz --delete \
-              --exclude='config.php' \
-              --include='storage/*/' \
-              --include='storage/*/.htaccess' \
-              --include='storage/*/index.html' \
-              --exclude='storage/*/*' \
+              --exclude='/config.php' \
+              --exclude='storage/' \
               --exclude='.git/' \
               --exclude='.github/' \
               --exclude='CLAUDE.md' \
               --exclude='deploy-targets.txt' \
               -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
               ./ ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }}:/var/www/html/$target/
+
+            # Sync storage structure files without --delete (preserve runtime data)
+            rsync -rlvz \
+              --include='*/' \
+              --include='.htaccess' \
+              --include='index.html' \
+              --exclude='*' \
+              -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+              ./storage/ ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }}:/var/www/html/$target/storage/
+
             echo "Done: $target"
           done < deploy-targets.txt
 
