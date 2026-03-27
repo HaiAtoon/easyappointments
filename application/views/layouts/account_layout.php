@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="<?= config('language_code') ?>" <?= in_array(config('language_code'), ['he', 'ar', 'fa']) ? 'dir="rtl"' : '' ?>>
+<html lang="<?= config('language_code') ?>">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
