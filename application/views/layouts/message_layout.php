@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="<?= config('language_code') ?>" <?= is_rtl() ? 'dir="rtl"' : '' ?>>
+<html lang="<?= config('language_code') ?>" <?= config('is_rtl') ? 'dir="rtl"' : '' ?>>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,13 +21,13 @@
 
     <?php component('company_color_style', ['company_color' => vars('company_color')]); ?>
 
-    <?php if (is_rtl()): ?>
+    <?php if (config('is_rtl')): ?>
         <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/rtl.css') ?>">
     <?php endif; ?>
 
     <?php slot('styles'); ?>
 </head>
-<body class="<?= is_rtl() ? 'rtl' : '' ?>">
+<body class="<?= config('is_rtl') ? 'rtl' : '' ?>">
 <div id="main" class="container">
     <div class="row wrapper">
         <div id="message-frame" class="col-12 border my-auto frame-container">

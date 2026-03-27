@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="<?= config('language_code') ?>" <?= is_rtl() ? 'dir="rtl"' : '' ?>>
+<html lang="<?= config('language_code') ?>" <?= config('is_rtl') ? 'dir="rtl"' : '' ?>>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 

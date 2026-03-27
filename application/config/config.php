@@ -141,6 +141,8 @@ $config['language'] =
 
 $config['language_code'] = array_search($config['language'], $languages) ?: 'en';
 
+$config['is_rtl'] = in_array($config['language_code'], ['he', 'ar', 'fa']);
+
 /*
 |--------------------------------------------------------------------------
 | Available Languages
