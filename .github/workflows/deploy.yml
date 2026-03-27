@@ -37,3 +37,9 @@ jobs:
               ./ ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }}:/var/www/html/$target/
             echo "Done: $target"
           done < deploy-targets.txt
+
+      - name: Restart Apache
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
+            ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} \
+            "sudo systemctl restart apache2"
