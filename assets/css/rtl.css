@@ -41,11 +41,38 @@
     text-align: right;
 }
 
-/* Navbar — keep layout LTR, only flip text inside dropdowns */
+/* Backend navbar — keep layout LTR, only flip text inside dropdowns */
 .rtl #header {
     direction: ltr;
 }
 
 .rtl #header .dropdown-menu {
     direction: rtl;
+}
+
+/* Booking page #header is inside #book-appointment-wizard — restore RTL */
+.rtl #book-appointment-wizard #header {
+    direction: rtl;
+}
+
+/* Booking header — RTL layout: name on right, steps on left */
+.rtl #book-appointment-wizard #header-bar {
+    direction: rtl;
+}
+
+.rtl #book-appointment-wizard #company-name {
+    text-align: right;
+}
+
+.rtl #book-appointment-wizard #steps {
+    direction: ltr;
+}
+
+/* Flip navigation button arrows */
+.rtl #book-appointment-wizard .button-back .fa-chevron-left {
+    transform: scaleX(-1);
+}
+
+.rtl #book-appointment-wizard .button-next .fa-chevron-right {
+    transform: scaleX(-1);
 }

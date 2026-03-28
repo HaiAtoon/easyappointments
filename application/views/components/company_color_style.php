@@ -81,7 +81,7 @@
 
         /* Booking Layout */
 
-        #book-appointment-wizard #header {
+        #book-appointment-wizard #header-bar {
             background: <?= $company_color ?>;
         }
 
