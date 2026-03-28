@@ -4,6 +4,15 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `feab525b` | Fix minified CSS with proper clean-css minifier
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/feab525ba6b12461731bfba0844e261fc44ec846)
+
+- `assets/css/layouts/booking_layout.min.css` lines:[1] `[New File]`
+- `assets/css/rtl.min.css` lines:[1] `[New File]`
+
+---
+
+
 ### 2026-03-28 | `236d554c` | Fix booking.min.js with proper minification via terser
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/236d554c458cbf097cb823856e156e84b8209365)
 
