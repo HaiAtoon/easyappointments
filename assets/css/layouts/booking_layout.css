@@ -35,8 +35,9 @@ body {
 }
 
 #book-appointment-wizard #header-logo-area {
-  text-align: center;
-  padding: 30px 15px 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
   background: #fff;
 }
 
