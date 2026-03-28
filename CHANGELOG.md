@@ -4,6 +4,15 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `a762e8cd` | Fix changelog links to use commit URLs and upstream blob links
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/a762e8cdd9e90091dd9647b27c0d144765a9486b)
+
+- `.github/scripts/generate-changelog-entry.sh` lines:[15, 18, 36, 41] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/.github/scripts/generate-changelog-entry.sh)]
+- `CHANGELOG.md` lines:[8, 10-14, 19, 21, 26, 28, 33, 35, 40, 42-43, 48, 50, 55, 57-59, 64-156, 161, 163-170, 175, 177-183, 188, 190-195, 200, 202, 207, 209, 214, 216, 221, 223-228, 233, 235-240, 245, 252, 254, 259, 261, 266, 268-269, 274, 276] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
+
+---
+
+
 ### 2026-03-28 | `eeefb506` | Add auto-updating Change Logs with GitHub Action
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/eeefb5066367d2134f023f739ace17987cb4e0de)
 
