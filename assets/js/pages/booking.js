@@ -339,7 +339,9 @@ App.Pages.Booking = (function () {
          *
          * Whenever the provider changes the available appointment date - time periods must be updated.
          */
+        $selectProvider.on('focus', () => $selectProvider.removeClass('is-invalid'));
         $selectProvider.on('change', (event) => {
+            $selectProvider.removeClass('is-invalid');
             const $target = $(event.target);
 
             const todayDateTimeObject = new Date();
@@ -362,7 +364,9 @@ App.Pages.Booking = (function () {
          * When the user clicks on a service, its available providers should
          * become visible.
          */
+        $selectService.on('focus', () => $selectService.removeClass('is-invalid'));
         $selectService.on('change', (event) => {
+            $selectService.removeClass('is-invalid');
             const $target = $(event.target);
             const serviceId = $selectService.val();
             $selectProvider.parent().prop('hidden', !Boolean(serviceId));
@@ -416,9 +420,23 @@ App.Pages.Booking = (function () {
         $('.button-next').on('click', (event) => {
             const $target = $(event.currentTarget);
 
-            // If we are on the first step and there is no provider selected do not continue with the next step.
-            if ($target.attr('data-step_index') === '1' && !$selectProvider.val()) {
-                return;
+            // If we are on the first step, validate service and provider selection.
+            if ($target.attr('data-step_index') === '1') {
+                let hasError = false;
+
+                if (!$selectService.val()) {
+                    $selectService.addClass('is-invalid');
+                    hasError = true;
+                }
+
+                if (!$selectProvider.val()) {
+                    $selectProvider.addClass('is-invalid');
+                    hasError = true;
+                }
+
+                if (hasError) {
+                    return;
+                }
             }
 
             // If we are on the 2nd tab then the user should have an appointment hour selected.
