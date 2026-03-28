@@ -4,6 +4,18 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `d33ae9d3` | Bold company name, white booking selection hidden until service chosen
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/d33ae9d35ddc3939aeedc4ba96660958c0b41998)
+
+- `application/views/components/company_color_style.php` _(lines removed only)_ [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/company_color_style.php)]
+- `assets/css/layouts/booking_layout.css` lines:[62, 67, 70] `[New File]`
+- `assets/css/layouts/booking_layout.min.css` lines:[1] `[New File]`
+- `assets/js/pages/booking.js` lines:[368] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/pages/booking.js)]
+- `assets/js/pages/booking.min.js` lines:[1] `[New File]`
+
+---
+
+
 ### 2026-03-28 | `d072a912` | Add upstream branch sync, use compare diff for Watch links [skip ci]
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/d072a912ccfc783e08e531fbe188f6f3ce5d7a08)
 
