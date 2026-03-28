@@ -127,7 +127,11 @@ body {
 
 #book-appointment-wizard .wizard-frame .flatpickr-calendar {
   margin: 25px auto;
-  direction: ltr;
+}
+
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+  transform: scaleX(-1);
 }
 
 
