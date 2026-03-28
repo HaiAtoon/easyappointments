@@ -127,6 +127,7 @@ body {
 
 #book-appointment-wizard .wizard-frame .flatpickr-calendar {
   margin: 25px auto;
+  direction: ltr;
 }
 
 
