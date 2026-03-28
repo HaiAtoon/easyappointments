@@ -716,30 +716,30 @@ App.Pages.Booking = (function () {
         const timezoneOptionText = $selectTimezone.find('option:selected').text();
 
         $('#appointment-details').html(`
-            <div>
-                <div class="mb-2 fw-bold fs-3">
+            <div class="d-flex flex-column">
+                <div class="mb-2 fw-bold fs-3 d-flex justify-content-between">
                     ${serviceOptionText}
-                </div> 
-                <div class="mb-2 fw-bold text-muted">
+                </div>
+                <div class="mb-2 fw-bold text-muted d-flex justify-content-between">
                     ${providerOptionText}
                 </div>
-                <div class="mb-2">
+                <div class="mb-2 d-flex justify-content-between">
                     <i class="fas fa-calendar-day me-2"></i>
                     ${formattedSelectedDate}
-                </div> 
-                <div class="mb-2">
+                </div>
+                <div class="mb-2 d-flex justify-content-between">
                     <i class="fas fa-clock me-2"></i>
                     ${service.duration} ${lang('minutes')}
                 </div>
-                <div class="mb-2">
+                <div class="mb-2 d-flex justify-content-between">
                     <i class="fas fa-globe me-2"></i>
                     ${timezoneOptionText}
-                </div> 
-                <div class="mb-2" ${!Number(service.price) ? 'hidden' : ''}>
+                </div>
+                <div class="mb-2 d-flex justify-content-between" ${!Number(service.price) ? 'hidden' : ''}>
                     <i class="fas fa-cash-register me-2"></i>
                     ${Number(service.price).toFixed(2)} ${service.currency}
                 </div>
-            </div>     
+            </div>
         `);
 
         // Render the customer information
