@@ -4,6 +4,14 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `fc677e17` | Align booking selection text to left on desktop
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/fc677e175ef3d26c21b55e848e02cbe34dd47f49)
+
+- `application/views/components/booking_header.php` lines:[20] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/booking_header.php)]
+
+---
+
+
 ### 2026-03-28 | `feab525b` | Fix minified CSS with proper clean-css minifier
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/feab525ba6b12461731bfba0844e261fc44ec846)
 
