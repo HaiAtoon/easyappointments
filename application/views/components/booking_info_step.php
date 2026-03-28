@@ -155,7 +155,7 @@
         <button type="button" id="button-next-3" class="btn button-next btn-dark"
                 data-step_index="3">
             <?php if (config('is_rtl')): ?>
-                <i class="fas fa-chevron-left me-2"></i><?= lang('next') ?>
+                <?= lang('next') ?><i class="fas fa-chevron-left ms-2"></i>
             <?php else: ?>
                 <?= lang('next') ?><i class="fas fa-chevron-right ms-2"></i>
             <?php endif; ?>
