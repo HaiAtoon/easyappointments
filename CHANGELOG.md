@@ -4,6 +4,14 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `236d554c` | Fix booking.min.js with proper minification via terser
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/236d554c458cbf097cb823856e156e84b8209365)
+
+- `assets/js/pages/booking.min.js` lines:[1-11] `[New File]`
+
+---
+
+
 ### 2026-03-28 | `d33ae9d3` | Bold company name, white booking selection hidden until service chosen
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/d33ae9d35ddc3939aeedc4ba96660958c0b41998)
 
