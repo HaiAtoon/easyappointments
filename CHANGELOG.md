@@ -4,6 +4,14 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `77786d70` | Validate upstream file existence before creating Watch links
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/77786d70b883651cefc1b638764e1d2f40a90ce3)
+
+- `.github/scripts/generate-changelog-entry.sh` lines:[7, 11-20, 46-50, 52-66] `[New File]`
+
+---
+
+
 ### 2026-03-28 | `a762e8cd` | Fix changelog links to use commit URLs and upstream blob links
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/a762e8cdd9e90091dd9647b27c0d144765a9486b)
 
