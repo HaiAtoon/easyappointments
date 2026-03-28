@@ -4,8 +4,19 @@ set -euo pipefail
 UPSTREAM_REPO="alextselegidis/easyappointments"
 FORK_REPO="HaiAtoon/easyappointments"
 UPSTREAM_BRANCH="main"
+UPSTREAM_CACHE="/tmp/ea-upstream-files.txt"
 
 commit="${1:?Usage: generate-changelog-entry.sh <commit-hash>}"
+
+if [[ ! -f "$UPSTREAM_CACHE" ]]; then
+    curl -sf "https://api.github.com/repos/${UPSTREAM_REPO}/git/trees/${UPSTREAM_BRANCH}?recursive=1" \
+        ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
+        | grep '"path"' | sed 's/.*"path": "//;s/".*//' > "$UPSTREAM_CACHE"
+fi
+
+file_exists_upstream() {
+    grep -qx "$1" "$UPSTREAM_CACHE"
+}
 
 short_hash=$(git log -1 --format="%h" "$commit")
 full_hash=$(git log -1 --format="%H" "$commit")
@@ -32,14 +43,27 @@ ranges=""
 is_deleted=""
 
 flush_file() {
-    if [[ -n "$current_file" && -n "$ranges" ]]; then
-        watch_url="https://github.com/${UPSTREAM_REPO}/blob/${UPSTREAM_BRANCH}/${current_file}"
-        echo "- \`${current_file}\` lines:[${ranges}] [[Watch](${watch_url})]"
-    elif [[ -n "$current_file" && "$is_deleted" == "true" ]]; then
+    if [[ -z "$current_file" ]]; then
+        return
+    fi
+
+    if [[ "$is_deleted" == "true" ]]; then
         echo "- \`${current_file}\` _(deleted)_"
-    elif [[ -n "$current_file" ]]; then
-        watch_url="https://github.com/${UPSTREAM_REPO}/blob/${UPSTREAM_BRANCH}/${current_file}"
-        echo "- \`${current_file}\` _(lines removed only)_ [[Watch](${watch_url})]"
+        return
+    fi
+
+    local suffix=""
+    if [[ -n "$ranges" ]]; then
+        suffix=" lines:[${ranges}]"
+    else
+        suffix=" _(lines removed only)_"
+    fi
+
+    if file_exists_upstream "$current_file"; then
+        local watch_url="https://github.com/${UPSTREAM_REPO}/blob/${UPSTREAM_BRANCH}/${current_file}"
+        echo "- \`${current_file}\`${suffix} [[Watch](${watch_url})]"
+    else
+        echo "- \`${current_file}\`${suffix} \`[New File]\`"
     fi
 }
 
