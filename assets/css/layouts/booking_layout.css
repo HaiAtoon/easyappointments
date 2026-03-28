@@ -129,15 +129,6 @@ body {
   margin: 25px auto;
 }
 
-.flatpickr-calendar .flatpickr-prev-month {
-  left: 0;
-  right: auto;
-}
-
-.flatpickr-calendar .flatpickr-next-month {
-  right: 0;
-  left: auto;
-}
 
 #book-appointment-wizard .wizard-frame #select-time {
   max-width: 288px;

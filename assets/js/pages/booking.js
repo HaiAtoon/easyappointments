@@ -107,6 +107,18 @@ App.Pages.Booking = (function () {
             inline: true,
             minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),
             maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),
+            onReady: (selectedDates, dateStr, instance) => {
+                const months = instance.calendarContainer.querySelector('.flatpickr-months');
+                if (months) {
+                    const next = months.querySelector('.flatpickr-next-month');
+                    const month = months.querySelector('.flatpickr-month');
+                    const prev = months.querySelector('.flatpickr-prev-month');
+                    months.innerHTML = '';
+                    months.appendChild(next);
+                    months.appendChild(month);
+                    months.appendChild(prev);
+                }
+            },
             onChange: (selectedDates) => {
                 App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));
                 App.Pages.Booking.updateConfirmFrame();
