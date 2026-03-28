@@ -12,6 +12,18 @@
     </div>
 
     <div id="header-bar">
+        <div id="company-name">
+            <span>
+                <?= e($company_name) ?>
+            </span>
+
+            <div class="d-flex justify-content-center justify-content-md-end">
+                <span class="display-booking-selection">
+                    <?= lang('service') ?> │ <?= lang('provider') ?>
+                </span>
+            </div>
+        </div>
+
         <div id="steps">
             <div id="step-1" class="book-step active-step"
                  data-tippy-content="<?= lang('service_and_provider') ?>">
@@ -29,18 +41,6 @@
             <div id="step-4" class="book-step" data-bs-toggle="tooltip"
                  data-tippy-content="<?= lang('appointment_confirmation') ?>">
                 <strong>4</strong>
-            </div>
-        </div>
-
-        <div id="company-name">
-            <span>
-                <?= e($company_name) ?>
-            </span>
-
-            <div class="d-flex justify-content-center justify-content-md-end">
-                <span class="display-booking-selection">
-                    <?= lang('service') ?> │ <?= lang('provider') ?>
-                </span>
             </div>
         </div>
     </div>
