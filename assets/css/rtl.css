@@ -71,9 +71,3 @@
     direction: ltr;
 }
 
-/* Command buttons — reverse order in RTL (Back on right, Next on left) */
-@media (min-width: 768px) {
-    .rtl #book-appointment-wizard .command-buttons {
-        flex-direction: row-reverse;
-    }
-}
