@@ -11,6 +11,7 @@
 /npm-debug.log
 /config.php
 /CLAUDE.md
+/CHANGELOG.md
 /storage/backups/*
 !/storage/backups/.htaccess
 !/storage/backups/index.html

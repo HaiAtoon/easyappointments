@@ -1,0 +1,57 @@
+name: Update Change Logs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-changelog:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog entry
+        run: |
+          chmod +x .github/scripts/generate-changelog-entry.sh
+          ENTRY=$(.github/scripts/generate-changelog-entry.sh "${{ github.sha }}")
+
+          if [ ! -f CHANGELOG.md ]; then
+            cat > CHANGELOG.md << 'EOF'
+          # Change Logs
+
+          Tracking changes against upstream: [alextselegidis/easyappointments](https://github.com/alextselegidis/easyappointments)
+
+          ---
+
+          EOF
+          fi
+
+          HEADER=$(head -5 CHANGELOG.md)
+          BODY=$(tail -n +6 CHANGELOG.md)
+
+          {
+            echo "$HEADER"
+            echo ""
+            echo "$ENTRY"
+            echo ""
+            echo "$BODY"
+          } > CHANGELOG.md.tmp
+
+          mv CHANGELOG.md.tmp CHANGELOG.md
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f CHANGELOG.md
+          git diff --staged --quiet && exit 0
+          git commit -m "Update CHANGELOG.md [skip ci]"
+          git push
