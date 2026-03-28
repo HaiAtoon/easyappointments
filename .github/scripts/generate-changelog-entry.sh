@@ -60,9 +60,7 @@ flush_file() {
     fi
 
     if file_exists_upstream "$current_file"; then
-        local file_hash
-        file_hash=$(printf '%s' "$current_file" | sha256sum | cut -d' ' -f1)
-        local watch_url="https://github.com/${FORK_REPO}/compare/upstream...main#diff-${file_hash}"
+        local watch_url="https://github.com/${UPSTREAM_REPO}/blob/${UPSTREAM_BRANCH}/${current_file}"
         echo "- \`${current_file}\`${suffix} [[Watch](${watch_url})]"
     else
         echo "- \`${current_file}\`${suffix} \`[New File]\`"

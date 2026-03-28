@@ -18,13 +18,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Sync upstream branch
-        run: |
-          git remote add upstream https://github.com/alextselegidis/easyappointments.git
-          git fetch upstream main
-          git branch -f upstream upstream/main
-          git push origin upstream --force
-
       - name: Generate changelog entry
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

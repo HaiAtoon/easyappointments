@@ -4,17 +4,26 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `d072a912` | Add upstream branch sync, use compare diff for Watch links [skip ci]
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/d072a912ccfc783e08e531fbe188f6f3ce5d7a08)
+
+- `.github/scripts/generate-changelog-entry.sh` lines:[63-65] `[New File]`
+- `.github/workflows/changelog.yml` lines:[21-27, 29-30, 37, 39, 41, 43] `[New File]`
+- `CHANGELOG.md` lines:[7-13, 17, 31, 39, 46, 56-57, 86, 109, 206-213, 220-226, 233-237, 245, 252, 259, 266-271, 278-283, 319] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
+
+---
+
 ### 2026-03-28 | `599e6e02` | Backfill CHANGELOG.md with all commits [skip ci]
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/599e6e02a0b56eb531f394ad7d4540ba1e12ac15)
 
-- `CHANGELOG.md` lines:[7-13, 21-26, 31, 36-41, 46-48, 57, 64, 71, 78, 86, 93-95, 103-192, 231, 290, 297, 304-305] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed)]
+- `CHANGELOG.md` lines:[7-13, 21-26, 31, 36-41, 46-48, 57, 64, 71, 78, 86, 93-95, 103-192, 231, 290, 297, 304-305] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
 
 ---
 
 ### 2026-03-28 | `5d459baa` | Update CHANGELOG.md [skip ci]
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/5d459baa85241214b2fb48d3fc0f5a631b1a8841)
 
-- `CHANGELOG.md` lines:[7-14] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed)]
+- `CHANGELOG.md` lines:[7-14] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
 
 ---
 
@@ -28,7 +37,7 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 ### 2026-03-28 | `0112b8c1` | Update CHANGELOG.md [skip ci]
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/0112b8c1d0cbf919411fda3756b489dd0c95d966)
 
-- `CHANGELOG.md` lines:[7-15] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed)]
+- `CHANGELOG.md` lines:[7-15] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
 
 ---
 
@@ -36,14 +45,14 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/a762e8cdd9e90091dd9647b27c0d144765a9486b)
 
 - `.github/scripts/generate-changelog-entry.sh` lines:[15, 18, 36, 41] `[New File]`
-- `CHANGELOG.md` lines:[8, 10-14, 19, 21, 26, 28, 33, 35, 40, 42-43, 48, 50, 55, 57-59, 64-156, 161, 163-170, 175, 177-183, 188, 190-195, 200, 202, 207, 209, 214, 216, 221, 223-228, 233, 235-240, 245, 252, 254, 259, 261, 266, 268-269, 274, 276] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed)]
+- `CHANGELOG.md` lines:[8, 10-14, 19, 21, 26, 28, 33, 35, 40, 42-43, 48, 50, 55, 57-59, 64-156, 161, 163-170, 175, 177-183, 188, 190-195, 200, 202, 207, 209, 214, 216, 221, 223-228, 233, 235-240, 245, 252, 254, 259, 261, 266, 268-269, 274, 276] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
 
 ---
 
 ### 2026-03-28 | `5a8e3581` | Update CHANGELOG.md [skip ci]
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/5a8e3581f129a3624bbe7aee31e38190684fd7a8)
 
-- `CHANGELOG.md` lines:[7-18] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed)]
+- `CHANGELOG.md` lines:[7-18] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
 
 ---
 
@@ -53,8 +62,8 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 - `.github/scripts/generate-changelog-entry.sh` lines:[1-73] `[New File]`
 - `.github/workflows/changelog.yml` lines:[1-57] `[New File]`
 - `.github/workflows/deploy.yml` lines:[35] `[New File]`
-- `.gitignore` lines:[14] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-bc37d034bad564583790a46f19d807abfe519c5671395fd494d8cce506c42947)]
-- `CHANGELOG.md` lines:[1-205, 207, 209-210, 212-217, 219, 221-222, 224-229, 231, 233-234, 236, 238, 240-241, 243, 245, 247-248, 250, 252, 254-255, 257-258, 260, 262-263, 265-266, 268] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed)]
+- `.gitignore` lines:[14] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/.gitignore)]
+- `CHANGELOG.md` lines:[1-205, 207, 209-210, 212-217, 219, 221-222, 224-229, 231, 233-234, 236, 238, 240-241, 243, 245, 247-248, 250, 252, 254-255, 257-258, 260, 262-263, 265-266, 268] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/CHANGELOG.md)]
 
 ---
 
@@ -83,7 +92,7 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/f658d34a76797c6362875045bb68cab6051d429f)
 
 - `.github/workflows/deploy.yml` lines:[31-34] `[New File]`
-- `application/config/config.php` lines:[134] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-98933efd56c3885925689f9ce8189c831d4a076ee368af92ae0303c9cb29b110)]
+- `application/config/config.php` lines:[134] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/config/config.php)]
 
 ---
 
@@ -106,7 +115,7 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 ### 2026-03-27 | `6cd94a5a` | Include minified JS/CSS files — required for deployment
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/6cd94a5ac42e546e6e2dd71e13f6eab4e08113a9)
 
-- `.gitignore` _(lines removed only)_ [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-bc37d034bad564583790a46f19d807abfe519c5671395fd494d8cce506c42947)]
+- `.gitignore` _(lines removed only)_ [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/.gitignore)]
 - `assets/css/components/color_selection.min.css` lines:[1] `[New File]`
 - `assets/css/layouts/account_layout.min.css` lines:[1] `[New File]`
 - `assets/css/layouts/backend_layout.min.css` lines:[1] `[New File]`
@@ -203,38 +212,38 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 ### 2026-03-27 | `2134ce89` | Move is_rtl to config variable, remove helper function
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/2134ce89df4fbdab048df569baafcbc2c4fdf57d)
 
-- `application/config/config.php` lines:[144-145] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-98933efd56c3885925689f9ce8189c831d4a076ee368af92ae0303c9cb29b110)]
-- `application/helpers/language_helper.php` _(lines removed only)_ [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-5c525de26797077bcf58affc5e386bc8ba322ee27c91eea3fdf276af984ab796)]
-- `application/views/layouts/account_layout.php` lines:[2, 22, 28] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-4dbe96cc788ef593f23642cbe7f09053b3d2a8d426947b681d71027e6c2596a1)]
-- `application/views/layouts/backend_layout.php` lines:[2, 28, 34] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-9a0eb11e673434315918b4e22c6e08a733d6d3fcc5ffd56954804968f19391f3)]
-- `application/views/layouts/booking_layout.php` lines:[2, 32, 39] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-789adca6159fded2f2072e5488bf08807ef6d87fc095606fe07c9c2a7c12fcd7)]
-- `application/views/layouts/message_layout.php` lines:[2, 24, 30] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-31dac9fb1e6ea197eef3d1db1d7fcf478b1744134b0ec7ae05fdbd32c7ec5758)]
-- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-6238f1a3cb2dc688cc7408bf917869083ec52d9cb7dca13bac2e621fdc46880e)]
-- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-01e3ebe43aef6c615a7c9bf36accc18d72d3a2a2dd6f2ede333f626e19c7289b)]
+- `application/config/config.php` lines:[144-145] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/config/config.php)]
+- `application/helpers/language_helper.php` _(lines removed only)_ [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/helpers/language_helper.php)]
+- `application/views/layouts/account_layout.php` lines:[2, 22, 28] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/account_layout.php)]
+- `application/views/layouts/backend_layout.php` lines:[2, 28, 34] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/backend_layout.php)]
+- `application/views/layouts/booking_layout.php` lines:[2, 32, 39] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/booking_layout.php)]
+- `application/views/layouts/message_layout.php` lines:[2, 24, 30] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/message_layout.php)]
+- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/installation.php)]
+- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/update.php)]
 
 ---
 
 ### 2026-03-27 | `4cd9f1e0` | Extract is_rtl() helper to replace repeated RTL condition
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/4cd9f1e00f7cbe07b3512d82437c5963be06b930)
 
-- `application/helpers/language_helper.php` lines:[40-51] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-5c525de26797077bcf58affc5e386bc8ba322ee27c91eea3fdf276af984ab796)]
-- `application/views/layouts/account_layout.php` lines:[2, 22, 28] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-4dbe96cc788ef593f23642cbe7f09053b3d2a8d426947b681d71027e6c2596a1)]
-- `application/views/layouts/backend_layout.php` lines:[2, 28, 34] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-9a0eb11e673434315918b4e22c6e08a733d6d3fcc5ffd56954804968f19391f3)]
-- `application/views/layouts/booking_layout.php` lines:[2, 32, 39] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-789adca6159fded2f2072e5488bf08807ef6d87fc095606fe07c9c2a7c12fcd7)]
-- `application/views/layouts/message_layout.php` lines:[2, 24, 30] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-31dac9fb1e6ea197eef3d1db1d7fcf478b1744134b0ec7ae05fdbd32c7ec5758)]
-- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-6238f1a3cb2dc688cc7408bf917869083ec52d9cb7dca13bac2e621fdc46880e)]
-- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-01e3ebe43aef6c615a7c9bf36accc18d72d3a2a2dd6f2ede333f626e19c7289b)]
+- `application/helpers/language_helper.php` lines:[40-51] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/helpers/language_helper.php)]
+- `application/views/layouts/account_layout.php` lines:[2, 22, 28] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/account_layout.php)]
+- `application/views/layouts/backend_layout.php` lines:[2, 28, 34] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/backend_layout.php)]
+- `application/views/layouts/booking_layout.php` lines:[2, 32, 39] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/booking_layout.php)]
+- `application/views/layouts/message_layout.php` lines:[2, 24, 30] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/message_layout.php)]
+- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/installation.php)]
+- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/update.php)]
 
 ---
 
 ### 2026-03-27 | `497e8f06` | RTL: use CSS class approach instead of inline dir attributes
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/497e8f06f9b2c4e5bf8f5a1025dafe3bd75dc300)
 
-- `application/views/components/backend_header.php` lines:[10, 55, 73, 96] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-e5f1f7ca945d1ca890211c90592616b2c21255875188b91185b8a1ee3f9101f0)]
-- `application/views/layouts/account_layout.php` lines:[22-25, 28] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-4dbe96cc788ef593f23642cbe7f09053b3d2a8d426947b681d71027e6c2596a1)]
-- `application/views/layouts/backend_layout.php` lines:[28-31, 34] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-9a0eb11e673434315918b4e22c6e08a733d6d3fcc5ffd56954804968f19391f3)]
-- `application/views/layouts/booking_layout.php` lines:[32-35, 39] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-789adca6159fded2f2072e5488bf08807ef6d87fc095606fe07c9c2a7c12fcd7)]
-- `application/views/layouts/message_layout.php` lines:[24-27, 30] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-31dac9fb1e6ea197eef3d1db1d7fcf478b1744134b0ec7ae05fdbd32c7ec5758)]
+- `application/views/components/backend_header.php` lines:[10, 55, 73, 96] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/backend_header.php)]
+- `application/views/layouts/account_layout.php` lines:[22-25, 28] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/account_layout.php)]
+- `application/views/layouts/backend_layout.php` lines:[28-31, 34] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/backend_layout.php)]
+- `application/views/layouts/booking_layout.php` lines:[32-35, 39] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/booking_layout.php)]
+- `application/views/layouts/message_layout.php` lines:[24-27, 30] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/message_layout.php)]
 - `assets/css/rtl.css` lines:[1-51] `[New File]`
 
 ---
@@ -242,45 +251,45 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 ### 2026-03-27 | `d1f59c41` | Add RTL to navbar dropdown menus
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/d1f59c418da115d8cdb3f7ea265297386daef56b)
 
-- `application/views/components/backend_header.php` lines:[8, 56, 74, 97] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-e5f1f7ca945d1ca890211c90592616b2c21255875188b91185b8a1ee3f9101f0)]
+- `application/views/components/backend_header.php` lines:[8, 56, 74, 97] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/backend_header.php)]
 
 ---
 
 ### 2026-03-27 | `ff8f389c` | Keep navbar LTR layout in RTL mode
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/ff8f389caec270cc7ad00ea1f421ccb0706cb6dc)
 
-- `application/views/components/backend_header.php` lines:[10, 22] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-e5f1f7ca945d1ca890211c90592616b2c21255875188b91185b8a1ee3f9101f0)]
+- `application/views/components/backend_header.php` lines:[10, 22] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/backend_header.php)]
 
 ---
 
 ### 2026-03-27 | `93a36465` | Fix navbar direction in RTL mode
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/93a36465bfb6bf04caec9daa1e4e5c9d300145a2)
 
-- `application/views/components/backend_header.php` lines:[22] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-e5f1f7ca945d1ca890211c90592616b2c21255875188b91185b8a1ee3f9101f0)]
+- `application/views/components/backend_header.php` lines:[22] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/backend_header.php)]
 
 ---
 
 ### 2026-03-27 | `74f777ab` | Add RTL support for Hebrew, Arabic, and Persian
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/74f777ab50328221ea10bc2467da5675ad1dc142)
 
-- `application/views/layouts/account_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-4dbe96cc788ef593f23642cbe7f09053b3d2a8d426947b681d71027e6c2596a1)]
-- `application/views/layouts/backend_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-9a0eb11e673434315918b4e22c6e08a733d6d3fcc5ffd56954804968f19391f3)]
-- `application/views/layouts/booking_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-789adca6159fded2f2072e5488bf08807ef6d87fc095606fe07c9c2a7c12fcd7)]
-- `application/views/layouts/message_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-31dac9fb1e6ea197eef3d1db1d7fcf478b1744134b0ec7ae05fdbd32c7ec5758)]
-- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-6238f1a3cb2dc688cc7408bf917869083ec52d9cb7dca13bac2e621fdc46880e)]
-- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-01e3ebe43aef6c615a7c9bf36accc18d72d3a2a2dd6f2ede333f626e19c7289b)]
+- `application/views/layouts/account_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/account_layout.php)]
+- `application/views/layouts/backend_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/backend_layout.php)]
+- `application/views/layouts/booking_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/booking_layout.php)]
+- `application/views/layouts/message_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/message_layout.php)]
+- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/installation.php)]
+- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/update.php)]
 
 ---
 
 ### 2026-03-27 | `2e94ee03` | Revert RTL changes — breaks CSS loading
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/2e94ee03c873af77f943bbba5b93327c0867cd58)
 
-- `application/views/layouts/account_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-4dbe96cc788ef593f23642cbe7f09053b3d2a8d426947b681d71027e6c2596a1)]
-- `application/views/layouts/backend_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-9a0eb11e673434315918b4e22c6e08a733d6d3fcc5ffd56954804968f19391f3)]
-- `application/views/layouts/booking_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-789adca6159fded2f2072e5488bf08807ef6d87fc095606fe07c9c2a7c12fcd7)]
-- `application/views/layouts/message_layout.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-31dac9fb1e6ea197eef3d1db1d7fcf478b1744134b0ec7ae05fdbd32c7ec5758)]
-- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-6238f1a3cb2dc688cc7408bf917869083ec52d9cb7dca13bac2e621fdc46880e)]
-- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-01e3ebe43aef6c615a7c9bf36accc18d72d3a2a2dd6f2ede333f626e19c7289b)]
+- `application/views/layouts/account_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/account_layout.php)]
+- `application/views/layouts/backend_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/backend_layout.php)]
+- `application/views/layouts/booking_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/booking_layout.php)]
+- `application/views/layouts/message_layout.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/message_layout.php)]
+- `application/views/pages/installation.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/installation.php)]
+- `application/views/pages/update.php` lines:[2] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/update.php)]
 
 ---
 
@@ -316,7 +325,7 @@ _No file changes_
 ### 2026-03-27 | `da81e555` | Remove CLAUDE.md from repo and add to .gitignore
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/da81e55569041761fb154f321048e6524e5e7be8)
 
-- `.gitignore` lines:[15] [[Watch](https://github.com/HaiAtoon/easyappointments/compare/upstream...main#diff-bc37d034bad564583790a46f19d807abfe519c5671395fd494d8cce506c42947)]
+- `.gitignore` lines:[15] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/.gitignore)]
 - `CLAUDE.md` _(deleted)_
 
 ---
