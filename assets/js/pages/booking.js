@@ -339,9 +339,7 @@ App.Pages.Booking = (function () {
          *
          * Whenever the provider changes the available appointment date - time periods must be updated.
          */
-        $selectProvider.on('focus', () => $selectProvider.removeClass('is-invalid'));
         $selectProvider.on('change', (event) => {
-            $selectProvider.removeClass('is-invalid');
             const $target = $(event.target);
 
             const todayDateTimeObject = new Date();
@@ -420,21 +418,14 @@ App.Pages.Booking = (function () {
         $('.button-next').on('click', (event) => {
             const $target = $(event.currentTarget);
 
-            // If we are on the first step, validate service and provider selection.
+            // If we are on the first step, validate service selection.
             if ($target.attr('data-step_index') === '1') {
-                let hasError = false;
-
                 if (!$selectService.val()) {
                     $selectService.addClass('is-invalid');
-                    hasError = true;
+                    return;
                 }
 
                 if (!$selectProvider.val()) {
-                    $selectProvider.addClass('is-invalid');
-                    hasError = true;
-                }
-
-                if (hasError) {
                     return;
                 }
             }
