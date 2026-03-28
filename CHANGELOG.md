@@ -4,6 +4,18 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-28 | `eeefb506` | Add auto-updating Change Logs with GitHub Action
+[View Diff vs Upstream](https://github.com/alextselegidis/easyappointments/compare/main...HaiAtoon/easyappointments:eeefb5066367d2134f023f739ace17987cb4e0de)
+
+- `.github/scripts/generate-changelog-entry.sh` lines:[1-73] [[Watch](https://github.com/alextselegidis/easyappointments/compare/main...HaiAtoon/easyappointments:main#diff-0d5146fc0b34d8806ffb091380bf2bef9e60b00eb50d8580e7304f6701da0966)]
+- `.github/workflows/changelog.yml` lines:[1-57] [[Watch](https://github.com/alextselegidis/easyappointments/compare/main...HaiAtoon/easyappointments:main#diff-a0aba5a2bd30b2f80a3a18aa24ce43670b1320ca0a8b9c103bb3bc971ae30a85)]
+- `.github/workflows/deploy.yml` lines:[35] [[Watch](https://github.com/alextselegidis/easyappointments/compare/main...HaiAtoon/easyappointments:main#diff-28802fbf11c83a2eee09623fb192785e7ca92a3f40602a517c011b947a1822d3)]
+- `.gitignore` lines:[14] [[Watch](https://github.com/alextselegidis/easyappointments/compare/main...HaiAtoon/easyappointments:main#diff-bc37d034bad564583790a46f19d807abfe519c5671395fd494d8cce506c42947)]
+- `CHANGELOG.md` lines:[1-205, 207, 209-210, 212-217, 219, 221-222, 224-229, 231, 233-234, 236, 238, 240-241, 243, 245, 247-248, 250, 252, 254-255, 257-258, 260, 262-263, 265-266, 268] [[Watch](https://github.com/alextselegidis/easyappointments/compare/main...HaiAtoon/easyappointments:main#diff-06572a96a58dc510037d5efa622f9bec8519bc1beab13c9f251e97e657a9d4ed)]
+
+---
+
+
 ### 2026-03-27 | `bd9ada01` | Add rtl.min.css for production use
 [View Diff vs Upstream](https://github.com/alextselegidis/easyappointments/compare/main...HaiAtoon/easyappointments:bd9ada016efafd134f1277d8fd3abb0a1e5fe640)
 
