@@ -130,13 +130,13 @@ body {
 }
 
 .flatpickr-prev-month {
-  left: auto;
-  right: 0;
+  left: auto !important;
+  right: 0 !important;
 }
 
 .flatpickr-next-month {
-  right: auto;
-  left: 0;
+  right: auto !important;
+  left: 0 !important;
 }
 
 .flatpickr-prev-month svg,
