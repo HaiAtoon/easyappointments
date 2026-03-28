@@ -11,32 +11,29 @@
 
         <h2 class="frame-title"><?= lang('appointment_date_and_time') ?></h2>
 
-        <div class="row frame-content">
-            <div class="col-12 col-md-6">
+        <div class="frame-content">
+            <div class="mx-auto" style="max-width: 340px;">
                 <div id="select-date"></div>
 
                 <?php slot('after_select_date'); ?>
             </div>
 
-            <div class="col-12 col-md-6">
-                <div id="select-time">
-                    <div class="mb-3">
-                        <label for="select-timezone" class="form-label">
-                            <?= lang('timezone') ?>
-                        </label>
-                        <?php component('timezone_dropdown', [
-                            'attributes' => 'id="select-timezone" class="form-select" value="UTC"',
-                            'grouped_timezones' => $grouped_timezones,
-                        ]); ?>
-                    </div>
-
-                    <?php slot('after_select_timezone'); ?>
-
-
-                    <div id="available-hours"></div>
-
-                    <?php slot('after_available_hours'); ?>
+            <div id="select-time" class="mx-auto" style="max-width: 340px;">
+                <div class="mb-3">
+                    <label for="select-timezone" class="form-label">
+                        <?= lang('timezone') ?>
+                    </label>
+                    <?php component('timezone_dropdown', [
+                        'attributes' => 'id="select-timezone" class="form-select" value="UTC"',
+                        'grouped_timezones' => $grouped_timezones,
+                    ]); ?>
                 </div>
+
+                <?php slot('after_select_timezone'); ?>
+
+                <div id="available-hours"></div>
+
+                <?php slot('after_available_hours'); ?>
             </div>
         </div>
     </div>

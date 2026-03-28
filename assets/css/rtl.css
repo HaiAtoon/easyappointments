@@ -41,6 +41,13 @@
     text-align: right;
 }
 
+/* Select dropdown arrow — move to left side */
+.rtl .form-select {
+    background-position: left 0.75rem center;
+    padding-left: 2.25rem;
+    padding-right: 0.75rem;
+}
+
 /* Backend navbar — keep layout LTR, only flip text inside dropdowns */
 .rtl #header {
     direction: ltr;
@@ -58,6 +65,7 @@
 /* Booking header — RTL layout: name on right, steps on left */
 .rtl #book-appointment-wizard #header-bar {
     direction: rtl;
+    flex-direction: row-reverse;
 }
 
 .rtl #book-appointment-wizard #company-name {
@@ -68,11 +76,15 @@
     direction: ltr;
 }
 
-/* Flip navigation button arrows */
-.rtl #book-appointment-wizard .button-back .fa-chevron-left {
+/* Flip all chevron arrows in booking wizard for RTL */
+.rtl #book-appointment-wizard .fa-chevron-left,
+.rtl #book-appointment-wizard .fa-chevron-right {
     transform: scaleX(-1);
 }
 
-.rtl #book-appointment-wizard .button-next .fa-chevron-right {
-    transform: scaleX(-1);
+/* Command buttons — reverse order in RTL (Back on right, Next on left) */
+@media (min-width: 768px) {
+    .rtl #book-appointment-wizard .command-buttons {
+        flex-direction: row-reverse;
+    }
 }

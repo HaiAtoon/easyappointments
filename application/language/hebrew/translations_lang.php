@@ -2,8 +2,8 @@
 // Hebrew
 $lang['page_title'] = 'קבע פגישה עם';
 $lang['service_and_provider'] = 'בחירת שירות וספק';
-$lang['select_service'] = 'בחירת שירות';
-$lang['select_provider'] = 'בחירת ספק';
+$lang['select_service'] = 'אנא בחר שירות';
+$lang['select_provider'] = 'אנא בחר ספק';
 $lang['duration'] = 'אורך הפגישה';
 $lang['minutes'] = 'דקות';
 $lang['price'] = 'מחיר';
