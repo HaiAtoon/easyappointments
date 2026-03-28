@@ -75,11 +75,7 @@
     <div class="command-buttons">
         <button type="button" id="button-back-4" class="btn button-back btn-outline-secondary"
                 data-step_index="4">
-            <?php if (config('is_rtl')): ?>
-                <?= lang('back') ?><i class="fas fa-chevron-right ms-2"></i>
-            <?php else: ?>
-                <i class="fas fa-chevron-left me-2"></i><?= lang('back') ?>
-            <?php endif; ?>
+            <i class="fas fa-chevron-<?= config('is_rtl') ? 'right' : 'left' ?> me-2"></i><?= lang('back') ?>
         </button>
         <form id="book-appointment-form" style="display:inline-block" method="post">
             <button id="book-appointment-submit" type="button" class="btn btn-primary">
