@@ -92,16 +92,6 @@
             filter: brightness(35%);
         }
 
-        #book-appointment-wizard .book-step {
-            background: <?= $company_color ?>;
-            filter: brightness(75%);
-        }
-
-        #book-appointment-wizard .book-step strong {
-            color: <?= $company_color ?>;
-            filter: brightness(200%);
-        }
-
         body .ui-widget.ui-widget-content {
             border-color: <?= $company_color ?>;
         }

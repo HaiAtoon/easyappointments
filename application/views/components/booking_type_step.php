@@ -109,8 +109,11 @@
 
         <button type="button" id="button-next-1" class="btn button-next btn-dark"
                 data-step_index="1">
-            <?= lang('next') ?>
-            <i class="fas fa-chevron-right ms-2"></i>
+            <?php if (config('is_rtl')): ?>
+                <i class="fas fa-chevron-left me-2"></i><?= lang('next') ?>
+            <?php else: ?>
+                <?= lang('next') ?><i class="fas fa-chevron-right ms-2"></i>
+            <?php endif; ?>
         </button>
     </div>
 </div>

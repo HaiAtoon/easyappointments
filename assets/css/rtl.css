@@ -62,24 +62,13 @@
     direction: rtl;
 }
 
-/* Booking header — RTL layout: name on right, steps on left */
-.rtl #book-appointment-wizard #header-bar {
-    direction: rtl;
-    flex-direction: row-reverse;
-}
-
+/* Booking header — RTL: name right-aligned, steps keep LTR numbering */
 .rtl #book-appointment-wizard #company-name {
     text-align: right;
 }
 
 .rtl #book-appointment-wizard #steps {
     direction: ltr;
-}
-
-/* Flip all chevron arrows in booking wizard for RTL */
-.rtl #book-appointment-wizard .fa-chevron-left,
-.rtl #book-appointment-wizard .fa-chevron-right {
-    transform: scaleX(-1);
 }
 
 /* Command buttons — reverse order in RTL (Back on right, Next on left) */

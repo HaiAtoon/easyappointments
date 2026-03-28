@@ -146,13 +146,19 @@
     <div class="command-buttons">
         <button type="button" id="button-back-3" class="btn button-back btn-outline-secondary"
                 data-step_index="3">
-            <i class="fas fa-chevron-left me-2"></i>
-            <?= lang('back') ?>
+            <?php if (config('is_rtl')): ?>
+                <?= lang('back') ?><i class="fas fa-chevron-right ms-2"></i>
+            <?php else: ?>
+                <i class="fas fa-chevron-left me-2"></i><?= lang('back') ?>
+            <?php endif; ?>
         </button>
         <button type="button" id="button-next-3" class="btn button-next btn-dark"
                 data-step_index="3">
-            <?= lang('next') ?>
-            <i class="fas fa-chevron-right ms-2"></i>
+            <?php if (config('is_rtl')): ?>
+                <i class="fas fa-chevron-left me-2"></i><?= lang('next') ?>
+            <?php else: ?>
+                <?= lang('next') ?><i class="fas fa-chevron-right ms-2"></i>
+            <?php endif; ?>
         </button>
     </div>
 </div>
