@@ -71,3 +71,14 @@
     direction: ltr;
 }
 
+/* Flatpickr calendar — swap prev/next arrow positions */
+.rtl .flatpickr-calendar .flatpickr-prev-month {
+    left: auto;
+    right: 0;
+}
+
+.rtl .flatpickr-calendar .flatpickr-next-month {
+    right: auto;
+    left: 0;
+}
+
