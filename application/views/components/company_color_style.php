@@ -178,10 +178,5 @@
             background: <?= $company_color ?> !important;
         }
 
-        #book-appointment-wizard #company-name .display-booking-selection {
-            color: <?= $company_color ?>;
-            border-right-color: <?= $company_color ?>;
-            filter: brightness(280%);
-        }
     </style>
 <?php endif; ?>

@@ -365,6 +365,7 @@ App.Pages.Booking = (function () {
         $selectService.on('focus', () => $selectService.removeClass('is-invalid'));
         $selectService.on('change', (event) => {
             $selectService.removeClass('is-invalid');
+            $displayBookingSelection.toggle(Boolean($selectService.val()));
             const $target = $(event.target);
             const serviceId = $selectService.val();
             $selectProvider.parent().prop('hidden', !Boolean(serviceId));

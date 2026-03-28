@@ -59,15 +59,15 @@ body {
   display: block;
   text-align: center;
   font-size: 24px;
-  font-weight: lighter;
+  font-weight: bold;
   color: #fff;
   margin: 5px 0;
 }
 #book-appointment-wizard #company-name .display-booking-selection {
-  color: #225d4d;
-  border-right-color: #225d4d !important;
+  color: #fff;
   font-size: 60%;
   font-weight: normal;
+  display: none;
 }
 
 #book-appointment-wizard #steps {
