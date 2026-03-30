@@ -4,6 +4,117 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-30 | `8ec1a6e5` | Add returning customer portal, UI/UX fixes, and calendar timezone handling
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/8ec1a6e50423af9fa99c567972e22edb586191d5)
+
+- `application/config/email.php` lines:[8-19] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/config/email.php)]
+- `application/config/routes.php` lines:[163, 167-170] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/config/routes.php)]
+- `application/controllers/Booking.php` lines:[38, 82-83, 168-169, 215-232, 265, 272-278, 297-298, 327-328, 347-348, 392-395, 421-439, 830-957] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/controllers/Booking.php)]
+- `application/controllers/Booking_cancellation.php` lines:[103-109] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/controllers/Booking_cancellation.php)]
+- `application/controllers/Booking_confirmation.php` lines:[66] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/controllers/Booking_confirmation.php)]
+- `application/controllers/Calendar.php` lines:[218-219, 388-398, 577, 717] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/controllers/Calendar.php)]
+- `application/controllers/Customer_portal.php` lines:[1-205] `[New File]`
+- `application/controllers/Customers.php` lines:[36, 100-101, 136-137] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/controllers/Customers.php)]
+- `application/controllers/General_settings.php` lines:[93-94, 96-99, 113-126] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/controllers/General_settings.php)]
+- `application/language/albanian/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/albanian/translations_lang.php)]
+- `application/language/arabic/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/arabic/translations_lang.php)]
+- `application/language/bosnian/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/bosnian/translations_lang.php)]
+- `application/language/bulgarian/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/bulgarian/translations_lang.php)]
+- `application/language/catalan/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/catalan/translations_lang.php)]
+- `application/language/chinese/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/chinese/translations_lang.php)]
+- `application/language/croatian/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/croatian/translations_lang.php)]
+- `application/language/czech/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/czech/translations_lang.php)]
+- `application/language/danish/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/danish/translations_lang.php)]
+- `application/language/dutch/translations_lang.php` lines:[488-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/dutch/translations_lang.php)]
+- `application/language/english/translations_lang.php` lines:[488-525] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/english/translations_lang.php)]
+- `application/language/estonian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/estonian/translations_lang.php)]
+- `application/language/finnish/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/finnish/translations_lang.php)]
+- `application/language/french/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/french/translations_lang.php)]
+- `application/language/german/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/german/translations_lang.php)]
+- `application/language/greek/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/greek/translations_lang.php)]
+- `application/language/hebrew/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/hebrew/translations_lang.php)]
+- `application/language/hindi/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/hindi/translations_lang.php)]
+- `application/language/hungarian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/hungarian/translations_lang.php)]
+- `application/language/italian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/italian/translations_lang.php)]
+- `application/language/japanese/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/japanese/translations_lang.php)]
+- `application/language/latvian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/latvian/translations_lang.php)]
+- `application/language/lithuanian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/lithuanian/translations_lang.php)]
+- `application/language/luxembourgish/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/luxembourgish/translations_lang.php)]
+- `application/language/marathi/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/marathi/translations_lang.php)]
+- `application/language/norwegian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/norwegian/translations_lang.php)]
+- `application/language/persian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/persian/translations_lang.php)]
+- `application/language/polish/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/polish/translations_lang.php)]
+- `application/language/portuguese-br/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/portuguese-br/translations_lang.php)]
+- `application/language/portuguese/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/portuguese/translations_lang.php)]
+- `application/language/romanian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/romanian/translations_lang.php)]
+- `application/language/russian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/russian/translations_lang.php)]
+- `application/language/serbian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/serbian/translations_lang.php)]
+- `application/language/slovak/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/slovak/translations_lang.php)]
+- `application/language/slovenian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/slovenian/translations_lang.php)]
+- `application/language/spanish/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/spanish/translations_lang.php)]
+- `application/language/swedish/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/swedish/translations_lang.php)]
+- `application/language/thai/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/thai/translations_lang.php)]
+- `application/language/traditional-chinese/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/traditional-chinese/translations_lang.php)]
+- `application/language/turkish/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/turkish/translations_lang.php)]
+- `application/language/ukrainian/translations_lang.php` lines:[488-526] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/ukrainian/translations_lang.php)]
+- `application/libraries/Availability.php` lines:[357-359] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/libraries/Availability.php)]
+- `application/libraries/Email_messages.php` lines:[213-231] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/libraries/Email_messages.php)]
+- `application/migrations/061_add_returning_customer_feature.php` lines:[1-98] `[New File]`
+- `application/migrations/062_add_cancellation_fields_to_appointments.php` lines:[1-39] `[New File]`
+- `application/models/Appointments_model.php` lines:[397, 442] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/models/Appointments_model.php)]
+- `application/models/Customer_logins_model.php` lines:[1-26] `[New File]`
+- `application/models/Customer_otps_model.php` lines:[1-46] `[New File]`
+- `application/models/Customers_model.php` lines:[46, 109-110, 118-119, 260-273, 432, 477, 534-537] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/models/Customers_model.php)]
+- `application/views/components/appointments_modal.php` lines:[12-13, 236-248] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/appointments_modal.php)]
+- `application/views/components/booking_info_step.php` lines:[13-14, 23-24, 26-27, 35-73, 75-87, 214-234] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/components/booking_info_step.php)]
+- `application/views/emails/account_recovery_email.php` lines:[9-12, 14, 18, 22, 33] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/emails/account_recovery_email.php)]
+- `application/views/emails/appointment_deleted_email.php` lines:[13-16, 19, 23, 27, 39, 137-146] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/emails/appointment_deleted_email.php)]
+- `application/views/emails/appointment_saved_email.php` lines:[15-18, 21, 27, 31, 43, 141-150] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/emails/appointment_saved_email.php)]
+- `application/views/emails/customer_otp_email.php` lines:[1-71] `[New File]`
+- `application/views/layouts/booking_layout.php` lines:[18, 45] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/layouts/booking_layout.php)]
+- `application/views/layouts/customer_layout.php` lines:[1-85] `[New File]`
+- `application/views/pages/booking.php` lines:[40-44] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/booking.php)]
+- `application/views/pages/booking_cancellation.php` lines:[20-26] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/booking_cancellation.php)]
+- `application/views/pages/booking_confirmation.php` lines:[31-37] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/booking_confirmation.php)]
+- `application/views/pages/booking_settings.php` lines:[142-167, 423, 439-454] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/booking_settings.php)]
+- `application/views/pages/calendar.php` lines:[121-122] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/calendar.php)]
+- `application/views/pages/customer_dashboard.php` lines:[1-65] `[New File]`
+- `application/views/pages/customer_login.php` lines:[1-62] `[New File]`
+- `application/views/pages/customer_logout.php` lines:[1-22] `[New File]`
+- `application/views/pages/customers.php` lines:[81-93] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/customers.php)]
+- `application/views/pages/general_settings.php` lines:[235-255] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/views/pages/general_settings.php)]
+- `assets/css/layouts/backend_layout.css` lines:[137-143] `[New File]`
+- `assets/css/layouts/backend_layout.min.css` lines:[1] `[New File]`
+- `assets/css/pages/customer_dashboard.css` lines:[1-7] `[New File]`
+- `assets/css/pages/customer_dashboard.min.css` lines:[1-7] `[New File]`
+- `assets/css/rtl.css` lines:[60-65] `[New File]`
+- `assets/css/rtl.min.css` lines:[1] `[New File]`
+- `assets/js/components/appointments_modal.js` lines:[32, 122, 267, 332] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/components/appointments_modal.js)]
+- `assets/js/components/appointments_modal.min.js` lines:[1-11] `[New File]`
+- `assets/js/http/booking_http_client.js` lines:[205-210, 399-422, 429-432] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/http/booking_http_client.js)]
+- `assets/js/http/booking_http_client.min.js` lines:[1-11] `[New File]`
+- `assets/js/http/customer_http_client.js` lines:[1-25] `[New File]`
+- `assets/js/http/customer_http_client.min.js` lines:[1] `[New File]`
+- `assets/js/pages/booking.js` lines:[36, 46-48, 273-276, 463-479, 481, 483-484, 767-768, 784-786, 817, 840-844, 916-917, 929-963, 1025-1165] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/pages/booking.js)]
+- `assets/js/pages/booking.min.js` lines:[11] `[New File]`
+- `assets/js/pages/booking_settings.js` lines:[165-172] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/pages/booking_settings.js)]
+- `assets/js/pages/booking_settings.min.js` lines:[1-11] `[New File]`
+- `assets/js/pages/customer_dashboard.js` lines:[1-106] `[New File]`
+- `assets/js/pages/customer_dashboard.min.js` lines:[1] `[New File]`
+- `assets/js/pages/customer_login.js` lines:[1-75] `[New File]`
+- `assets/js/pages/customer_login.min.js` lines:[1] `[New File]`
+- `assets/js/pages/customers.js` lines:[28, 135, 292, 444-457, 460, 463-469] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/pages/customers.js)]
+- `assets/js/pages/customers.min.js` lines:[1-11] `[New File]`
+- `assets/js/pages/general_settings.js` lines:[98-115] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/pages/general_settings.js)]
+- `assets/js/pages/general_settings.min.js` lines:[1-11] `[New File]`
+- `assets/js/utils/calendar_default_view.js` lines:[157, 383-384, 386-387, 406, 420, 607, 621, 680-693, 1231-1232, 1236-1237, 1240, 1256-1257, 1260-1261, 1276-1277] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/utils/calendar_default_view.js)]
+- `assets/js/utils/calendar_default_view.min.js` lines:[1-11] `[New File]`
+- `assets/js/utils/calendar_table_view.js` lines:[231, 905-906, 910-911, 915, 944-945, 948-949, 1120-1121, 1123-1124, 1143, 1157, 1347, 1361, 1419-1431] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/assets/js/utils/calendar_table_view.js)]
+- `assets/js/utils/calendar_table_view.min.js` lines:[1-11] `[New File]`
+
+---
+
+
 ### 2026-03-28 | `fc677e17` | Align booking selection text to left on desktop
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/fc677e175ef3d26c21b55e848e02cbe34dd47f49)
 
