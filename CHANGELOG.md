@@ -4,6 +4,27 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-30 | `188aa90e` | Add missing translations across 14 languages
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/188aa90e33919c60263e648641a1f171af67bb42)
+
+- `application/language/arabic/translations_lang.php` lines:[19, 127, 171, 397-398, 402, 431, 433, 435, 448, 486-492, 495-523, 525-527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/arabic/translations_lang.php)]
+- `application/language/bosnian/translations_lang.php` lines:[528-535] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/bosnian/translations_lang.php)]
+- `application/language/bulgarian/translations_lang.php` lines:[528-532] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/bulgarian/translations_lang.php)]
+- `application/language/catalan/translations_lang.php` lines:[528] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/catalan/translations_lang.php)]
+- `application/language/croatian/translations_lang.php` lines:[528-535] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/croatian/translations_lang.php)]
+- `application/language/estonian/translations_lang.php` lines:[527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/estonian/translations_lang.php)]
+- `application/language/hebrew/translations_lang.php` lines:[54-55, 66, 111, 171, 181-191, 453-463, 465-467, 470-477, 479-487] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/hebrew/translations_lang.php)]
+- `application/language/latvian/translations_lang.php` lines:[527-542] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/latvian/translations_lang.php)]
+- `application/language/norwegian/translations_lang.php` lines:[527-529] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/norwegian/translations_lang.php)]
+- `application/language/serbian/translations_lang.php` lines:[527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/serbian/translations_lang.php)]
+- `application/language/slovenian/translations_lang.php` lines:[527-529] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/slovenian/translations_lang.php)]
+- `application/language/spanish/translations_lang.php` lines:[527-528] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/spanish/translations_lang.php)]
+- `application/language/swedish/translations_lang.php` lines:[527] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/swedish/translations_lang.php)]
+- `application/language/thai/translations_lang.php` lines:[527-543] [[Watch](https://github.com/alextselegidis/easyappointments/blob/main/application/language/thai/translations_lang.php)]
+
+---
+
+
 ### 2026-03-30 | `8ec1a6e5` | Add returning customer portal, UI/UX fixes, and calendar timezone handling
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/8ec1a6e50423af9fa99c567972e22edb586191d5)
 
