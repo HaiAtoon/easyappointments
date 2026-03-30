@@ -78,6 +78,19 @@
 
                     <div id="form-message" class="alert" style="display:none;"></div>
 
+                    <?php if (vars('display_id_number')): ?>
+                        <div class="mb-3">
+                            <label for="id-number" class="form-label">
+                                <?= lang('id_number') ?>
+                                <?php if (vars('require_id_number')): ?>
+                                    <span class="text-danger" hidden>*</span>
+                                <?php endif; ?>
+                            </label>
+                            <input type="text" id="id-number"
+                                   class="<?= vars('require_id_number') ? 'required' : '' ?> form-control" maxlength="20" disabled/>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="mb-3">
                         <label for="first-name" class="form-label">
                             <?= lang('first_name') ?>

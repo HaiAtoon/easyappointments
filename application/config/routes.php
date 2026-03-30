@@ -160,9 +160,13 @@ $route['api/v1/availabilities']['get'] = 'api/v1/availabilities_api_v1/get';
 | CUSTOM ROUTING
 | -------------------------------------------------------------------------
 | You can add custom routes to the following section to define URL patterns
-| that are later mapped to the available controllers in the filesystem. 
+| that are later mapped to the available controllers in the filesystem.
 |
 */
+
+$route['customer'] = 'customer_portal/index';
+$route['customer/dashboard'] = 'customer_portal/dashboard';
+$route['customer/logout'] = 'customer_portal/logout';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

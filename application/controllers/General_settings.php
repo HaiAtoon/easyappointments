@@ -90,7 +90,13 @@ class General_settings extends EA_Controller
 
             $settings = request('general_settings', []);
 
+            $app_mode = null;
+
             foreach ($settings as $setting) {
+                if ($setting['name'] === 'app_mode') {
+                    $app_mode = $setting['value'];
+                }
+
                 $existing_setting = $this->settings_model
                     ->query()
                     ->where('name', $setting['name'])
@@ -102,6 +108,20 @@ class General_settings extends EA_Controller
                 }
 
                 $this->settings_model->save($setting);
+            }
+
+            if ($app_mode !== null) {
+                $is_clinic = $app_mode === 'clinic' ? '1' : '0';
+
+                $clinic_settings = [
+                    'display_id_number' => $is_clinic,
+                    'require_id_number' => $is_clinic,
+                    'returning_customer' => $is_clinic,
+                ];
+
+                foreach ($clinic_settings as $name => $value) {
+                    setting([$name => $value]);
+                }
             }
 
             response();

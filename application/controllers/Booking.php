@@ -35,6 +35,7 @@ class Booking extends EA_Controller
         'zip_code',
         'timezone',
         'language',
+        'id_number',
         'custom_field_1',
         'custom_field_2',
         'custom_field_3',
@@ -78,6 +79,8 @@ class Booking extends EA_Controller
         $this->load->library('notifications');
         $this->load->library('availability');
         $this->load->library('webhooks_client');
+        $this->load->library('email_messages');
+        $this->load->model('customer_otps_model');
     }
 
     /**
@@ -162,6 +165,8 @@ class Booking extends EA_Controller
         $require_zip_code = setting('require_zip_code');
         $display_notes = setting('display_notes');
         $require_notes = setting('require_notes');
+        $display_id_number = setting('display_id_number');
+        $require_id_number = setting('require_id_number');
         $display_cookie_notice = setting('display_cookie_notice');
         $cookie_notice_content = setting('cookie_notice_content');
         $display_terms_and_conditions = setting('display_terms_and_conditions');
@@ -207,6 +212,24 @@ class Booking extends EA_Controller
                 return;
             }
 
+            // Block access if the appointment was cancelled.
+            if (!empty($results[0]['status']) && $results[0]['status'] === 'Cancelled') {
+                html_vars([
+                    'show_message' => true,
+                    'page_title' => lang('appointment_cancelled_title') . ' | ' . $company_name,
+                    'message_title' => lang('appointment_cancelled_title'),
+                    'message_text' => lang('appointment_cancelled'),
+                    'message_icon' => base_url('assets/img/error.png'),
+                    'google_analytics_code' => $google_analytics_code,
+                    'matomo_analytics_url' => $matomo_analytics_url,
+                    'matomo_analytics_site_id' => $matomo_analytics_site_id,
+                ]);
+
+                $this->load->view('pages/booking_message');
+
+                return;
+            }
+
             // Make sure the appointment can still be rescheduled.
 
             $start_datetime = strtotime($results[0]['start_datetime']);
@@ -239,16 +262,20 @@ class Booking extends EA_Controller
             $appointment = $results[0];
             $provider = $this->providers_model->find($appointment['id_users_provider']);
             $customer = $this->customers_model->find($appointment['id_users_customer']);
-            $customer_token = md5(uniqid(mt_rand(), true));
-
-            // Cache the token for 10 minutes.
-            $this->cache->save('customer-token-' . $customer_token, $customer['id'], 600);
+            $customer_token = $this->generate_customer_token($customer['id']);
         } else {
             $manage_mode = false;
             $customer_token = false;
             $appointment = null;
             $provider = null;
             $customer = null;
+
+            $portal_customer_id = session('customer_id');
+
+            if ($portal_customer_id) {
+                $customer = $this->customers_model->find($portal_customer_id);
+                $customer_token = $this->generate_customer_token($customer['id']);
+            }
         }
 
         script_vars([
@@ -267,6 +294,8 @@ class Booking extends EA_Controller
             'customer_token' => $customer_token,
             'default_language' => setting('default_language'),
             'default_timezone' => setting('default_timezone'),
+            'returning_customer' => setting('returning_customer'),
+            'customer_portal_session' => !empty(session('customer_id')),
         ]);
 
         html_vars([
@@ -295,6 +324,8 @@ class Booking extends EA_Controller
             'require_zip_code' => $require_zip_code,
             'display_notes' => $display_notes,
             'require_notes' => $require_notes,
+            'display_id_number' => $display_id_number,
+            'require_id_number' => $require_id_number,
             'display_cookie_notice' => $display_cookie_notice,
             'cookie_notice_content' => $cookie_notice_content,
             'display_terms_and_conditions' => $display_terms_and_conditions,
@@ -313,6 +344,8 @@ class Booking extends EA_Controller
             'appointment_data' => $appointment,
             'provider_data' => $provider,
             'customer_data' => $customer,
+            'returning_customer' => setting('returning_customer'),
+            'customer_portal_session' => !empty(session('customer_id')),
         ]);
 
         $this->load->view('pages/booking');
@@ -356,6 +389,10 @@ class Booking extends EA_Controller
                 $customer['phone_number'] = '';
             }
 
+            if (!array_key_exists('id_number', $customer)) {
+                $customer['id_number'] = '';
+            }
+
             // Check appointment availability before registering it to the database.
             $appointment['id_users_provider'] = $this->check_datetime_availability();
 
@@ -379,6 +416,25 @@ class Booking extends EA_Controller
                 ]);
 
                 return;
+            }
+
+            $returning_customer_enabled = filter_var(setting('returning_customer'), FILTER_VALIDATE_BOOLEAN);
+            $returning_customer_verified = !empty($post_data['returning_customer_verified']);
+            $portal_authenticated = !empty(session('customer_id'));
+
+            if (
+                $returning_customer_enabled
+                && !$returning_customer_verified
+                && !$portal_authenticated
+                && !$manage_mode
+                && !empty($customer['id_number'])
+            ) {
+                $existing = $this->customers_model->find_by_id_number($customer['id_number']);
+
+                if ($existing) {
+                    json_response(['existing_customer_detected' => true]);
+                    return;
+                }
             }
 
             if ($this->customers_model->exists($customer)) {
@@ -770,5 +826,133 @@ class Booking extends EA_Controller
         }
 
         return $provider_list;
+    }
+
+    public function lookup_customer(): void
+    {
+        try {
+            $id_number = request('id_number');
+
+            if (empty($id_number)) {
+                throw new InvalidArgumentException('No ID number provided.');
+            }
+
+            $customer = $this->customers_model->find_by_id_number($id_number);
+
+            if ($customer) {
+                $email = $customer['email'];
+                $masked = substr($email, 0, 2) . str_repeat('*', strpos($email, '@') - 2) . substr($email, strpos($email, '@'));
+
+                json_response([
+                    'found' => true,
+                    'customer_id' => (int) $customer['id'],
+                    'masked_email' => $masked,
+                ]);
+            } else {
+                json_response(['found' => false]);
+            }
+        } catch (Throwable $e) {
+            json_exception($e);
+        }
+    }
+
+    private function generate_customer_token(int $customer_id): string
+    {
+        $token = md5(uniqid(mt_rand(), true));
+
+        $this->cache->save('customer-token-' . $token, $customer_id, 600);
+
+        return $token;
+    }
+
+    public function send_customer_otp(): void
+    {
+        try {
+            $customer_id = (int) request('customer_id');
+
+            if (empty($customer_id)) {
+                throw new InvalidArgumentException('No customer ID provided.');
+            }
+
+            $customer = $this->customers_model->find($customer_id);
+
+            $otp_code = $this->customer_otps_model->generate($customer_id, $customer['email']);
+
+            $company_color = setting('company_color');
+
+            $settings = [
+                'company_name' => setting('company_name'),
+                'company_link' => setting('company_link'),
+                'company_email' => setting('company_email'),
+                'company_color' => !empty($company_color) && $company_color != DEFAULT_COMPANY_COLOR ? $company_color : null,
+            ];
+
+            $this->email_messages->send_customer_otp($customer, $settings, $otp_code);
+
+            json_response(['success' => true]);
+        } catch (Throwable $e) {
+            json_exception($e);
+        }
+    }
+
+    public function verify_customer_otp(): void
+    {
+        try {
+            $customer_id = (int) request('customer_id');
+            $otp_code = request('otp_code');
+
+            if (empty($customer_id) || empty($otp_code)) {
+                throw new InvalidArgumentException('Customer ID and OTP code are required.');
+            }
+
+            $valid = $this->customer_otps_model->verify($customer_id, $otp_code);
+
+            if ($valid) {
+                $customer = $this->customers_model->find($customer_id);
+
+                json_response([
+                    'valid' => true,
+                    'customer' => [
+                        'id' => (int) $customer['id'],
+                        'first_name' => $customer['first_name'],
+                        'last_name' => $customer['last_name'],
+                        'email' => $customer['email'],
+                        'phone_number' => $customer['phone_number'],
+                        'address' => $customer['address'],
+                        'city' => $customer['city'],
+                        'zip_code' => $customer['zip_code'],
+                        'id_number' => $customer['id_number'],
+                        'notes' => $customer['notes'] ?? '',
+                        'custom_field_1' => $customer['custom_field_1'] ?? '',
+                        'custom_field_2' => $customer['custom_field_2'] ?? '',
+                        'custom_field_3' => $customer['custom_field_3'] ?? '',
+                        'custom_field_4' => $customer['custom_field_4'] ?? '',
+                        'custom_field_5' => $customer['custom_field_5'] ?? '',
+                    ],
+                ]);
+            } else {
+                json_response(['valid' => false]);
+            }
+        } catch (Throwable $e) {
+            json_exception($e);
+        }
+    }
+
+    public function check_customer_id_number(): void
+    {
+        try {
+            $id_number = request('id_number');
+
+            if (empty($id_number)) {
+                json_response(['exists' => false]);
+                return;
+            }
+
+            $customer = $this->customers_model->find_by_id_number($id_number);
+
+            json_response(['exists' => !empty($customer)]);
+        } catch (Throwable $e) {
+            json_exception($e);
+        }
     }
 }

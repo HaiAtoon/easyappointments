@@ -25,6 +25,7 @@ App.Pages.Customers = (function () {
     const $address = $('#address');
     const $city = $('#city');
     const $zipCode = $('#zip-code');
+    const $idNumber = $('#id-number');
     const $timezone = $('#timezone');
     const $language = $('#language');
     const $ldapDn = $('#ldap-dn');
@@ -131,6 +132,7 @@ App.Pages.Customers = (function () {
                 address: $address.val(),
                 city: $city.val(),
                 zip_code: $zipCode.val(),
+                id_number: $idNumber.val(),
                 notes: $notes.val(),
                 timezone: $timezone.val(),
                 language: $language.val() || 'english',
@@ -287,6 +289,7 @@ App.Pages.Customers = (function () {
         $address.val(customer.address);
         $city.val(customer.city);
         $zipCode.val(customer.zip_code);
+        $idNumber.val(customer.id_number);
         $notes.val(customer.notes);
         $timezone.val(customer.timezone);
         $language.val(customer.language || 'english');
@@ -438,20 +441,32 @@ App.Pages.Customers = (function () {
 
         info = customer.phone_number ? info + ', ' + customer.phone_number : info;
 
+        const html = [
+            $('<strong/>', {
+                'text': name,
+            }),
+            $('<br/>'),
+            $('<small/>', {
+                'class': 'text-muted',
+                'text': info,
+            }),
+            $('<br/>'),
+        ];
+
+        if (customer.id_number) {
+            html.push(
+                $('<small/>', {
+                    'class': 'text-muted',
+                    'text': lang('id_number') + ': ' + customer.id_number,
+                }),
+                $('<br/>'),
+            );
+        }
+
         return $('<div/>', {
             'class': 'customer-row entry',
             'data-id': customer.id,
-            'html': [
-                $('<strong/>', {
-                    'text': name,
-                }),
-                $('<br/>'),
-                $('<small/>', {
-                    'class': 'text-muted',
-                    'text': info,
-                }),
-                $('<br/>'),
-            ],
+            'html': html,
         });
     }
 

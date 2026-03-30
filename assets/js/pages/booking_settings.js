@@ -162,6 +162,14 @@ App.Pages.BookingSettings = (function () {
         });
 
         $disableBookingMessage.closest('.form-group').prop('hidden', !$disableBooking.prop('checked'));
+
+        const appMode = vars('booking_settings').find((s) => s.name === 'app_mode');
+
+        if (appMode && appMode.value === 'clinic') {
+            $('#display-id-number').prop('checked', true);
+            $('#require-id-number').prop('checked', true);
+            $('#returning-customer').prop('checked', true);
+        }
     }
 
     /**

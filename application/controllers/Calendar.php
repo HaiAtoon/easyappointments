@@ -215,6 +215,8 @@ class Calendar extends EA_Controller
             'require_city' => setting('require_city'),
             'require_zip_code' => setting('require_zip_code'),
             'require_notes' => setting('require_notes'),
+            'display_id_number' => setting('display_id_number'),
+            'require_id_number' => setting('require_id_number'),
         ]);
 
         $this->load->view('pages/calendar');
@@ -383,8 +385,17 @@ class Calendar extends EA_Controller
                 'time_format' => setting('time_format'),
             ];
 
-            // Delete appointment record from the database.
-            $this->appointments_model->delete($appointment_id);
+            $user_id = session('user_id');
+            $user_display_name = $this->accounts->get_user_display_name($user_id);
+            $role_slug = session('role_slug');
+
+            $this->db->update('appointments', [
+                'status' => 'Cancelled',
+                'cancellation_reason' => $cancellation_reason,
+                'cancelled_by' => $user_display_name . ' (' . $role_slug . ')',
+                'cancelled_at' => date('Y-m-d H:i:s'),
+                'update_datetime' => date('Y-m-d H:i:s'),
+            ], ['id' => $appointment_id]);
 
             $this->notifications->notify_appointment_deleted(
                 $appointment,
@@ -563,6 +574,7 @@ class Calendar extends EA_Controller
                 'appointments' => $this->appointments_model->get([
                     'start_datetime >=' => $start_date,
                     'end_datetime <=' => $end_date,
+                    'status !=' => 'Cancelled',
                 ]),
                 'unavailabilities' => $this->unavailabilities_model->get([
                     'start_datetime >=' => $start_date,
@@ -702,6 +714,7 @@ class Calendar extends EA_Controller
                 $end_date .
                 ')) 
                 AND is_unavailability = 0
+                AND (status IS NULL OR status != \'Cancelled\')
             ';
 
             $response['appointments'] = $this->appointments_model->get($where_clause);

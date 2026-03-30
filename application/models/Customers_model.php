@@ -43,6 +43,7 @@ class Customers_model extends EA_Model
         'zip' => 'zip_code',
         'timezone' => 'timezone',
         'language' => 'language',
+        'idNumber' => 'id_number',
         'customField1' => 'custom_field_1',
         'customField2' => 'custom_field_2',
         'customField3' => 'custom_field_3',
@@ -105,6 +106,8 @@ class Customers_model extends EA_Model
         $require_city = filter_var(setting('require_city'), FILTER_VALIDATE_BOOLEAN);
         $require_zip_code = filter_var(setting('require_zip_code'), FILTER_VALIDATE_BOOLEAN);
 
+        $require_id_number = filter_var(setting('require_id_number'), FILTER_VALIDATE_BOOLEAN);
+
         if (
             (empty($customer['first_name']) && $require_first_name) ||
             (empty($customer['last_name']) && $require_last_name) ||
@@ -112,7 +115,8 @@ class Customers_model extends EA_Model
             (empty($customer['phone_number']) && $require_phone_number) ||
             (empty($customer['address']) && $require_address) ||
             (empty($customer['city']) && $require_city) ||
-            (empty($customer['zip_code']) && $require_zip_code)
+            (empty($customer['zip_code']) && $require_zip_code) ||
+            (empty($customer['id_number']) && $require_id_number)
         ) {
             throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($customer, true));
         }
@@ -251,6 +255,20 @@ class Customers_model extends EA_Model
         }
 
         return (int) $customer['id'];
+    }
+
+    public function find_by_id_number(string $id_number): ?array
+    {
+        $customer = $this->db
+            ->select('users.*')
+            ->from('users')
+            ->join('roles', 'roles.id = users.id_roles', 'inner')
+            ->where('users.id_number', $id_number)
+            ->where('roles.slug', DB_SLUG_CUSTOMER)
+            ->get()
+            ->row_array();
+
+        return $customer ?: null;
     }
 
     /**
@@ -411,6 +429,7 @@ class Customers_model extends EA_Model
             ->or_like('city', $keyword)
             ->or_like('state', $keyword)
             ->or_like('zip_code', $keyword)
+            ->or_like('id_number', $keyword)
             ->or_like('notes', $keyword)
             ->group_end()
             ->limit($limit)
@@ -455,6 +474,7 @@ class Customers_model extends EA_Model
             'address' => $customer['address'],
             'city' => $customer['city'],
             'zip' => $customer['zip_code'],
+            'idNumber' => $customer['id_number'],
             'notes' => $customer['notes'],
             'timezone' => $customer['timezone'],
             'language' => $customer['language'],
@@ -509,6 +529,10 @@ class Customers_model extends EA_Model
 
         if (array_key_exists('zip', $customer)) {
             $decoded_resource['zip_code'] = $customer['zip'];
+        }
+
+        if (array_key_exists('idNumber', $customer)) {
+            $decoded_resource['id_number'] = $customer['idNumber'];
         }
 
         if (array_key_exists('language', $customer)) {

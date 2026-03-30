@@ -5,17 +5,17 @@
 // @link https://codeigniter.com/user_guide/libraries/email.html
 
 $config['useragent'] = 'Easy!Appointments';
-$config['protocol'] = 'mail'; // or 'smtp'
-$config['mailtype'] = 'html'; // or 'text'
-// $config['smtp_debug'] = '0'; // or '1'
-// $config['smtp_auth'] = TRUE; //or FALSE for anonymous relay.
-// $config['smtp_host'] = '';
-// $config['smtp_user'] = '';
-// $config['smtp_pass'] = '';
-// $config['smtp_crypto'] = 'ssl'; // or 'tls'
-// $config['smtp_port'] = 25;
-// $config['from_name'] = '';
-// $config['from_address'] = '';
-// $config['reply_to'] = '';
+$config['protocol'] = 'smtp';
+$config['mailtype'] = 'html';
+$config['smtp_debug'] = '0';
+$config['smtp_auth'] = TRUE;
+$config['smtp_host'] = 'smtp.gmail.com';
+$config['smtp_user'] = 'economyofis@gmail.com';
+$config['smtp_pass'] = 'ghfp obft fzha xfmn';
+$config['smtp_crypto'] = 'tls';
+$config['smtp_port'] = 587;
+$config['from_name'] = 'LilachClinic - מרפאת לילך';
+$config['from_address'] = 'no-reply@lilach-clinic.co.il';
+$config['reply_to'] = 'no-reply@lilach-clinic.co.il';
 $config['crlf'] = "\r\n";
 $config['newline'] = "\r\n";

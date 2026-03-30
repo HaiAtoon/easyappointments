@@ -57,6 +57,12 @@
     direction: rtl;
 }
 
+/* Calendar popovers */
+.rtl .popover {
+    direction: rtl;
+    text-align: right;
+}
+
 /* Booking page #header is inside #book-appointment-wizard — restore RTL */
 .rtl #book-appointment-wizard #header {
     direction: rtl;

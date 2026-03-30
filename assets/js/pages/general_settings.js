@@ -95,6 +95,24 @@ App.Pages.GeneralSettings = (function () {
             value: companyLogoBase64,
         });
 
+        const appMode = $('#app-mode').val();
+        const isClinic = appMode === 'clinic' ? '1' : '0';
+
+        generalSettings.push({
+            name: 'display_id_number',
+            value: isClinic,
+        });
+
+        generalSettings.push({
+            name: 'require_id_number',
+            value: isClinic,
+        });
+
+        generalSettings.push({
+            name: 'returning_customer',
+            value: isClinic,
+        });
+
         return generalSettings;
     }
 

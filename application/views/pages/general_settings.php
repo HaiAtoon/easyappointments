@@ -232,6 +232,27 @@
                             </div>
                         </div>
 
+                        <div class="row mb-5">
+                            <div class="col-12">
+                                <h5 class="text-black-50 mb-3 fw-light"><?= lang('app_mode') ?></h5>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="app-mode">
+                                        <?= lang('app_mode') ?>
+                                    </label>
+                                    <select id="app-mode" data-field="app_mode" class="form-select">
+                                        <option value="general"><?= lang('mode_general') ?></option>
+                                        <option value="clinic"><?= lang('mode_clinic') ?></option>
+                                    </select>
+                                    <div class="form-text text-muted">
+                                        <small>
+                                            <?= lang('app_mode_hint') ?>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <?php slot('after_primary_fields'); ?>
                     </fieldset>
                 </form>

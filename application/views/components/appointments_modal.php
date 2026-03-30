@@ -9,6 +9,8 @@
  * @var array $require_last_name
  * @var array $require_email
  * @var array $require_phone_number
+ * @var array $display_id_number
+ * @var array $require_id_number
  * @var array $require_address
  * @var array $require_city
  * @var array $require_zip_code
@@ -231,6 +233,19 @@
 
                         <div class="row">
                             <div class="col-12 col-sm-6">
+                                <?php if ($display_id_number): ?>
+                                    <div class="mb-3">
+                                        <label for="id-number" class="form-label">
+                                            <?= lang('id_number') ?>
+                                            <?php if ($require_id_number): ?>
+                                                <span class="text-danger">*</span>
+                                            <?php endif; ?>
+                                        </label>
+                                        <input type="text" id="id-number"
+                                               class="<?= $require_id_number ? 'required' : '' ?> form-control" maxlength="20"/>
+                                    </div>
+                                <?php endif; ?>
+
                                 <div class="mb-3">
                                     <label for="first-name" class="form-label">
                                         <?= lang('first_name') ?>

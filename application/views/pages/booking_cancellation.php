@@ -17,6 +17,13 @@
         <i class="fas fa-calendar-alt me-2"></i>
         <?= lang('go_to_booking_page') ?>
     </a>
+
+    <?php if (session('customer_id')): ?>
+        <a href="<?= site_url('customer/dashboard') ?>" class="btn btn-outline-primary ms-2">
+            <i class="fas fa-user me-2"></i>
+            <?= lang('customer_area') ?>
+        </a>
+    <?php endif; ?>
 </div>
 
 <?php end_section('content'); ?>

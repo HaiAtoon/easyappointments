@@ -485,4 +485,44 @@ $lang['import_ldap_users'] = 'Импортиране на LDAP потребит�
 $lang['manage_providers'] = 'Управление на доставчици';
 $lang['secret_header'] = 'Secret Header';
 $lang['search'] = 'Search';
+$lang['id_number'] = 'ID Number';
+$lang['app_mode'] = 'Mode';
+$lang['mode_general'] = 'General';
+$lang['mode_clinic'] = 'Clinic';
+$lang['app_mode_hint'] = 'Select the application mode. Clinic mode requires customers to provide their ID number.';
+
+// Returning Customer
+$lang['returning_customer'] = 'Returning Customer';
+$lang['returning_customer_hint'] = 'Enable the returning customer flow in the booking page. Customers can identify themselves by ID number and OTP verification.';
+$lang['new_customer'] = 'New Customer';
+$lang['are_you_returning_customer'] = 'Have you booked with us before?';
+$lang['send_otp'] = 'Send Code';
+$lang['otp_code'] = 'Verification Code';
+$lang['verify'] = 'Verify';
+$lang['otp_sent_to'] = 'A verification code has been sent to %s';
+$lang['otp_invalid'] = 'The verification code is invalid or has expired. Please try again.';
+$lang['otp_verified'] = 'Your identity has been verified successfully.';
+$lang['existing_customer'] = 'Existing Customer';
+$lang['existing_customer_message'] = 'You are an existing customer. Please use the Returning Customer option to verify your identity and continue booking.';
+$lang['customer_not_found'] = 'No customer found with this ID number.';
+$lang['customer_area'] = 'Customer Area';
+$lang['customer_login'] = 'Customer Login';
+$lang['customer_dashboard'] = 'My Appointments';
+$lang['upcoming_appointments'] = 'Upcoming Appointments';
+$lang['past_appointments'] = 'Past Appointments';
+$lang['no_upcoming_appointments'] = 'You have no upcoming appointments.';
+$lang['no_past_appointments'] = 'You have no past appointments.';
+$lang['your_otp_code'] = 'Your Verification Code';
+$lang['otp_email_greeting'] = 'Hello %s,';
+$lang['otp_email_message'] = 'Your verification code is:';
+$lang['otp_email_expiry'] = 'This code is valid for 5 minutes.';
+$lang['otp_email_ignore'] = 'If you did not request this code, please ignore this email.';
+$lang['enter_id_number'] = 'Enter your ID number';
+$lang['enter_otp_code'] = 'Enter the verification code';
+$lang['customer_logged_out'] = 'You have been logged out successfully.';
+$lang['login_to_customer_area'] = 'Log in to view and manage your appointments.';
+
+$lang['cancelled'] = 'Cancelled';
+$lang['cancelled_by'] = 'Cancelled by';
+$lang['cancelled_by_me'] = 'Cancelled by me';
 // End

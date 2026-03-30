@@ -210,6 +210,25 @@ class Email_messages
         $php_mailer->send();
     }
 
+    public function send_customer_otp(array $customer, array $settings, string $otp_code): void
+    {
+        $html = $this->CI->load->view(
+            'emails/customer_otp_email',
+            [
+                'otp_code' => $otp_code,
+                'customer' => $customer,
+                'settings' => $settings,
+            ],
+            true,
+        );
+
+        $subject = lang('your_otp_code') . ' - ' . $settings['company_name'];
+
+        $php_mailer = $this->get_php_mailer($customer['email'], $subject, $html);
+
+        $php_mailer->send();
+    }
+
     /**
      * Create PHP Mailer instance based on the email configuration.
      *

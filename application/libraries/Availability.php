@@ -354,6 +354,9 @@ class Availability
             ' AND DATE(end_datetime) >= ' .
             $escaped_date;
 
+        // Exclude cancelled appointments from availability calculation.
+        $where .= " AND (status IS NULL OR status != 'Cancelled')";
+
         // Sometimes it might be necessary to exclude an appointment from the calculation (e.g. when editing an
         // existing appointment).
         if ($exclude_appointment_id) {

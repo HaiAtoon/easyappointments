@@ -37,6 +37,11 @@
     'require_zip_code' => vars('require_zip_code'),
     'display_notes' => vars('display_notes'),
     'require_notes' => vars('require_notes'),
+    'display_id_number' => vars('display_id_number'),
+    'require_id_number' => vars('require_id_number'),
+    'returning_customer' => vars('returning_customer'),
+    'manage_mode' => vars('manage_mode'),
+    'customer_portal_session' => vars('customer_portal_session'),
 ]); ?>
 
 <!-- Appointment Data Confirmation -->

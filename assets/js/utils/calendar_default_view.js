@@ -154,6 +154,7 @@ App.Utils.CalendarDefaultView = (function () {
                 $appointmentsModal.find('#last-name').val(customer.last_name);
                 $appointmentsModal.find('#email').val(customer.email);
                 $appointmentsModal.find('#phone-number').val(customer.phone_number);
+                $appointmentsModal.find('#id-number').val(customer.id_number);
                 $appointmentsModal.find('#address').val(customer.address);
                 $appointmentsModal.find('#city').val(customer.city);
                 $appointmentsModal.find('#zip-code').val(customer.zip_code);
@@ -379,15 +380,11 @@ App.Utils.CalendarDefaultView = (function () {
             displayDelete =
                 $target.hasClass('fc-custom') && vars('privileges').appointments.delete === true ? 'me-2' : 'd-none'; // Same value at the time.
 
-            let startDateTimeObject = info.event.start;
-            let endDateTimeObject = info.event.end || info.event.start;
+            const unavailData = info.event.extendedProps.data;
+            const provider = unavailData.provider;
 
-            if (info.event.extendedProps.data) {
-                startDateTimeObject = new Date(info.event.extendedProps.data.start_datetime);
-                endDateTimeObject = new Date(info.event.extendedProps.data.end_datetime);
-            }
-
-            const provider = info.event.extendedProps.data.provider;
+            const startDateTime = unavailData ? unavailData.start_datetime : moment(info.event.start).format('YYYY-MM-DD HH:mm:ss');
+            const endDateTime = unavailData ? unavailData.end_datetime : moment(info.event.end || info.event.start).format('YYYY-MM-DD HH:mm:ss');
 
             $html = $('<div/>', {
                 'html': [
@@ -406,7 +403,7 @@ App.Utils.CalendarDefaultView = (function () {
                     }),
                     $('<span/>', {
                         'text': App.Utils.Date.format(
-                            moment(startDateTimeObject).format('YYYY-MM-DD HH:mm:ss'),
+                            startDateTime,
                             vars('date_format'),
                             vars('time_format'),
                             true,
@@ -420,7 +417,7 @@ App.Utils.CalendarDefaultView = (function () {
                     }),
                     $('<span/>', {
                         'text': App.Utils.Date.format(
-                            moment(endDateTimeObject).format('YYYY-MM-DD HH:mm:ss'),
+                            endDateTime,
                             vars('date_format'),
                             vars('time_format'),
                             true,
@@ -607,7 +604,7 @@ App.Utils.CalendarDefaultView = (function () {
                     }),
                     $('<span/>', {
                         'text': App.Utils.Date.format(
-                            moment(info.event.start).format('YYYY-MM-DD HH:mm:ss'),
+                            info.event.extendedProps.data.start_datetime,
                             vars('date_format'),
                             vars('time_format'),
                             true,
@@ -621,7 +618,7 @@ App.Utils.CalendarDefaultView = (function () {
                     }),
                     $('<span/>', {
                         'text': App.Utils.Date.format(
-                            moment(info.event.end).format('YYYY-MM-DD HH:mm:ss'),
+                            info.event.extendedProps.data.end_datetime,
                             vars('date_format'),
                             vars('time_format'),
                             true,
@@ -679,6 +676,20 @@ App.Utils.CalendarDefaultView = (function () {
                         'text': customerInfo.length ? customerInfo.join(' ') : '-',
                     }),
                     $('<br/>'),
+
+                    ...(info.event.extendedProps.data.customer.id_number
+                        ? [
+                              $('<strong/>', {
+                                  'class': 'd-inline-block me-2',
+                                  'text': lang('id_number'),
+                              }),
+                              $('<span/>', {
+                                  'class': 'd-inline-block',
+                                  'text': info.event.extendedProps.data.customer.id_number,
+                              }),
+                              $('<br/>'),
+                          ]
+                        : []),
 
                     $('<strong/>', {
                         'class': 'd-inline-block me-2',
@@ -1217,14 +1228,16 @@ App.Utils.CalendarDefaultView = (function () {
                         title.push(customerInfo.join(' '));
                     }
 
+                    const providerTimezone = appointment.provider.timezone;
+
                     const appointmentEvent = {
                         id: appointment.id,
                         title: title.join(' - '),
-                        start: moment(appointment.start_datetime).toDate(),
-                        end: moment(appointment.end_datetime).toDate(),
+                        start: moment.tz(appointment.start_datetime, providerTimezone).toDate(),
+                        end: moment.tz(appointment.end_datetime, providerTimezone).toDate(),
                         allDay: false,
                         color: appointment.color,
-                        data: appointment, // Store appointment data for later use.
+                        data: appointment,
                         display: 'block',
                     };
 
@@ -1240,10 +1253,12 @@ App.Utils.CalendarDefaultView = (function () {
                         notes = ' - ' + unavailability.notes.substring(0, 30) + '...';
                     }
 
+                    const unavailProviderTimezone = unavailability.provider.timezone;
+
                     const unavailabilityEvent = {
                         title: lang('unavailability') + notes,
-                        start: moment(unavailability.start_datetime).toDate(),
-                        end: moment(unavailability.end_datetime).toDate(),
+                        start: moment.tz(unavailability.start_datetime, unavailProviderTimezone).toDate(),
+                        end: moment.tz(unavailability.end_datetime, unavailProviderTimezone).toDate(),
                         allDay: false,
                         color: '#879DB4',
                         editable: true,
@@ -1258,8 +1273,8 @@ App.Utils.CalendarDefaultView = (function () {
                 response?.blocked_periods?.forEach((blockedPeriod) => {
                     const blockedPeriodEvent = {
                         title: blockedPeriod.name,
-                        start: moment(blockedPeriod.start_datetime).toDate(),
-                        end: moment(blockedPeriod.end_datetime).toDate(),
+                        start: moment.tz(blockedPeriod.start_datetime, vars('default_timezone')).toDate(),
+                        end: moment.tz(blockedPeriod.end_datetime, vars('default_timezone')).toDate(),
                         allDay: true,
                         backgroundColor: '#d65069',
                         borderColor: '#d65069',

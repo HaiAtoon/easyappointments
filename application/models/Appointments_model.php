@@ -394,6 +394,7 @@ class Appointments_model extends EA_Model
             ->group_end()
             ->where('id_services', $service_id)
             ->where('id_users_provider', $provider_id)
+            ->where("(status IS NULL OR status != 'Cancelled')")
             ->get()
             ->row_array();
 
@@ -438,6 +439,7 @@ class Appointments_model extends EA_Model
             ->group_end()
             ->where('id_services !=', $service_id)
             ->where('id_users_provider', $provider_id)
+            ->where("(status IS NULL OR status != 'Cancelled')")
             ->get()
             ->row_array();
 

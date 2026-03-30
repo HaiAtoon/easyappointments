@@ -15,7 +15,7 @@
 
     <?php slot('meta'); ?>
 
-    <title><?= lang('page_title') . ' ' . vars('company_name') ?> | Easy!Appointments</title>
+    <title><?= lang('page_title') . ' ' . vars('company_name') ?></title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
     <link rel="icon" sizes="192x192" href="<?= asset_url('assets/img/logo.png') ?>">
@@ -42,8 +42,8 @@
         <div id="book-appointment-wizard" class="col-12 col-lg-10 col-xl-8 col-xxl-7">
 
             <?php component('booking_header', [
+			    'company_logo' => vars('company_logo'),
                 'company_name' => vars('company_name'),
-                'company_logo' => vars('company_logo'),
             ]); ?>
 
             <?php slot('content'); ?>

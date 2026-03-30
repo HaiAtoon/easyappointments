@@ -202,6 +202,12 @@ App.Http.Booking = (function () {
             },
         })
             .done((response) => {
+                if (response.existing_customer_detected) {
+                    const modal = new bootstrap.Modal(document.getElementById('existing-customer-modal'));
+                    modal.show();
+                    return false;
+                }
+
                 if (response.captcha_verification === false) {
                     $captchaHint.text(lang('captcha_is_wrong')).fadeTo(400, 1);
 
@@ -390,11 +396,39 @@ App.Http.Booking = (function () {
         });
     }
 
+    function lookupCustomer(idNumber) {
+        const url = App.Utils.Url.siteUrl('booking/lookup_customer');
+        const data = {csrf_token: vars('csrf_token'), id_number: idNumber};
+        return $.post(url, data);
+    }
+
+    function sendCustomerOtp(customerId) {
+        const url = App.Utils.Url.siteUrl('booking/send_customer_otp');
+        const data = {csrf_token: vars('csrf_token'), customer_id: customerId};
+        return $.post(url, data);
+    }
+
+    function verifyCustomerOtp(customerId, otpCode) {
+        const url = App.Utils.Url.siteUrl('booking/verify_customer_otp');
+        const data = {csrf_token: vars('csrf_token'), customer_id: customerId, otp_code: otpCode};
+        return $.post(url, data);
+    }
+
+    function checkCustomerIdNumber(idNumber) {
+        const url = App.Utils.Url.siteUrl('booking/check_customer_id_number');
+        const data = {csrf_token: vars('csrf_token'), id_number: idNumber};
+        return $.post(url, data);
+    }
+
     return {
         registerAppointment,
         getAvailableHours,
         getUnavailableDates,
         applyPreviousUnavailableDates,
         deletePersonalInformation,
+        lookupCustomer,
+        sendCustomerOtp,
+        verifyCustomerOtp,
+        checkCustomerIdNumber,
     };
 })();

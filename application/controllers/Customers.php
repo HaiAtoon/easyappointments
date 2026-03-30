@@ -33,6 +33,7 @@ class Customers extends EA_Controller
         'notes',
         'timezone',
         'language',
+        'id_number',
         'custom_field_1',
         'custom_field_2',
         'custom_field_3',
@@ -96,6 +97,8 @@ class Customers extends EA_Controller
         $require_address = setting('require_address');
         $require_city = setting('require_city');
         $require_zip_code = setting('require_zip_code');
+        $display_id_number = setting('display_id_number');
+        $require_id_number = setting('require_id_number');
 
         $secretary_providers = [];
 
@@ -130,6 +133,8 @@ class Customers extends EA_Controller
             'require_address' => $require_address,
             'require_city' => $require_city,
             'require_zip_code' => $require_zip_code,
+            'display_id_number' => $display_id_number,
+            'require_id_number' => $require_id_number,
             'available_languages' => config('available_languages'),
         ]);
 

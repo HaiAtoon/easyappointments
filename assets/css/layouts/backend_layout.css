@@ -134,6 +134,13 @@ body .modal .modal-title {
 body .modal-header {
   padding: 20px 15px;
   background: #429a82;
+  display: flex;
+  justify-content: space-between;
+}
+
+body .modal-header .btn-close {
+  padding: 0;
+  margin: 0;
 }
 
 body .modal-header h3 {

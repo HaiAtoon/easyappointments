@@ -33,6 +33,7 @@ App.Pages.Booking = (function () {
     const $availableHours = $('#available-hours');
     const $bookAppointmentSubmit = $('#book-appointment-submit');
     const $deletePersonalInformation = $('#delete-personal-information');
+    const $idNumber = $('#id-number');
     const $customField1 = $('#custom-field-1');
     const $customField2 = $('#custom-field-2');
     const $customField3 = $('#custom-field-3');
@@ -41,6 +42,9 @@ App.Pages.Booking = (function () {
     const $displayBookingSelection = $('.display-booking-selection');
     const tippy = window.tippy;
     const moment = window.moment;
+
+    let returningCustomerVerified = !!vars('customer_portal_session');
+    let returningCustomerId = vars('customer_portal_session') && vars('customer_data') ? vars('customer_data').id : null;
 
     /**
      * Determines the functionality of the page.
@@ -266,6 +270,10 @@ App.Pages.Booking = (function () {
             prefillFromQueryParam('#address', 'address');
             prefillFromQueryParam('#city', 'city');
             prefillFromQueryParam('#zip-code', 'zip');
+
+            if (vars('customer_portal_session') && vars('customer_data')) {
+                applyCustomerData(vars('customer_data'));
+            }
         }
     }
 
@@ -450,28 +458,30 @@ App.Pages.Booking = (function () {
             if ($target.attr('data-step_index') === '3') {
                 if (!App.Pages.Booking.validateCustomerForm()) {
                     return; // Validation failed, do not continue.
-                } else {
-                    App.Pages.Booking.updateConfirmFrame();
                 }
+
+                // Check if returning customer feature is on and user is on the new customer path
+                if (vars('returning_customer') === '1' && !returningCustomerVerified && !manageMode) {
+                    const idNumberVal = $idNumber.val();
+
+                    if (idNumberVal) {
+                        App.Http.Booking.checkCustomerIdNumber(idNumberVal).done((response) => {
+                            if (response.exists) {
+                                const modal = new bootstrap.Modal(document.getElementById('existing-customer-modal'));
+                                modal.show();
+                            } else {
+                                App.Pages.Booking.updateConfirmFrame();
+                                proceedToNextStep($target);
+                            }
+                        });
+                        return;
+                    }
+                }
+
+                App.Pages.Booking.updateConfirmFrame();
             }
 
-            // Display the next step tab (uses jquery animation effect).
-            const nextTabIndex = parseInt($target.attr('data-step_index')) + 1;
-
-            $target
-                .parents()
-                .eq(1)
-                .fadeOut(() => {
-                    $('.active-step').removeClass('active-step');
-                    $('#step-' + nextTabIndex).addClass('active-step');
-                    $('#wizard-frame-' + nextTabIndex).fadeIn();
-                });
-
-            // Scroll to the top of the page. On a small screen, especially on a mobile device, this is very useful.
-            const scrollingElement = document.scrollingElement || document.body;
-            if (window.innerHeight < scrollingElement.scrollHeight) {
-                scrollingElement.scrollTop = 0;
-            }
+            proceedToNextStep($target);
         });
 
         /**
@@ -754,6 +764,8 @@ App.Pages.Booking = (function () {
         const city = App.Utils.String.escapeHtml($city.val());
         const zipCode = App.Utils.String.escapeHtml($zipCode.val());
 
+        const idNumber = App.Utils.String.escapeHtml($idNumber.val());
+
         const addressParts = [];
 
         if (city) {
@@ -768,6 +780,9 @@ App.Pages.Booking = (function () {
             <div>
                 <div class="mb-2 fw-bold fs-3">
                     ${lang('contact_info')}
+                </div>
+                <div class="mb-2" ${!idNumber ? 'hidden' : ''}>
+                    ${lang('id_number')}: ${idNumber}
                 </div>
                 <div class="mb-2 fw-bold text-muted" ${!fullName ? 'hidden' : ''}>
                     ${fullName}
@@ -799,6 +814,7 @@ App.Pages.Booking = (function () {
             address: $address.val(),
             city: $city.val(),
             zip_code: $zipCode.val(),
+            id_number: $idNumber.val(),
             timezone: $selectTimezone.val(),
             custom_field_1: $customField1.val(),
             custom_field_2: $customField2.val(),
@@ -821,6 +837,11 @@ App.Pages.Booking = (function () {
         };
 
         data.manage_mode = Number(manageMode);
+        data.returning_customer_verified = returningCustomerVerified;
+
+        if (returningCustomerVerified && returningCustomerId) {
+            data.customer.id = returningCustomerId;
+        }
 
         if (manageMode) {
             data.appointment.id = vars('appointment_data').id;
@@ -892,31 +913,51 @@ App.Pages.Booking = (function () {
                 startMoment.format('YYYY-MM-DD'),
             );
 
-            // Apply Customer's Data
-            $lastName.val(customer.last_name);
-            $firstName.val(customer.first_name);
-            $email.val(customer.email);
-            $phoneNumber.val(customer.phone_number);
-            $address.val(customer.address);
-            $city.val(customer.city);
-            $zipCode.val(customer.zip_code);
-            if (customer.timezone) {
-                $selectTimezone.val(customer.timezone);
-            }
+            applyCustomerData(customer);
+
             const appointmentNotes = appointment.notes !== null ? appointment.notes : '';
             $notes.val(appointmentNotes);
-
-            $customField1.val(customer.custom_field_1);
-            $customField2.val(customer.custom_field_2);
-            $customField3.val(customer.custom_field_3);
-            $customField4.val(customer.custom_field_4);
-            $customField5.val(customer.custom_field_5);
 
             App.Pages.Booking.updateConfirmFrame();
 
             return true;
         } catch (exc) {
             return false;
+        }
+    }
+
+    function applyCustomerData(customer) {
+        $firstName.val(customer.first_name);
+        $lastName.val(customer.last_name);
+        $email.val(customer.email);
+        $phoneNumber.val(customer.phone_number);
+        $address.val(customer.address);
+        $city.val(customer.city);
+        $zipCode.val(customer.zip_code);
+        $idNumber.val(customer.id_number);
+        if (customer.timezone) {
+            $selectTimezone.val(customer.timezone);
+        }
+        $customField1.val(customer.custom_field_1);
+        $customField2.val(customer.custom_field_2);
+        $customField3.val(customer.custom_field_3);
+        $customField4.val(customer.custom_field_4);
+        $customField5.val(customer.custom_field_5);
+
+        if (vars('returning_customer') === '1') {
+            $firstName.prop('readonly', true);
+            $lastName.prop('readonly', true);
+            $email.prop('readonly', true);
+            $phoneNumber.prop('readonly', true);
+            $address.prop('readonly', true);
+            $city.prop('readonly', true);
+            $zipCode.prop('readonly', true);
+            $idNumber.prop('readonly', true);
+            $customField1.prop('readonly', true);
+            $customField2.prop('readonly', true);
+            $customField3.prop('readonly', true);
+            $customField4.prop('readonly', true);
+            $customField5.prop('readonly', true);
         }
     }
 
@@ -981,7 +1022,147 @@ App.Pages.Booking = (function () {
         }
     }
 
-    document.addEventListener('DOMContentLoaded', initialize);
+    function proceedToNextStep($target) {
+        const nextTabIndex = parseInt($target.attr('data-step_index')) + 1;
+
+        $target
+            .parents()
+            .eq(1)
+            .fadeOut(() => {
+                $('.active-step').removeClass('active-step');
+                $('#step-' + nextTabIndex).addClass('active-step');
+                $('#wizard-frame-' + nextTabIndex).fadeIn();
+            });
+
+        const scrollingElement = document.scrollingElement || document.body;
+        if (window.innerHeight < scrollingElement.scrollHeight) {
+            scrollingElement.scrollTop = 0;
+        }
+    }
+
+    function initReturningCustomer() {
+        const $selection = $('#returning-customer-selection');
+        const $rcForm = $('#returning-customer-form');
+        const $customerFields = $('#customer-form-fields');
+        const $otpSection = $('#otp-section');
+        const $otpSendSection = $('#otp-send-section');
+
+        if (!$selection.length) {
+            return;
+        }
+
+        $('#btn-returning-customer').on('click', () => {
+            $selection.hide();
+            $rcForm.show();
+            $customerFields.hide();
+        });
+
+        $('#btn-new-customer').on('click', () => {
+            $selection.hide();
+            $rcForm.hide();
+            $customerFields.show();
+            returningCustomerVerified = false;
+            returningCustomerId = null;
+        });
+
+        $('#btn-back-to-selection').on('click', () => {
+            $rcForm.hide();
+            $customerFields.hide();
+            $selection.show();
+            $otpSection.hide();
+            $otpSendSection.show();
+            $('#returning-id-number').val('');
+            $('#otp-code').val('');
+        });
+
+        $('#btn-send-otp').on('click', () => {
+            const idNumber = $('#returning-id-number').val().trim();
+
+            if (!idNumber) {
+                $('#returning-id-number').addClass('is-invalid');
+                return;
+            }
+
+            $('#returning-id-number').removeClass('is-invalid');
+            $('#btn-send-otp').prop('disabled', true);
+
+            App.Http.Booking.lookupCustomer(idNumber).done((response) => {
+                if (response.found) {
+                    returningCustomerId = response.customer_id;
+                    $('#otp-email-hint').text(lang('otp_sent_to').replace('%s', response.masked_email));
+                    $otpSendSection.hide();
+                    $otpSection.show();
+
+                    App.Http.Booking.sendCustomerOtp(response.customer_id).done(() => {
+                        // OTP sent
+                    });
+                } else {
+                    App.Utils.Message.show(lang('customer_not_found'), lang('customer_not_found'));
+                }
+            }).always(() => {
+                $('#btn-send-otp').prop('disabled', false);
+            });
+        });
+
+        $('#btn-verify-otp').on('click', () => {
+            const otpCode = $('#otp-code').val().trim();
+
+            if (!otpCode) {
+                $('#otp-code').addClass('is-invalid');
+                return;
+            }
+
+            $('#otp-code').removeClass('is-invalid');
+            $('#btn-verify-otp').prop('disabled', true);
+
+            App.Http.Booking.verifyCustomerOtp(returningCustomerId, otpCode).done((response) => {
+                if (response.valid) {
+                    const c = response.customer;
+
+                    $firstName.val(c.first_name).prop('readonly', true);
+                    $lastName.val(c.last_name).prop('readonly', true);
+                    $email.val(c.email).prop('readonly', true);
+                    $phoneNumber.val(c.phone_number).prop('readonly', true);
+                    $address.val(c.address).prop('readonly', true);
+                    $city.val(c.city).prop('readonly', true);
+                    $zipCode.val(c.zip_code).prop('readonly', true);
+                    $idNumber.val(c.id_number).prop('readonly', true);
+                    $customField1.val(c.custom_field_1).prop('readonly', true);
+                    $customField2.val(c.custom_field_2).prop('readonly', true);
+                    $customField3.val(c.custom_field_3).prop('readonly', true);
+                    $customField4.val(c.custom_field_4).prop('readonly', true);
+                    $customField5.val(c.custom_field_5).prop('readonly', true);
+
+                    returningCustomerVerified = true;
+
+                    $rcForm.hide();
+                    $customerFields.show();
+                } else {
+                    App.Utils.Message.show(lang('otp_invalid'), lang('otp_invalid'));
+                }
+            }).always(() => {
+                $('#btn-verify-otp').prop('disabled', false);
+            });
+        });
+
+        $('#btn-go-returning').on('click', () => {
+            $customerFields.hide();
+            $selection.hide();
+            $rcForm.show();
+            $otpSection.hide();
+            $otpSendSection.show();
+
+            // Reset form fields readonly state
+            $('#customer-form-fields input, #customer-form-fields textarea').prop('readonly', false).val('');
+            returningCustomerVerified = false;
+            returningCustomerId = null;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initialize();
+        initReturningCustomer();
+    });
 
     return {
         manageMode,

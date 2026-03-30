@@ -6,16 +6,20 @@
  * @var string $message
  * @var array $settings
  */
+
+$is_rtl = in_array(config('language'), ['hebrew', 'arabic', 'persian']);
+$dir = $is_rtl ? 'rtl' : 'ltr';
+$text_align = $is_rtl ? 'right' : 'left';
 ?>
-<html lang="en">
+<html lang="<?= $is_rtl ? 'he' : 'en' ?>" dir="<?= $dir ?>">
 <head>
     <title><?= $subject ?> | Easy!Appointments</title>
 </head>
-<body style="font: 13px arial, helvetica, tahoma;">
+<body style="font: 13px arial, helvetica, tahoma; direction: <?= $dir ?>; text-align: <?= $text_align ?>;">
 
 <div class="email-container" style="width: 650px; border: 1px solid #eee; margin: 30px auto;">
     <div id="header"
-         style="background-color: <?= $settings['company_color'] ?? '#429a82' ?>; height: 45px; padding: 10px 15px;">
+         style="background-color: <?= $settings['company_color'] ?? '#429a82' ?>; height: 45px; padding: 10px 15px; text-align: center;">
         <strong id="logo" style="color: white; font-size: 20px; margin-top: 10px; display: inline-block">
             <?= e($settings['company_name']) ?>
         </strong>
@@ -26,7 +30,7 @@
             <?= $subject ?>
         </h2>
         <p>
-            <?= $message ?>
+            <?= preg_replace('/\.(\s)/', '.<br><br>$1', $message) ?>
         </p>
     </div>
 

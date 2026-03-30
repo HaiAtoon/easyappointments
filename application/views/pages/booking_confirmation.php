@@ -28,6 +28,13 @@
         <i class="fas fa-plus me-2"></i>
         <?= lang('add_to_google_calendar') ?>
     </a>
+
+    <?php if (!empty(vars('returning_customer')) && filter_var(vars('returning_customer'), FILTER_VALIDATE_BOOLEAN)): ?>
+        <a href="<?= site_url(session('customer_id') ? 'customer/dashboard' : 'customer') ?>" class="btn btn-outline-primary ms-2">
+            <i class="fas fa-user me-2"></i>
+            <?= lang('customer_area') ?>
+        </a>
+    <?php endif; ?>
 </div>
 
 <?php end_section('content'); ?>

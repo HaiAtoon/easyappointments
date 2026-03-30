@@ -140,6 +140,32 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group mb-5">
+                                    <label for="id-number" class="form-label">
+                                        <?= lang('id_number') ?>
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="id-number" class="form-control mb-2" readonly/>
+                                    <div class="d-flex">
+                                        <div class="form-check form-switch me-4">
+                                            <input class="form-check-input display-switch" type="checkbox"
+                                                   id="display-id-number"
+                                                   data-field="display_id_number">
+                                            <label class="form-check-label" for="display-id-number">
+                                                <?= lang('display') ?>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input require-switch" type="checkbox"
+                                                   id="require-id-number"
+                                                   data-field="require_id_number">
+                                            <label class="form-check-label" for="require-id-number">
+                                                <?= lang('require') ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-5">
                                     <label for="address" class="form-label">
                                         <?= lang('address') ?>
                                         <span class="text-danger">*</span>
@@ -394,7 +420,7 @@
                                         </div>
                                     </div>
 
-                                    <div>
+                                    <div class="mb-3">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="disable-booking"
                                                    data-field="disable_booking">
@@ -406,6 +432,22 @@
                                         <div class="form-text text-muted">
                                             <small>
                                                 <?= lang('disable_booking_hint') ?>
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="returning-customer"
+                                                   data-field="returning_customer">
+                                            <label class="form-check-label" for="returning-customer">
+                                                <?= lang('returning_customer') ?>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-text text-muted">
+                                            <small>
+                                                <?= lang('returning_customer_hint') ?>
                                             </small>
                                         </div>
                                     </div>

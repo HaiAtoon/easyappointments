@@ -12,19 +12,23 @@
  * @var array $timezone
  * @var string $appointment_link
  */
+
+$is_rtl = in_array(config('language'), ['hebrew', 'arabic', 'persian']);
+$dir = $is_rtl ? 'rtl' : 'ltr';
+$text_align = $is_rtl ? 'right' : 'left';
 ?>
 
-<html lang="en">
+<html lang="<?= $is_rtl ? 'he' : 'en' ?>" dir="<?= $dir ?>">
 <head>
     <title>
         <?= lang('appointment_details_title') ?> | Easy!Appointments
     </title>
 </head>
-<body style="font: 13px arial, helvetica, tahoma;">
+<body style="font: 13px arial, helvetica, tahoma; direction: <?= $dir ?>; text-align: <?= $text_align ?>;">
 
 <div class="email-container" style="width: 650px; border: 1px solid #eee; margin: 30px auto;">
     <div id="header"
-         style="background-color: <?= $settings['company_color'] ?? '#429a82' ?>; height: 45px; padding: 10px 15px;">
+         style="background-color: <?= $settings['company_color'] ?? '#429a82' ?>; height: 45px; padding: 10px 15px; text-align: center;">
         <strong id="logo" style="color: white; font-size: 20px; margin-top: 10px; display: inline-block">
             <?= e($settings['company_name']) ?>
         </strong>
@@ -36,7 +40,7 @@
         </h2>
 
         <p>
-            <?= $message ?>
+            <?= preg_replace('/\.(\s)/', '.<br><br>$1', $message) ?>
         </p>
 
         <h2>
@@ -134,6 +138,16 @@
         </h2>
 
         <table id="customer-details">
+            <?php if (!empty($customer['id_number'])): ?>
+                <tr>
+                    <td class="label" style="padding: 3px;font-weight: bold;">
+                        <?= lang('id_number') ?>
+                    </td>
+                    <td style="padding: 3px;">
+                        <?= e($customer['id_number']) ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
             <tr>
                 <td class="label" style="padding: 3px;font-weight: bold;">
                     <?= lang('name') ?>
