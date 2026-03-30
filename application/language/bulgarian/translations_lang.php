@@ -525,4 +525,9 @@ $lang['login_to_customer_area'] = 'Log in to view and manage your appointments.'
 $lang['cancelled'] = 'Cancelled';
 $lang['cancelled_by'] = 'Cancelled by';
 $lang['cancelled_by_me'] = 'Cancelled by me';
+
+$lang['fields'] = 'Полета';
+$lang['invalid_credentials_provided'] = 'Невалидни идентификационни данни, моля опитайте отново.';
+$lang['calendar_url'] = 'URL на календара';
+$lang['please_select'] = 'Моля, изберете';
 // End

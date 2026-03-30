@@ -524,4 +524,5 @@ $lang['login_to_customer_area'] = 'Log in to view and manage your appointments.'
 $lang['cancelled'] = 'Cancelled';
 $lang['cancelled_by'] = 'Cancelled by';
 $lang['cancelled_by_me'] = 'Cancelled by me';
+$lang['requested_hour_is_unavailable'] = 'Den begärda bokningstiden är tyvärr inte tillgänglig. Vänligen välj en annan tid för din bokning.';
 // End

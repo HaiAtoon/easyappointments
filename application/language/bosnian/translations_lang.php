@@ -525,4 +525,12 @@ $lang['login_to_customer_area'] = 'Log in to view and manage your appointments.'
 $lang['cancelled'] = 'Cancelled';
 $lang['cancelled_by'] = 'Cancelled by';
 $lang['cancelled_by_me'] = 'Cancelled by me';
+$lang['today'] = 'Danas';
+$lang['tuesday'] = 'Utorak';
+$lang['wednesday'] = 'Srijeda';
+$lang['january'] = 'Januar';
+$lang['june'] = 'Juni';
+$lang['october'] = 'Oktobar';
+$lang['november'] = 'Novembar';
+$lang['now'] = 'Sada';
 // End

@@ -525,4 +525,12 @@ $lang['login_to_customer_area'] = 'Log in to view and manage your appointments.'
 $lang['cancelled'] = 'Cancelled';
 $lang['cancelled_by'] = 'Cancelled by';
 $lang['cancelled_by_me'] = 'Cancelled by me';
+
+$lang['unavailability'] = 'Nedostupnost';
+$lang['unavailability_periods_hint'] = 'Tijekom perioda nedostupnosti pružatelj usluga neće primati nove termine.';
+$lang['new_unavailability_title'] = 'Nova nedostupnost';
+$lang['edit_unavailability_title'] = 'Uredi nedostupnost';
+$lang['unavailability_saved'] = 'Nedostupnost uspješno spremljena.';
+$lang['delete_unavailability'] = 'Obriši nedostupnost';
+$lang['unavailability_updated'] = 'Nedostupnost uspješno ažurirana.';
 // End

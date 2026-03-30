@@ -525,4 +525,5 @@ $lang['login_to_customer_area'] = 'Log in to view and manage your appointments.'
 $lang['cancelled'] = 'Cancelled';
 $lang['cancelled_by'] = 'Cancelled by';
 $lang['cancelled_by_me'] = 'Cancelled by me';
+$lang['requested_hour_is_unavailable'] = 'La cita sol·licitada malauradament no està disponible. Si us plau, seleccioneu una hora diferent per a la vostra cita.';
 // End
