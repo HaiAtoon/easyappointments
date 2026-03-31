@@ -4,6 +4,14 @@ Tracking changes against upstream: [alextselegidis/easyappointments](https://git
 
 ---
 
+### 2026-03-31 | `2d46b2cc` | Merge branch 'system-unit-tests'
+[View Commit](https://github.com/HaiAtoon/easyappointments/commit/2d46b2ccc53c1536a54a15f81d7260d906448a13)
+
+_No file changes_
+
+---
+
+
 ### 2026-03-30 | `188aa90e` | Add missing translations across 14 languages
 [View Commit](https://github.com/HaiAtoon/easyappointments/commit/188aa90e33919c60263e648641a1f171af67bb42)
 
