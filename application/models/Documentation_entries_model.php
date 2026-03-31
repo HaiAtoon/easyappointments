@@ -242,6 +242,22 @@ class Documentation_entries_model extends EA_Model
             ->result_array();
     }
 
+    /**
+     * Delete edit log entries older than the given number of days.
+     *
+     * @param int $days Retention period in days (default: 365).
+     *
+     * @return int Number of deleted rows.
+     */
+    public function purge_edit_log(int $days = 365): int
+    {
+        $cutoff = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+
+        $this->db->where('edit_datetime <', $cutoff)->delete('documentation_edit_log');
+
+        return $this->db->affected_rows();
+    }
+
     public function load(array &$entry, array $resources): void
     {
         if (in_array('appointment', $resources) && !empty($entry['id_appointments'])) {

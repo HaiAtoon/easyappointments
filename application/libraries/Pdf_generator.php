@@ -130,10 +130,18 @@ class Pdf_generator
     /**
      * Get all active document types from the database.
      *
+     * Results are cached for the duration of the request to avoid repeated DB queries.
+     *
      * @return array Associative array keyed by slug with id and label.
      */
     public function get_document_types(): array
     {
+        static $cached = null;
+
+        if ($cached !== null) {
+            return $cached;
+        }
+
         $templates = $this->CI->document_templates_model->get(['is_active' => 1]);
 
         $types = [];
@@ -144,6 +152,8 @@ class Pdf_generator
                 'label' => $template['name'],
             ];
         }
+
+        $cached = $types;
 
         return $types;
     }

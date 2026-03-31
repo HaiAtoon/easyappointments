@@ -377,6 +377,7 @@
 
 <script src="<?= asset_url('assets/js/http/customers_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/documentation_entries_http_client.js') ?>"></script>
+<script src="<?= asset_url('assets/js/components/documentation.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/customers.js') ?>"></script>
 
 <?php end_section('scripts'); ?>

@@ -23,8 +23,6 @@ use Mpdf\Mpdf;
  */
 class Pdf_utils
 {
-    const TEMP_DIR = 'storage/cache/mpdf/';
-
     /**
      * Create a configured mPDF instance with UTF-8, A4 format, and optional RTL support.
      *
@@ -32,7 +30,7 @@ class Pdf_utils
      */
     public static function create_mpdf(): Mpdf
     {
-        $temp_dir = FCPATH . self::TEMP_DIR;
+        $temp_dir = FCPATH . STORAGE_MPDF_TEMP;
 
         if (!is_dir($temp_dir)) {
             mkdir($temp_dir, 0775, true);

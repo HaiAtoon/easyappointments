@@ -218,7 +218,7 @@ class Document_templates_settings extends EA_Controller
             throw new RuntimeException('The uploaded file is not a valid Word document.');
         }
 
-        $upload_dir = FCPATH . 'storage/document-templates/';
+        $upload_dir = FCPATH . STORAGE_DOCUMENT_TEMPLATES;
 
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0775, true);
@@ -234,7 +234,7 @@ class Document_templates_settings extends EA_Controller
 
         $this->document_templates_model->save([
             'id' => $template_id,
-            'file_path' => 'storage/document-templates/' . $filename,
+            'file_path' => STORAGE_DOCUMENT_TEMPLATES . $filename,
         ]);
     }
 }
