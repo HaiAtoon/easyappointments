@@ -555,6 +555,7 @@ $lang['send_email'] = 'Send Email';
 $lang['pdf_sent_successfully'] = 'Document sent to client email.';
 $lang['pdf_password_notice'] = 'The attached PDF is password-protected. Your password is your ID number.';
 $lang['pdf_password_notice_phone'] = 'The attached PDF is password-protected. Your password is your phone number.';
+$lang['pdf_password_notice_generated'] = 'The attached PDF is password-protected. Use the password below to open it:';
 $lang['professional_title'] = 'Professional Title';
 $lang['license_number'] = 'License Number';
 $lang['signature'] = 'Signature';

@@ -42,11 +42,11 @@ class Pdf_generator
      * Generate a PDF from a documentation entry's session summary.
      *
      * @param int $entry_id Documentation entry ID.
-     * @param bool $encrypt Whether to password-protect the PDF (password = client ID or phone).
+     * @param string|null $password If set, encrypt the PDF with this password.
      *
      * @return string PDF binary string.
      */
-    public function generate_from_entry(int $entry_id, bool $encrypt = false): string
+    public function generate_from_entry(int $entry_id, ?string $password = null): string
     {
         $entry = $this->CI->documentation_entries_model->find($entry_id);
         $this->CI->documentation_entries_model->load($entry, ['customer', 'provider', 'appointment']);
@@ -68,7 +68,7 @@ class Pdf_generator
             'provider' => $provider,
             'appointment' => $appointment,
             'session_date' => $session_date,
-        ], $encrypt ? $customer : null);
+        ], $password);
     }
 
     /**
@@ -78,11 +78,11 @@ class Pdf_generator
      * DOCX-based generation. Otherwise falls back to HTML template rendering.
      *
      * @param int $document_id Issued document ID.
-     * @param bool $encrypt Whether to password-protect the PDF.
+     * @param string|null $password If set, encrypt the PDF with this password.
      *
      * @return string PDF binary string.
      */
-    public function generate_from_document(int $document_id, bool $encrypt = false): string
+    public function generate_from_document(int $document_id, ?string $password = null): string
     {
         $template = $this->CI->document_templates_model->find_by_slug(
             $this->CI->issued_documents_model->find($document_id)['document_type'],
@@ -91,7 +91,7 @@ class Pdf_generator
         if ($template && !empty($template['file_path'])) {
             $this->CI->load->library('document_generator');
 
-            return $this->CI->document_generator->generate($document_id, $encrypt);
+            return $this->CI->document_generator->generate($document_id, $password);
         }
 
         $document = $this->CI->issued_documents_model->find($document_id);
@@ -124,7 +124,7 @@ class Pdf_generator
             'provider' => $provider,
             'appointment' => $appointment,
             'session_date' => $session_date,
-        ], $encrypt ? $customer : null);
+        ], $password);
     }
 
     /**
@@ -162,11 +162,11 @@ class Pdf_generator
      * Render a PDF from the HTML template using mPDF.
      *
      * @param array $data Template data (content, customer, provider, etc.).
-     * @param array|null $encrypt_for_customer If set, encrypt PDF with this customer's ID/phone.
+     * @param string|null $password If set, encrypt PDF with this password.
      *
      * @return string PDF binary string.
      */
-    private function render_pdf(array $data, ?array $encrypt_for_customer = null): string
+    private function render_pdf(array $data, ?string $password = null): string
     {
         $html = $this->CI->load->view('pdfs/documentation_pdf', [
             'content' => $data['content'],
@@ -185,8 +185,8 @@ class Pdf_generator
 
         $mpdf = Pdf_utils::create_mpdf();
 
-        if ($encrypt_for_customer) {
-            Pdf_utils::encrypt_for_customer($mpdf, $encrypt_for_customer);
+        if ($password) {
+            Pdf_utils::encrypt_pdf($mpdf, $password);
         }
 
         $mpdf->WriteHTML($html);

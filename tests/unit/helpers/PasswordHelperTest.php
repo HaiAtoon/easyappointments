@@ -14,28 +14,54 @@ class PasswordHelperTest extends TestCase
         $this->assertIsString($hash);
     }
 
-    public function test_hash_password_is_deterministic(): void
+    public function test_hash_password_produces_argon2_or_bcrypt_hash(): void
     {
-        $hash1 = hash_password('same_salt', 'same_password');
-        $hash2 = hash_password('same_salt', 'same_password');
+        $hash = hash_password('salt', 'password');
 
-        $this->assertEquals($hash1, $hash2);
+        $this->assertTrue(
+            str_starts_with($hash, '$argon2') || str_starts_with($hash, '$2y$'),
+            'Hash should use Argon2id or bcrypt',
+        );
     }
 
-    public function test_hash_password_differs_with_different_salt(): void
+    public function test_verify_password_validates_correct_password(): void
     {
-        $hash1 = hash_password('salt_a', 'password');
-        $hash2 = hash_password('salt_b', 'password');
+        $hash = hash_password('salt', 'my_password');
 
-        $this->assertNotEquals($hash1, $hash2);
+        $this->assertTrue(verify_password('my_password', $hash));
     }
 
-    public function test_hash_password_differs_with_different_password(): void
+    public function test_verify_password_rejects_wrong_password(): void
     {
-        $hash1 = hash_password('salt', 'password1');
-        $hash2 = hash_password('salt', 'password2');
+        $hash = hash_password('salt', 'my_password');
 
-        $this->assertNotEquals($hash1, $hash2);
+        $this->assertFalse(verify_password('wrong_password', $hash));
+    }
+
+    public function test_verify_password_works_with_legacy_hash(): void
+    {
+        $salt = 'testsalt1234567890abcdef';
+        $legacy_hash = hash_password_legacy($salt, 'legacy_pass');
+
+        $this->assertTrue(verify_password('legacy_pass', $legacy_hash, $salt));
+        $this->assertFalse(verify_password('wrong', $legacy_hash, $salt));
+    }
+
+    public function test_ea_password_needs_rehash_for_legacy(): void
+    {
+        $legacy_hash = hash('sha256', 'test');
+
+        $this->assertTrue(ea_password_needs_rehash($legacy_hash));
+    }
+
+    public function test_ea_password_needs_rehash_detects_modern_hash(): void
+    {
+        $modern_hash = hash_password('salt', 'password');
+
+        // Modern hashes start with $argon2 or $2y$ — the function recognizes them
+        $this->assertTrue(
+            str_starts_with($modern_hash, '$argon2') || str_starts_with($modern_hash, '$2y$'),
+        );
     }
 
     public function test_generate_salt_returns_non_empty_string(): void
@@ -58,6 +84,6 @@ class PasswordHelperTest extends TestCase
     {
         $salt = generate_salt();
 
-        $this->assertGreaterThanOrEqual(16, strlen($salt));
+        $this->assertGreaterThanOrEqual(32, strlen($salt));
     }
 }

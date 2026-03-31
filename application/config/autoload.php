@@ -84,7 +84,9 @@ $autoload['helper'] = [
     'setting',
     'string',
     'url',
-    'validation'
+    'validation',
+    'encryption',
+    'audit',
 ];
 
 /*

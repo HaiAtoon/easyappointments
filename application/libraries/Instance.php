@@ -176,8 +176,20 @@ class Instance
 
         $contents = $this->CI->dbutil->backup();
 
-        $filename = 'easyappointments-backup-' . date('Y-m-d-His') . '.gz';
+        $key = defined('Config::ENCRYPTION_KEY') ? Config::ENCRYPTION_KEY : '';
 
-        write_file(rtrim($path, '/') . '/' . $filename, $contents);
+        if (!empty($key) && strlen($key) >= 64) {
+            $key_bytes = hex2bin($key);
+            $iv = random_bytes(16);
+            $encrypted = openssl_encrypt($contents, 'AES-256-CBC', $key_bytes, OPENSSL_RAW_DATA, $iv);
+
+            $filename = 'easyappointments-backup-' . date('Y-m-d-His') . '.enc';
+
+            write_file(rtrim($path, '/') . '/' . $filename, $iv . $encrypted);
+        } else {
+            $filename = 'easyappointments-backup-' . date('Y-m-d-His') . '.gz';
+
+            write_file(rtrim($path, '/') . '/' . $filename, $contents);
+        }
     }
 }

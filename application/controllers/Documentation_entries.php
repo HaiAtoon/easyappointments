@@ -45,7 +45,7 @@ class Documentation_entries extends EA_Controller
                 throw new InvalidArgumentException('Customer ID is required.');
             }
 
-            $entries = $this->db
+            $this->db
                 ->select('
                     documentation_entries.*,
                     CONCAT(provider.first_name, " ", provider.last_name) AS provider_name,
@@ -55,7 +55,14 @@ class Documentation_entries extends EA_Controller
                 ->join('users AS provider', 'provider.id = documentation_entries.id_users_provider', 'left')
                 ->join('appointments', 'appointments.id = documentation_entries.id_appointments', 'left')
                 ->join('services', 'services.id = appointments.id_services', 'left')
-                ->where('documentation_entries.id_users_customer', $customer_id)
+                ->where('documentation_entries.id_users_customer', $customer_id);
+
+            // Providers can only see their own entries; admins see all
+            if (session('role_slug') === DB_SLUG_PROVIDER) {
+                $this->db->where('documentation_entries.id_users_provider', session('user_id'));
+            }
+
+            $entries = $this->db
                 ->order_by('documentation_entries.create_datetime', 'DESC')
                 ->get()
                 ->result_array();
@@ -63,6 +70,8 @@ class Documentation_entries extends EA_Controller
             foreach ($entries as &$entry) {
                 $this->documentation_entries_model->cast($entry);
             }
+
+            audit_log('VIEW_DOCUMENTATION', 'documentation_entries', null, $customer_id);
 
             json_response($entries);
         } catch (Throwable $e) {
@@ -205,6 +214,8 @@ class Documentation_entries extends EA_Controller
 
             $pdf_string = $this->pdf_generator->generate_from_entry($entry_id);
 
+            audit_log('VIEW_ENTRY_PDF', 'documentation_entries', $entry_id);
+
             $this->output
                 ->set_content_type('application/pdf')
                 ->set_header('Content-Disposition: inline; filename="entry_' . $entry_id . '.pdf"')
@@ -228,7 +239,9 @@ class Documentation_entries extends EA_Controller
             $this->load->library('pdf_generator');
             $this->load->library('email_messages');
 
-            $pdf_string = $this->pdf_generator->generate_from_entry($entry_id, true);
+            $password = Pdf_utils::generate_password();
+
+            $pdf_string = $this->pdf_generator->generate_from_entry($entry_id, $password);
 
             $entry = $this->documentation_entries_model->find($entry_id);
             $customer = $this->customers_model->find($entry['id_users_customer']);
@@ -237,9 +250,9 @@ class Documentation_entries extends EA_Controller
                 throw new RuntimeException(lang('no_client_email'));
             }
 
-            $password_field = Pdf_utils::get_password_field($customer);
+            $this->email_messages->send_documentation_pdf($customer, $pdf_string, 'session_summary', $password);
 
-            $this->email_messages->send_documentation_pdf($customer, $pdf_string, 'session_summary', $password_field);
+            audit_log('SEND_ENTRY_PDF', 'documentation_entries', $entry_id, $customer['id']);
 
             json_response(['success' => true]);
         } catch (Throwable $e) {
@@ -364,11 +377,13 @@ class Documentation_entries extends EA_Controller
                 throw new RuntimeException(lang('no_client_email'));
             }
 
-            $pdf_string = $this->pdf_generator->generate_from_document($document_id, true);
+            $password = Pdf_utils::generate_password();
 
-            $password_field = Pdf_utils::get_password_field($customer);
+            $pdf_string = $this->pdf_generator->generate_from_document($document_id, $password);
 
-            $this->email_messages->send_documentation_pdf($customer, $pdf_string, $document['document_type'], $password_field);
+            $this->email_messages->send_documentation_pdf($customer, $pdf_string, $document['document_type'], $password);
+
+            audit_log('SEND_DOCUMENT_PDF', 'issued_documents', $document_id, $customer['id']);
 
             json_response(['success' => true]);
         } catch (Throwable $e) {

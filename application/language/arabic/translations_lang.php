@@ -601,4 +601,5 @@ $lang['cancelled_by_me'] = 'ألغيته بنفسي';
 \['system_variable'] = 'System Variable';
 \['no_template_file'] = 'No template file uploaded.';
 \['free_textarea'] = 'Rich Text';
+\['pdf_password_notice_generated'] = 'The attached PDF is password-protected. Use the password below to open it:';
 // End

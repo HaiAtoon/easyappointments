@@ -555,6 +555,7 @@ $lang['send_email'] = 'שלח באימייל';
 $lang['pdf_sent_successfully'] = 'המסמך נשלח לאימייל הלקוח.';
 $lang['pdf_password_notice'] = 'קובץ ה-PDF המצורף מוגן בסיסמה. הסיסמה היא מספר תעודת הזהות שלך.';
 $lang['pdf_password_notice_phone'] = 'קובץ ה-PDF המצורף מוגן בסיסמה. הסיסמה היא מספר הטלפון שלך.';
+$lang['pdf_password_notice_generated'] = 'קובץ ה-PDF המצורף מוגן בסיסמה. השתמש בסיסמה הבאה כדי לפתוח אותו:';
 $lang['professional_title'] = 'תואר מקצועי';
 $lang['license_number'] = 'מספר רישיון';
 $lang['signature'] = 'חתימה';

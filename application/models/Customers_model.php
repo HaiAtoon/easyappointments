@@ -178,6 +178,7 @@ class Customers_model extends EA_Model
 
         foreach ($customers as &$customer) {
             $this->cast($customer);
+            $this->decrypt_sensitive_fields($customer);
         }
 
         return $customers;
@@ -286,6 +287,8 @@ class Customers_model extends EA_Model
         $customer['update_datetime'] = date('Y-m-d H:i:s');
         $customer['id_roles'] = $this->get_customer_role_id();
 
+        $this->encrypt_sensitive_fields($customer);
+
         if (!$this->db->insert('users', $customer)) {
             throw new RuntimeException('Could not insert customer.');
         }
@@ -305,6 +308,8 @@ class Customers_model extends EA_Model
     protected function update(array $customer): int
     {
         $customer['update_datetime'] = date('Y-m-d H:i:s');
+
+        $this->encrypt_sensitive_fields($customer);
 
         if (!$this->db->update('users', $customer, ['id' => $customer['id']])) {
             throw new RuntimeException('Could not update customer.');
@@ -343,6 +348,7 @@ class Customers_model extends EA_Model
         }
 
         $this->cast($customer);
+        $this->decrypt_sensitive_fields($customer);
 
         return $customer;
     }
@@ -440,6 +446,7 @@ class Customers_model extends EA_Model
 
         foreach ($customers as &$customer) {
             $this->cast($customer);
+            $this->decrypt_sensitive_fields($customer);
         }
 
         return $customers;
@@ -572,5 +579,37 @@ class Customers_model extends EA_Model
         }
 
         $customer = $decoded_resource;
+    }
+
+    /**
+     * Encrypt sensitive patient fields before storing in the database.
+     *
+     * @param array $customer Customer data (modified in-place).
+     */
+    private function encrypt_sensitive_fields(array &$customer): void
+    {
+        $sensitive_fields = ['id_number'];
+
+        foreach ($sensitive_fields as $field) {
+            if (!empty($customer[$field]) && !str_starts_with($customer[$field], 'enc:')) {
+                $customer[$field] = field_encrypt($customer[$field]);
+            }
+        }
+    }
+
+    /**
+     * Decrypt sensitive patient fields after reading from the database.
+     *
+     * @param array $customer Customer data (modified in-place).
+     */
+    private function decrypt_sensitive_fields(array &$customer): void
+    {
+        $sensitive_fields = ['id_number'];
+
+        foreach ($sensitive_fields as $field) {
+            if (!empty($customer[$field])) {
+                $customer[$field] = field_decrypt($customer[$field]);
+            }
+        }
     }
 }

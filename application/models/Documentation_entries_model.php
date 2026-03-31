@@ -109,6 +109,7 @@ class Documentation_entries_model extends EA_Model
 
         foreach ($entries as &$entry) {
             $this->cast($entry);
+            $this->decrypt_fields($entry);
         }
 
         return $entries;
@@ -125,8 +126,19 @@ class Documentation_entries_model extends EA_Model
         }
 
         $this->cast($entry);
+        $this->decrypt_fields($entry);
 
         return $entry;
+    }
+
+    /**
+     * Decrypt encrypted fields after reading from the database.
+     */
+    private function decrypt_fields(array &$entry): void
+    {
+        if (!empty($entry['session_summary'])) {
+            $entry['session_summary'] = field_decrypt($entry['session_summary']);
+        }
     }
 
     public function value(int $entry_id, string $field): mixed
@@ -168,6 +180,7 @@ class Documentation_entries_model extends EA_Model
 
         if (!empty($entry['session_summary'])) {
             $entry['session_summary'] = pure_html($entry['session_summary']);
+            $entry['session_summary'] = field_encrypt($entry['session_summary']);
         }
 
         if (!$this->db->insert('documentation_entries', $entry)) {
@@ -183,6 +196,7 @@ class Documentation_entries_model extends EA_Model
 
         if (!empty($entry['session_summary'])) {
             $entry['session_summary'] = pure_html($entry['session_summary']);
+            $entry['session_summary'] = field_encrypt($entry['session_summary']);
         }
 
         if (!$this->db->update('documentation_entries', $entry, ['id' => $entry['id']])) {

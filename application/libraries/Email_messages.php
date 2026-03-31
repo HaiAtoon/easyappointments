@@ -244,7 +244,7 @@ class Email_messages
         array $customer,
         string $pdf_stream,
         string $document_type,
-        string $password_field = 'id_number',
+        string $pdf_password,
     ): void {
         $settings = [
             'company_name' => setting('company_name'),
@@ -257,7 +257,7 @@ class Email_messages
             'customer' => $customer,
             'settings' => $settings,
             'document_type' => $document_type,
-            'password_field' => $password_field,
+            'pdf_password' => $pdf_password,
         ], true);
 
         $subject = lang('documentation_pdf_subject') . ' - ' . $settings['company_name'];

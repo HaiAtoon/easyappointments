@@ -33,6 +33,17 @@ if ($request_uri === '.')
 
 $config['base_url'] = rtrim(! is_cli() ? $protocol . $domain . $request_uri : Config::BASE_URL, '/');
 
+// Enforce HTTPS in production
+if (!is_cli() && defined('Config::FORCE_HTTPS') && Config::FORCE_HTTPS && $protocol === 'http://') {
+    header('Location: https://' . $domain . $_SERVER['REQUEST_URI'], true, 301);
+    exit;
+}
+
+// HSTS header (only when HTTPS is active)
+if (!is_cli() && $protocol === 'https://') {
+    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -341,7 +352,7 @@ $config['cache_path'] = __DIR__ . '/../../storage/cache/';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = base64_encode(APPPATH);
+$config['encryption_key'] = defined('Config::ENCRYPTION_KEY') ? Config::ENCRYPTION_KEY : base64_encode(APPPATH);
 
 /*
 |--------------------------------------------------------------------------
@@ -365,7 +376,7 @@ $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ea_session';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = __DIR__ . '/../../storage/sessions';
-$config['sess_match_ip'] = FALSE;
+$config['sess_match_ip'] = TRUE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = TRUE;
 
@@ -384,6 +395,8 @@ $config['cookie_prefix'] = '';
 $config['cookie_domain'] = '';
 $config['cookie_path'] = '/';
 $config['cookie_secure'] = strpos($config['base_url'], 'https') !== FALSE;
+$config['cookie_httponly'] = TRUE;
+$config['cookie_samesite'] = 'Strict';
 
 /*
 |--------------------------------------------------------------------------

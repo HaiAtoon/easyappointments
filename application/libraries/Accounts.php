@@ -49,19 +49,27 @@ class Accounts
      */
     public function check_login(string $username, string $password): ?array
     {
-        $salt = $this->get_salt_by_username($username);
-
-        $password = hash_password($salt, $password);
-
         $user_settings = $this->CI->db
-            ->get_where('user_settings', [
-                'username' => $username,
-                'password' => $password,
-            ])
+            ->get_where('user_settings', ['username' => $username])
             ->row_array();
 
         if (empty($user_settings)) {
+            audit_log('LOGIN_FAILED', null, null, null, 'failure', 'Unknown username: ' . $username);
             return null;
+        }
+
+        $stored_hash = $user_settings['password'];
+        $salt = $user_settings['salt'] ?? '';
+
+        if (!verify_password($password, $stored_hash, $salt)) {
+            audit_log('LOGIN_FAILED', null, null, null, 'failure', 'Wrong password for: ' . $username);
+            return null;
+        }
+
+        // Rehash with modern algorithm if using legacy hash
+        if (ea_password_needs_rehash($stored_hash)) {
+            $new_hash = hash_password($salt, $password);
+            $this->CI->db->update('user_settings', ['password' => $new_hash], ['id_users' => $user_settings['id_users']]);
         }
 
         $user = $this->CI->users_model->find($user_settings['id_users']);
@@ -70,7 +78,7 @@ class Accounts
 
         $default_timezone = $this->CI->timezones->get_default_timezone();
 
-        return [
+        $session_data = [
             'user_id' => $user['id'],
             'user_email' => $user['email'],
             'username' => $username,
@@ -78,6 +86,10 @@ class Accounts
             'language' => !empty($user['language']) ? $user['language'] : Config::LANGUAGE,
             'role_slug' => $role['slug'],
         ];
+
+        audit_log('LOGIN_SUCCESS', null, $user['id'], null, 'success', 'Role: ' . $role['slug']);
+
+        return $session_data;
     }
 
     /**

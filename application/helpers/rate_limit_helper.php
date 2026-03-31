@@ -77,3 +77,51 @@ if (!function_exists('rate_limit')) {
         }
     }
 }
+
+if (!function_exists('rate_limit_auth')) {
+    /**
+     * Stricter rate limiting for authentication endpoints (login, OTP).
+     *
+     * 5 attempts per 5 minutes per IP. After 10 attempts, 30-minute lockout.
+     *
+     * @param string $ip Client IP address.
+     * @param string $context Identifier (e.g., 'login', 'otp').
+     */
+    function rate_limit_auth(string $ip, string $context = 'login'): void
+    {
+        /** @var EA_Controller $CI */
+        $CI = &get_instance();
+
+        if (is_cli()) {
+            return;
+        }
+
+        $CI->load->driver('cache', ['adapter' => 'file']);
+
+        $cache_key = str_replace(':', '', 'auth_rate_' . $context . '_' . $ip);
+        $lockout_key = str_replace(':', '', 'auth_lockout_' . $context . '_' . $ip);
+
+        if ($CI->cache->get($lockout_key)) {
+            header('HTTP/1.0 429 Too Many Requests');
+            header('Retry-After: 1800');
+            exit();
+        }
+
+        $attempts = (int) $CI->cache->get($cache_key);
+
+        if ($attempts >= 10) {
+            $CI->cache->save($lockout_key, true, 1800); // 30-minute lockout
+            header('HTTP/1.0 429 Too Many Requests');
+            header('Retry-After: 1800');
+            exit();
+        }
+
+        if ($attempts >= 5) {
+            header('HTTP/1.0 429 Too Many Requests');
+            header('Retry-After: 300');
+            exit();
+        }
+
+        $CI->cache->save($cache_key, $attempts + 1, 300); // 5-minute window
+    }
+}

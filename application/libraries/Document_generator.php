@@ -49,13 +49,13 @@ class Document_generator
      * Generate a PDF from an issued document using its .docx template.
      *
      * @param int $document_id Issued document ID.
-     * @param bool $encrypt Whether to password-protect the PDF.
+     * @param string|null $password If set, encrypt the PDF with this password.
      *
      * @return string PDF binary string.
      *
      * @throws RuntimeException If template file not found.
      */
-    public function generate(int $document_id, bool $encrypt = false): string
+    public function generate(int $document_id, ?string $password = null): string
     {
         $document = $this->CI->issued_documents_model->find($document_id);
         $this->CI->issued_documents_model->load($document, ['entry', 'provider']);
@@ -143,7 +143,7 @@ class Document_generator
             $zip->addFromString('word/document.xml', $doc_xml);
             $zip->close();
 
-            $pdf_string = $this->convert_to_pdf($temp_docx, $encrypt ? $customer : null, $html_placeholders);
+            $pdf_string = $this->convert_to_pdf($temp_docx, $password, $html_placeholders);
 
             return $pdf_string;
         } catch (Throwable $e) {
@@ -320,12 +320,12 @@ class Document_generator
      * the HTML after PhpWord conversion but before mPDF rendering, preserving formatting.
      *
      * @param string $docx_path Path to the processed .docx file.
-     * @param array|null $encrypt_for_customer If set, encrypt PDF with this customer's ID/phone.
+     * @param string|null $password If set, encrypt the PDF with this password.
      * @param array $html_placeholders Marker => HTML content pairs for rich text injection.
      *
      * @return string PDF binary string.
      */
-    private function convert_to_pdf(string $docx_path, ?array $encrypt_for_customer = null, array $html_placeholders = []): string
+    private function convert_to_pdf(string $docx_path, ?string $password = null, array $html_placeholders = []): string
     {
         $temp_html = tempnam(sys_get_temp_dir(), 'html_') . '.html';
 
@@ -358,8 +358,8 @@ class Document_generator
 
         $mpdf = Pdf_utils::create_mpdf();
 
-        if ($encrypt_for_customer) {
-            Pdf_utils::encrypt_for_customer($mpdf, $encrypt_for_customer);
+        if ($password) {
+            Pdf_utils::encrypt_pdf($mpdf, $password);
         }
 
         $mpdf->WriteHTML($html);

@@ -65,5 +65,15 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+// Database SSL/TLS encryption (enable in production)
+if (defined('Config::DB_SSL') && Config::DB_SSL) {
+    $db['default']['encrypt'] = [
+        'ssl_key' => Config::DB_SSL_KEY,
+        'ssl_cert' => Config::DB_SSL_CERT,
+        'ssl_ca' => Config::DB_SSL_CA,
+        'ssl_verify' => true,
+    ];
+}
+
 /* End of file database.php */
 /* Location: ./application/config/database.php */

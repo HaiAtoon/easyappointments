@@ -16,8 +16,7 @@ use Mpdf\Mpdf;
 /**
  * PDF utilities library.
  *
- * Shared configuration and helper methods used by both Pdf_generator and Document_generator
- * to avoid duplication of mPDF setup, encryption logic, and temp directory management.
+ * Shared configuration and helper methods used by both Pdf_generator and Document_generator.
  *
  * @package Libraries
  */
@@ -55,30 +54,56 @@ class Pdf_utils
     }
 
     /**
-     * Apply password encryption to an mPDF instance using the customer's ID number or phone.
+     * Generate a random PDF password (16-character hex string).
+     *
+     * @return string
+     */
+    public static function generate_password(): string
+    {
+        return bin2hex(random_bytes(8));
+    }
+
+    /**
+     * Apply password encryption to an mPDF instance.
      *
      * @param Mpdf $mpdf The mPDF instance to protect.
-     * @param array $customer Customer record with id_number and/or phone_number.
+     * @param string $password The password to use.
+     *
+     * @return void
+     */
+    public static function encrypt_pdf(Mpdf $mpdf, string $password): void
+    {
+        if ($password) {
+            $owner_password = bin2hex(random_bytes(16));
+            $mpdf->SetProtection(['copy', 'print'], $password, $owner_password);
+        }
+    }
+
+    /**
+     * Apply password encryption using a customer's identifier (legacy, for entry PDFs).
+     *
+     * @param Mpdf $mpdf The mPDF instance to protect.
+     * @param array $customer Customer record.
      *
      * @return void
      */
     public static function encrypt_for_customer(Mpdf $mpdf, array $customer): void
     {
-        $password = self::get_pdf_password($customer);
+        $password = self::get_customer_identifier($customer);
 
         if ($password) {
-            $mpdf->SetProtection(['copy', 'print'], $password, $password);
+            self::encrypt_pdf($mpdf, $password);
         }
     }
 
     /**
-     * Determine the PDF password for a customer (ID number, fallback to phone).
+     * Get a customer's primary identifier (ID number or phone) for legacy password use.
      *
      * @param array $customer Customer record.
      *
-     * @return string Password string, or empty if no identifier available.
+     * @return string Identifier string, or empty if unavailable.
      */
-    public static function get_pdf_password(array $customer): string
+    public static function get_customer_identifier(array $customer): string
     {
         if (!empty($customer['id_number'])) {
             return $customer['id_number'];
@@ -92,7 +117,7 @@ class Pdf_utils
     }
 
     /**
-     * Determine which field is used as the PDF password.
+     * Determine which field is used as the customer identifier.
      *
      * @param array $customer Customer record.
      *

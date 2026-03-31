@@ -3,15 +3,12 @@
  * @var array $customer
  * @var array $settings
  * @var string $document_type
- * @var string $password_field
+ * @var string $pdf_password
  */
 
 $is_rtl = is_rtl();
 $dir = $is_rtl ? 'rtl' : 'ltr';
 $text_align = $is_rtl ? 'right' : 'left';
-$password_notice = $password_field === 'id_number'
-    ? lang('pdf_password_notice')
-    : lang('pdf_password_notice_phone');
 ?>
 
 <html lang="<?= $is_rtl ? 'he' : 'en' ?>" dir="<?= $dir ?>">
@@ -42,7 +39,12 @@ $password_notice = $password_field === 'id_number'
         </p>
 
         <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <i>&#128274;</i> <?= $password_notice ?>
+            <p style="margin: 0 0 10px 0;">&#128274; <?= lang('pdf_password_notice_generated') ?></p>
+            <div style="text-align: center;">
+                <span style="font-size: 18px; font-weight: bold; letter-spacing: 2px; background: #fff; padding: 10px 20px; border-radius: 4px; border: 1px solid #ddd; display: inline-block; font-family: monospace;">
+                    <?= e($pdf_password) ?>
+                </span>
+            </div>
         </div>
     </div>
 
