@@ -6,7 +6,7 @@
  * @var string $password_field
  */
 
-$is_rtl = in_array(config('language'), ['hebrew', 'arabic', 'persian']);
+$is_rtl = is_rtl();
 $dir = $is_rtl ? 'rtl' : 'ltr';
 $text_align = $is_rtl ? 'right' : 'left';
 $password_notice = $password_field === 'id_number'

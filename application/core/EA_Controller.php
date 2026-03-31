@@ -74,6 +74,7 @@
  * @property Webhooks_client $webhooks_client
  * @property Pdf_generator $pdf_generator
  * @property Document_generator $document_generator
+ * @property Pdf_utils $pdf_utils
  */
 class EA_Controller extends CI_Controller
 {

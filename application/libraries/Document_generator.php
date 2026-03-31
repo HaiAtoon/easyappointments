@@ -12,7 +12,6 @@
  * ---------------------------------------------------------------------------- */
 
 use PhpOffice\PhpWord\IOFactory;
-use Mpdf\Mpdf;
 
 /**
  * Document generator library.
@@ -106,43 +105,56 @@ class Document_generator
         }
 
         $temp_docx = tempnam(sys_get_temp_dir(), 'doc_') . '.docx';
+        $html_placeholders = [];
 
-        copy($file_path, $temp_docx);
-
-        $zip = new \ZipArchive();
-
-        if ($zip->open($temp_docx) === true) {
-            $doc_xml = $zip->getFromName('word/document.xml');
-
-            if ($doc_xml) {
-                $doc_xml = $this->clean_split_placeholders($doc_xml, array_keys($replacements));
-
-                $html_placeholders = [];
-
-                foreach ($replacements as $label => $value) {
-                    $search = '{' . $label . '}';
-
-                    if (!empty($html_fields[$label]) && !empty($value)) {
-                        $marker = '___HTML_' . strtoupper($label) . '___';
-                        $html_placeholders[$marker] = $value;
-                        $doc_xml = str_replace($search, $marker, $doc_xml);
-                    } else {
-                        $safe_value = htmlspecialchars($value ?? '', ENT_XML1, 'UTF-8');
-                        $doc_xml = str_replace($search, $safe_value, $doc_xml);
-                    }
-                }
-
-                $zip->addFromString('word/document.xml', $doc_xml);
+        try {
+            if (!copy($file_path, $temp_docx)) {
+                throw new RuntimeException('Failed to copy template file for processing.');
             }
 
+            $zip = new \ZipArchive();
+
+            if ($zip->open($temp_docx) !== true) {
+                throw new RuntimeException('Failed to open template .docx as ZIP archive.');
+            }
+
+            $doc_xml = $zip->getFromName('word/document.xml');
+
+            if (!$doc_xml) {
+                $zip->close();
+                throw new RuntimeException('Template .docx does not contain word/document.xml.');
+            }
+
+            $doc_xml = $this->clean_split_placeholders($doc_xml, array_keys($replacements));
+
+            foreach ($replacements as $label => $value) {
+                $search = '{' . $label . '}';
+
+                if (!empty($html_fields[$label]) && !empty($value)) {
+                    $marker = '___HTML_' . strtoupper($label) . '___';
+                    $html_placeholders[$marker] = $value;
+                    $doc_xml = str_replace($search, $marker, $doc_xml);
+                } else {
+                    $safe_value = htmlspecialchars($value ?? '', ENT_XML1, 'UTF-8');
+                    $doc_xml = str_replace($search, $safe_value, $doc_xml);
+                }
+            }
+
+            $zip->addFromString('word/document.xml', $doc_xml);
             $zip->close();
+
+            $pdf_string = $this->convert_to_pdf($temp_docx, $encrypt ? $customer : null, $html_placeholders);
+
+            return $pdf_string;
+        } catch (Throwable $e) {
+            log_message('error', 'Document generation failed: ' . $e->getMessage());
+
+            throw $e;
+        } finally {
+            if (file_exists($temp_docx)) {
+                unlink($temp_docx);
+            }
         }
-
-        $pdf_string = $this->convert_to_pdf($temp_docx, $encrypt ? $customer : null, $html_placeholders ?? []);
-
-        @unlink($temp_docx);
-
-        return $pdf_string;
     }
 
     /**
@@ -315,18 +327,26 @@ class Document_generator
      */
     private function convert_to_pdf(string $docx_path, ?array $encrypt_for_customer = null, array $html_placeholders = []): string
     {
-        $phpWord = IOFactory::load($docx_path, 'Word2007');
-
         $temp_html = tempnam(sys_get_temp_dir(), 'html_') . '.html';
-        $writer = IOFactory::createWriter($phpWord, 'HTML');
-        $writer->save($temp_html);
+
+        try {
+            $phpWord = IOFactory::load($docx_path, 'Word2007');
+            $writer = IOFactory::createWriter($phpWord, 'HTML');
+            $writer->save($temp_html);
+        } catch (Throwable $e) {
+            log_message('error', 'PhpWord conversion failed: ' . $e->getMessage());
+
+            if (file_exists($temp_html)) {
+                unlink($temp_html);
+            }
+
+            throw new RuntimeException('Failed to convert document to HTML: ' . $e->getMessage());
+        }
 
         $html = file_get_contents($temp_html);
-        @unlink($temp_html);
+        unlink($temp_html);
 
-        $is_rtl = in_array(config('language'), ['hebrew', 'arabic', 'persian']);
-
-        if ($is_rtl) {
+        if (is_rtl()) {
             $html = preg_replace('/<body([^>]*)>/', '<body$1 dir="rtl" style="direction:rtl; text-align:right;">', $html, 1);
             $html = str_replace('<html', '<html dir="rtl"', $html);
         }
@@ -336,41 +356,10 @@ class Document_generator
             $html = str_replace($marker, $rich_html, $html);
         }
 
-        $temp_dir = FCPATH . 'storage/cache/mpdf/';
-
-        if (!is_dir($temp_dir)) {
-            mkdir($temp_dir, 0775, true);
-        }
-
-        $mpdf_config = [
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'default_font' => 'dejavusans',
-            'tempDir' => $temp_dir,
-            'margin_left' => 15,
-            'margin_right' => 15,
-            'margin_top' => 10,
-            'margin_bottom' => 15,
-        ];
-
-        if ($is_rtl) {
-            $mpdf_config['directionality'] = 'rtl';
-        }
-
-        $mpdf = new Mpdf($mpdf_config);
+        $mpdf = Pdf_utils::create_mpdf();
 
         if ($encrypt_for_customer) {
-            $password = '';
-
-            if (!empty($encrypt_for_customer['id_number'])) {
-                $password = $encrypt_for_customer['id_number'];
-            } elseif (!empty($encrypt_for_customer['phone_number'])) {
-                $password = $encrypt_for_customer['phone_number'];
-            }
-
-            if ($password) {
-                $mpdf->SetProtection(['copy', 'print'], $password, $password);
-            }
+            Pdf_utils::encrypt_for_customer($mpdf, $encrypt_for_customer);
         }
 
         $mpdf->WriteHTML($html);

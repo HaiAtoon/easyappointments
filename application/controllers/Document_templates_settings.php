@@ -146,15 +146,31 @@ class Document_templates_settings extends EA_Controller
         }
 
         $template['name'] = $_POST['name'] ?? $this->input->post('name', true) ?: '';
-        $template['slug'] = $_POST['slug'] ?? $this->input->post('slug', true) ?: '';
+        $raw_slug = $_POST['slug'] ?? $this->input->post('slug', true) ?: '';
+        $template['slug'] = preg_replace('/[^a-z0-9_]/', '', strtolower($raw_slug));
         $template['is_active'] = (int) ($_POST['is_active'] ?? $this->input->post('is_active') ?? 1);
 
         $field_mappings = $_POST['field_mappings'] ?? $this->input->post('field_mappings');
 
         if ($field_mappings) {
-            $template['field_mappings'] = is_string($field_mappings)
-                ? json_decode($field_mappings, true)
-                : $field_mappings;
+            $decoded = is_string($field_mappings) ? json_decode($field_mappings, true) : $field_mappings;
+
+            $template['field_mappings'] = [];
+
+            if (is_array($decoded)) {
+                foreach ($decoded as $mapping) {
+                    if (empty($mapping['label'])) {
+                        continue;
+                    }
+
+                    $template['field_mappings'][] = [
+                        'label' => preg_replace('/[^a-zA-Z0-9_]/', '', $mapping['label'] ?? ''),
+                        'name' => $mapping['name'] ?? '',
+                        'type' => $mapping['type'] ?? 'free_text',
+                        'user_display' => !empty($mapping['user_display']),
+                    ];
+                }
+            }
         } else {
             $template['field_mappings'] = [];
         }
@@ -168,6 +184,40 @@ class Document_templates_settings extends EA_Controller
             return;
         }
 
+        $file = $_FILES['template_file'];
+
+        $max_size = 10 * 1024 * 1024; // 10MB
+
+        if ($file['size'] > $max_size) {
+            throw new RuntimeException('Template file exceeds the maximum size of 10MB.');
+        }
+
+        $allowed_mimes = [
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/zip',
+            'application/octet-stream',
+        ];
+
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($file['tmp_name']);
+
+        if (!in_array($mime, $allowed_mimes)) {
+            throw new RuntimeException('Invalid file type. Only .docx files are allowed.');
+        }
+
+        $zip = new ZipArchive();
+
+        if ($zip->open($file['tmp_name']) !== true) {
+            throw new RuntimeException('The uploaded file is not a valid .docx archive.');
+        }
+
+        $has_document_xml = $zip->locateName('word/document.xml') !== false;
+        $zip->close();
+
+        if (!$has_document_xml) {
+            throw new RuntimeException('The uploaded file is not a valid Word document.');
+        }
+
         $upload_dir = FCPATH . 'storage/document-templates/';
 
         if (!is_dir($upload_dir)) {
@@ -178,7 +228,7 @@ class Document_templates_settings extends EA_Controller
         $filename = $template_id . '_' . $template['slug'] . '.docx';
         $dest = $upload_dir . $filename;
 
-        if (!move_uploaded_file($_FILES['template_file']['tmp_name'], $dest)) {
+        if (!move_uploaded_file($file['tmp_name'], $dest)) {
             throw new RuntimeException('Failed to upload template file.');
         }
 

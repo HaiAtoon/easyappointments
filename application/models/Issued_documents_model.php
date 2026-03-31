@@ -114,7 +114,18 @@ class Issued_documents_model extends EA_Model
         $document['create_datetime'] = date('Y-m-d H:i:s');
 
         if (!empty($document['extra_fields']) && is_array($document['extra_fields'])) {
+            foreach ($document['extra_fields'] as $key => &$value) {
+                if (is_string($value) && $value !== strip_tags($value)) {
+                    $value = pure_html($value);
+                }
+            }
+            unset($value);
+
             $document['extra_fields'] = json_encode($document['extra_fields']);
+        }
+
+        if (!empty($document['content']) && $document['content'] !== strip_tags($document['content'])) {
+            $document['content'] = pure_html($document['content']);
         }
 
         if (!$this->db->insert('issued_documents', $document)) {

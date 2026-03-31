@@ -45,23 +45,23 @@ class Documentation_entries extends EA_Controller
                 throw new InvalidArgumentException('Customer ID is required.');
             }
 
-            $entries = $this->documentation_entries_model->get(['id_users_customer' => $customer_id]);
+            $entries = $this->db
+                ->select('
+                    documentation_entries.*,
+                    CONCAT(provider.first_name, " ", provider.last_name) AS provider_name,
+                    CONCAT(services.name, " - ", appointments.start_datetime) AS appointment_summary
+                ')
+                ->from('documentation_entries')
+                ->join('users AS provider', 'provider.id = documentation_entries.id_users_provider', 'left')
+                ->join('appointments', 'appointments.id = documentation_entries.id_appointments', 'left')
+                ->join('services', 'services.id = appointments.id_services', 'left')
+                ->where('documentation_entries.id_users_customer', $customer_id)
+                ->order_by('documentation_entries.create_datetime', 'DESC')
+                ->get()
+                ->result_array();
 
             foreach ($entries as &$entry) {
-                $this->documentation_entries_model->load($entry, ['appointment', 'provider']);
-
-                if (!empty($entry['provider'])) {
-                    $entry['provider_name'] = $entry['provider']['first_name'] . ' ' . $entry['provider']['last_name'];
-                    unset($entry['provider']);
-                }
-
-                if (!empty($entry['appointment'])) {
-                    $this->appointments_model->load($entry['appointment'], ['service']);
-                    $entry['appointment_summary'] = !empty($entry['appointment']['service'])
-                        ? $entry['appointment']['service']['name'] . ' - ' . $entry['appointment']['start_datetime']
-                        : $entry['appointment']['start_datetime'];
-                    unset($entry['appointment']);
-                }
+                $this->documentation_entries_model->cast($entry);
             }
 
             json_response($entries);
@@ -237,7 +237,7 @@ class Documentation_entries extends EA_Controller
                 throw new RuntimeException(lang('no_client_email'));
             }
 
-            $password_field = !empty($customer['id_number']) ? 'id_number' : 'phone_number';
+            $password_field = Pdf_utils::get_password_field($customer);
 
             $this->email_messages->send_documentation_pdf($customer, $pdf_string, 'session_summary', $password_field);
 
@@ -294,15 +294,20 @@ class Documentation_entries extends EA_Controller
                 throw new InvalidArgumentException('Documentation entry ID is required.');
             }
 
-            $documents = $this->issued_documents_model->get(['id_documentation_entry' => $entry_id]);
+            $documents = $this->db
+                ->select('
+                    issued_documents.*,
+                    CONCAT(provider.first_name, " ", provider.last_name) AS provider_name
+                ')
+                ->from('issued_documents')
+                ->join('users AS provider', 'provider.id = issued_documents.id_users_provider', 'left')
+                ->where('issued_documents.id_documentation_entry', $entry_id)
+                ->order_by('issued_documents.create_datetime', 'DESC')
+                ->get()
+                ->result_array();
 
             foreach ($documents as &$doc) {
-                $this->issued_documents_model->load($doc, ['provider']);
-
-                if (!empty($doc['provider'])) {
-                    $doc['provider_name'] = $doc['provider']['first_name'] . ' ' . $doc['provider']['last_name'];
-                    unset($doc['provider']);
-                }
+                $this->issued_documents_model->cast($doc);
             }
 
             json_response($documents);
@@ -361,7 +366,7 @@ class Documentation_entries extends EA_Controller
 
             $pdf_string = $this->pdf_generator->generate_from_document($document_id, true);
 
-            $password_field = !empty($customer['id_number']) ? 'id_number' : 'phone_number';
+            $password_field = Pdf_utils::get_password_field($customer);
 
             $this->email_messages->send_documentation_pdf($customer, $pdf_string, $document['document_type'], $password_field);
 

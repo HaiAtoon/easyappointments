@@ -11,8 +11,6 @@
  * @since       v1.5.0
  * ---------------------------------------------------------------------------- */
 
-use Mpdf\Mpdf;
-
 /**
  * PDF generator library.
  *
@@ -151,26 +149,6 @@ class Pdf_generator
     }
 
     /**
-     * Determine the PDF password for a customer (ID number, fallback to phone).
-     *
-     * @param array $customer Customer record.
-     *
-     * @return string Password string, or empty if no identifier available.
-     */
-    public function get_pdf_password(array $customer): string
-    {
-        if (!empty($customer['id_number'])) {
-            return $customer['id_number'];
-        }
-
-        if (!empty($customer['phone_number'])) {
-            return $customer['phone_number'];
-        }
-
-        return '';
-    }
-
-    /**
      * Render a PDF from the HTML template using mPDF.
      *
      * @param array $data Template data (content, customer, provider, etc.).
@@ -180,8 +158,6 @@ class Pdf_generator
      */
     private function render_pdf(array $data, ?array $encrypt_for_customer = null): string
     {
-        $is_rtl = in_array(config('language'), ['hebrew', 'arabic', 'persian']);
-
         $html = $this->CI->load->view('pdfs/documentation_pdf', [
             'content' => $data['content'],
             'customer' => $data['customer'],
@@ -191,57 +167,20 @@ class Pdf_generator
             'type_label' => $data['type_label'],
             'extra_fields' => $data['extra_fields'],
             'session_date' => $data['session_date'],
-            'is_rtl' => $is_rtl,
+            'is_rtl' => is_rtl(),
             'company_name' => setting('company_name'),
             'company_logo' => setting('company_logo'),
             'company_color' => setting('company_color') ?: '#429a82',
         ], true);
 
-        $mpdf = $this->get_mpdf_instance($is_rtl);
+        $mpdf = Pdf_utils::create_mpdf();
 
         if ($encrypt_for_customer) {
-            $password = $this->get_pdf_password($encrypt_for_customer);
-
-            if ($password) {
-                $mpdf->SetProtection(['copy', 'print'], $password, $password);
-            }
+            Pdf_utils::encrypt_for_customer($mpdf, $encrypt_for_customer);
         }
 
         $mpdf->WriteHTML($html);
 
         return $mpdf->Output('', 'S');
-    }
-
-    /**
-     * Create a configured mPDF instance.
-     *
-     * @param bool $is_rtl Whether to enable RTL directionality.
-     *
-     * @return Mpdf
-     */
-    private function get_mpdf_instance(bool $is_rtl = false): Mpdf
-    {
-        $temp_dir = FCPATH . 'storage/cache/mpdf/';
-
-        if (!is_dir($temp_dir)) {
-            mkdir($temp_dir, 0775, true);
-        }
-
-        $config = [
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'default_font' => 'dejavusans',
-            'tempDir' => $temp_dir,
-            'margin_left' => 15,
-            'margin_right' => 15,
-            'margin_top' => 10,
-            'margin_bottom' => 15,
-        ];
-
-        if ($is_rtl) {
-            $config['directionality'] = 'rtl';
-        }
-
-        return new Mpdf($config);
     }
 }

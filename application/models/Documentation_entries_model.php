@@ -166,6 +166,10 @@ class Documentation_entries_model extends EA_Model
         $entry['update_datetime'] = $now;
         $entry['is_edited'] = 0;
 
+        if (!empty($entry['session_summary'])) {
+            $entry['session_summary'] = pure_html($entry['session_summary']);
+        }
+
         if (!$this->db->insert('documentation_entries', $entry)) {
             throw new RuntimeException('Could not insert documentation entry.');
         }
@@ -176,6 +180,10 @@ class Documentation_entries_model extends EA_Model
     protected function update(array $entry): int
     {
         $entry['update_datetime'] = date('Y-m-d H:i:s');
+
+        if (!empty($entry['session_summary'])) {
+            $entry['session_summary'] = pure_html($entry['session_summary']);
+        }
 
         if (!$this->db->update('documentation_entries', $entry, ['id' => $entry['id']])) {
             throw new RuntimeException('Could not update documentation entry.');
