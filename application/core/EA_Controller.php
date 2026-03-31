@@ -53,6 +53,9 @@
  * @property Users_model $users_model
  * @property Webhooks_model $webhooks_model
  * @property Blocked_periods_model $blocked_periods_model
+ * @property Documentation_entries_model $documentation_entries_model
+ * @property Issued_documents_model $issued_documents_model
+ * @property Document_templates_model $document_templates_model
  *
  * @property Accounts $accounts
  * @property Api $api
@@ -69,6 +72,9 @@
  * @property Synchronization $synchronization
  * @property Timezones $timezones
  * @property Webhooks_client $webhooks_client
+ * @property Pdf_generator $pdf_generator
+ * @property Document_generator $document_generator
+ * @property Pdf_utils $pdf_utils
  */
 class EA_Controller extends CI_Controller
 {

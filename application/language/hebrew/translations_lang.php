@@ -523,5 +523,75 @@ $lang['login_to_customer_area'] = 'התחבר כדי לצפות ולנהל את 
 $lang['cancelled'] = 'בוטלה';
 $lang['cancelled_by'] = 'בוטלה על ידי';
 $lang['cancelled_by_me'] = 'בוטלה על ידי';
-
+// Documentation
+$lang['overview'] = 'סקירה כללית';
+$lang['documentation'] = 'תיעוד';
+$lang['billing'] = 'חיוב';
+$lang['new_entry'] = 'רשומה חדשה';
+$lang['session_summary'] = 'סיכום מפגש';
+$lang['linked_appointment'] = 'פגישה מקושרת';
+$lang['no_linked_appointment'] = 'ללא פגישה מקושרת';
+$lang['documentation_entry_saved'] = 'רשומת תיעוד נשמרה.';
+$lang['documentation_entry_deleted'] = 'רשומת תיעוד נמחקה.';
+$lang['delete_documentation_entry'] = 'מחק רשומת תיעוד';
+$lang['coming_soon'] = 'בקרוב';
+$lang['select_appointment'] = 'בחר פגישה';
+$lang['created_by'] = 'נוצר על ידי';
+$lang['no_documentation_entries'] = 'לא נמצאו רשומות תיעוד.';
+$lang['edited'] = 'נערך';
+$lang['edit_history'] = 'היסטוריית עריכה';
+$lang['edited_by'] = 'נערך על ידי';
+$lang['changed_field'] = 'שדה שהשתנה';
+// PDF Generation
+$lang['generate_document'] = 'הפק מסמך';
+$lang['document_type'] = 'סוג מסמך';
+$lang['general_letter'] = 'מכתב כללי';
+$lang['referral'] = 'הפניה';
+$lang['certificate'] = 'אישור';
+$lang['destination'] = 'יעד';
+$lang['purpose'] = 'מטרה';
+$lang['download'] = 'הורדה';
+$lang['send_email'] = 'שלח באימייל';
+$lang['pdf_sent_successfully'] = 'המסמך נשלח לאימייל הלקוח.';
+$lang['pdf_password_notice'] = 'קובץ ה-PDF המצורף מוגן בסיסמה. הסיסמה היא מספר תעודת הזהות שלך.';
+$lang['pdf_password_notice_phone'] = 'קובץ ה-PDF המצורף מוגן בסיסמה. הסיסמה היא מספר הטלפון שלך.';
+$lang['professional_title'] = 'תואר מקצועי';
+$lang['license_number'] = 'מספר רישיון';
+$lang['signature'] = 'חתימה';
+$lang['session_date'] = 'תאריך מפגש';
+$lang['document'] = 'מסמך';
+$lang['documentation_pdf_subject'] = 'המסמך שלך';
+$lang['no_client_email'] = 'ללקוח אין כתובת אימייל.';
+// Issued Documents
+$lang['issued_documents'] = 'מסמכים שהופקו';
+$lang['new_document'] = 'מסמך חדש';
+$lang['document_content'] = 'תוכן המסמך';
+$lang['document_saved'] = 'המסמך נשמר.';
+$lang['view_as_pdf'] = 'צפה כ-PDF';
+$lang['send_as_pdf'] = 'שלח כ-PDF';
+$lang['document_title'] = 'כותרת מסמך';
+// Document Templates
+$lang['document_templates'] = 'תבניות מסמכים';
+$lang['template_name'] = 'שם התבנית';
+$lang['template_fields'] = 'שדות התבנית';
+$lang['field_name'] = 'שם השדה';
+$lang['field_label'] = 'תווית השדה';
+$lang['field_type'] = 'סוג השדה';
+$lang['add_field'] = 'הוסף שדה';
+$lang['default_content'] = 'תוכן ברירת מחדל';
+$lang['template_saved'] = 'התבנית נשמרה.';
+$lang['template_deleted'] = 'התבנית נמחקה.';
+$lang['add_template'] = 'הוסף תבנית';
+$lang['delete_template'] = 'מחק תבנית';
+$lang['text'] = 'טקסט';
+$lang['textarea'] = 'אזור טקסט';
+// DOCX Template Engine
+$lang['upload_template'] = 'העלה תבנית';
+$lang['template_file'] = 'קובץ תבנית (.docx)';
+$lang['field_mappings'] = 'מיפוי שדות';
+$lang['free_text'] = 'טקסט חופשי';
+$lang['user_display'] = 'הצג למשתמש';
+$lang['system_variable'] = 'משתנה מערכת';
+$lang['no_template_file'] = 'לא הועלה קובץ תבנית.';
+$lang['free_textarea'] = 'טקסט עשיר';
 // End

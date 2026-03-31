@@ -153,5 +153,9 @@ const WEBHOOK_ADMIN_DELETE = 'admin_delete';
 const WEBHOOK_BLOCKED_PERIOD_SAVE = 'blocked_period_save';
 const WEBHOOK_BLOCKED_PERIOD_DELETE = 'blocked_period_delete';
 
+// Storage paths (relative to FCPATH)
+const STORAGE_MPDF_TEMP = 'storage/cache/mpdf/';
+const STORAGE_DOCUMENT_TEMPLATES = 'storage/document-templates/';
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

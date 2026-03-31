@@ -55,6 +55,7 @@ class Customers extends EA_Controller
 
         $this->load->model('appointments_model');
         $this->load->model('customers_model');
+        $this->load->model('providers_model');
         $this->load->model('secretaries_model');
         $this->load->model('roles_model');
 
@@ -108,6 +109,19 @@ class Customers extends EA_Controller
             $secretary_providers = $secretary['providers'];
         }
 
+        $providers = [];
+
+        if ($role_slug === DB_SLUG_ADMIN || $role_slug === DB_SLUG_PROVIDER) {
+            $all_providers = $this->providers_model->get();
+
+            foreach ($all_providers as $provider) {
+                $providers[] = [
+                    'id' => $provider['id'],
+                    'name' => $provider['first_name'] . ' ' . $provider['last_name'],
+                ];
+            }
+        }
+
         script_vars([
             'user_id' => $user_id,
             'role_slug' => $role_slug,
@@ -117,6 +131,9 @@ class Customers extends EA_Controller
             'secretary_providers' => $secretary_providers,
             'default_language' => setting('default_language'),
             'default_timezone' => setting('default_timezone'),
+            'user_display_name' => $this->accounts->get_user_display_name($user_id),
+            'providers' => $providers,
+            'is_rtl' => config('is_rtl'),
         ]);
 
         html_vars([
@@ -136,6 +153,7 @@ class Customers extends EA_Controller
             'display_id_number' => $display_id_number,
             'require_id_number' => $require_id_number,
             'available_languages' => config('available_languages'),
+            'providers_list' => $providers,
         ]);
 
         $this->load->view('pages/customers');

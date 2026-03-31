@@ -10,9 +10,10 @@
  * ---------------------------------------------------------------------------- */
 
 /**
- * Customers page.
+ * Customers page module.
  *
- * This module implements the functionality of the customers page.
+ * Manages the customer list, CRUD operations, and the tabbed dashboard layout.
+ * Documentation and issued document functionality is delegated to App.Components.Documentation.
  */
 App.Pages.Customers = (function () {
     const $customers = $('#customers');
@@ -43,15 +44,7 @@ App.Pages.Customers = (function () {
     let filterResults = {};
     let filterLimit = 20;
 
-    /**
-     * Add the page event listeners.
-     */
     function addEventListeners() {
-        /**
-         * Event: Filter Customers Form "Submit"
-         *
-         * @param {jQuery.Event} event
-         */
         $customers.on('submit', '#filter-customers form', (event) => {
             event.preventDefault();
             const key = $filterCustomers.find('.key').val();
@@ -61,16 +54,9 @@ App.Pages.Customers = (function () {
             App.Pages.Customers.filter(key);
         });
 
-        /**
-         * Event: Filter Entry "Click"
-         *
-         * Display the customer data of the selected row.
-         *
-         * @param {jQuery.Event} event
-         */
         $customers.on('click', '.customer-row', (event) => {
             if ($filterCustomers.find('.filter').prop('disabled')) {
-                return; // Do nothing when user edits a customer record.
+                return;
             }
 
             const customerId = $(event.currentTarget).attr('data-id');
@@ -82,34 +68,27 @@ App.Pages.Customers = (function () {
             $('#edit-customer, #delete-customer').prop('disabled', false);
         });
 
-        /**
-         * Event: Add Customer Button "Click"
-         */
         $customers.on('click', '#add-customer', () => {
             App.Pages.Customers.resetForm();
             $customers.find('#add-edit-delete-group').hide();
             $customers.find('#save-cancel-group').show();
-            $customers.find('.record-details').find('input, select, textarea').prop('disabled', false);
-            $customers.find('.record-details .form-label span').prop('hidden', false);
+            $('#tab-overview').find('input, select, textarea').prop('disabled', false);
+            $('#tab-overview .form-label span').prop('hidden', false);
             $filterCustomers.find('button').prop('disabled', true);
             $filterCustomers.find('.results').css('color', '#AAA');
+            setTabsEnabled(false);
         });
 
-        /**
-         * Event: Edit Customer Button "Click"
-         */
         $customers.on('click', '#edit-customer', () => {
-            $customers.find('.record-details').find('input, select, textarea').prop('disabled', false);
-            $customers.find('.record-details .form-label span').prop('hidden', false);
+            $('#tab-overview').find('input, select, textarea').prop('disabled', false);
+            $('#tab-overview .form-label span').prop('hidden', false);
             $customers.find('#add-edit-delete-group').hide();
             $customers.find('#save-cancel-group').show();
             $filterCustomers.find('button').prop('disabled', true);
             $filterCustomers.find('.results').css('color', '#AAA');
+            setTabsEnabled(false);
         });
 
-        /**
-         * Event: Cancel Customer Add/Edit Operation Button "Click"
-         */
         $customers.on('click', '#cancel-customer', () => {
             const id = $id.val();
 
@@ -120,9 +99,6 @@ App.Pages.Customers = (function () {
             }
         });
 
-        /**
-         * Event: Save Add/Edit Customer Operation "Click"
-         */
         $customers.on('click', '#save-customer', () => {
             const customer = {
                 first_name: $firstName.val(),
@@ -155,9 +131,6 @@ App.Pages.Customers = (function () {
             App.Pages.Customers.save(customer);
         });
 
-        /**
-         * Event: Delete Customer Button "Click"
-         */
         $customers.on('click', '#delete-customer', () => {
             const customerId = $id.val();
             const buttons = [
@@ -180,11 +153,6 @@ App.Pages.Customers = (function () {
         });
     }
 
-    /**
-     * Save a customer record to the database (via ajax post).
-     *
-     * @param {Object} customer Contains the customer data.
-     */
     function save(customer) {
         App.Http.Customers.save(customer).then((response) => {
             App.Layouts.Backend.displayNotification(lang('customer_saved'));
@@ -194,11 +162,6 @@ App.Pages.Customers = (function () {
         });
     }
 
-    /**
-     * Delete a customer record from database.
-     *
-     * @param {Number} id Record id to be deleted.
-     */
     function remove(id) {
         App.Http.Customers.destroy(id).then(() => {
             App.Layouts.Backend.displayNotification(lang('customer_deleted'));
@@ -207,18 +170,14 @@ App.Pages.Customers = (function () {
         });
     }
 
-    /**
-     * Validate customer data before save (insert or update).
-     */
     function validate() {
         $formMessage.removeClass('alert-danger').hide();
         $('.is-invalid').removeClass('is-invalid');
 
         try {
-            // Validate required fields.
             let missingRequired = false;
 
-            $('.required').each((index, requiredField) => {
+            $('#tab-overview .required').each((index, requiredField) => {
                 if ($(requiredField).val() === '') {
                     $(requiredField).addClass('is-invalid');
                     missingRequired = true;
@@ -229,7 +188,6 @@ App.Pages.Customers = (function () {
                 throw new Error(lang('fields_are_required'));
             }
 
-            // Validate email address.
             const email = $email.val();
 
             if (email && !App.Utils.Validation.email(email)) {
@@ -237,7 +195,6 @@ App.Pages.Customers = (function () {
                 throw new Error(lang('invalid_email'));
             }
 
-            // Validate phone number.
             const phoneNumber = $phoneNumber.val();
 
             if (phoneNumber && !App.Utils.Validation.phone(phoneNumber)) {
@@ -252,14 +209,12 @@ App.Pages.Customers = (function () {
         }
     }
 
-    /**
-     * Bring the customer form back to its initial state.
-     */
     function resetForm() {
-        $customers.find('.record-details').find('input, select, textarea').val('').prop('disabled', true);
-        $customers.find('.record-details .form-label span').prop('hidden', true);
-        $customers.find('.record-details #timezone').val(vars('default_timezone'));
-        $customers.find('.record-details #language').val(vars('default_language'));
+        $id.val('');
+        $('#tab-overview').find('input, select, textarea').val('').prop('disabled', true);
+        $('#tab-overview .form-label span').prop('hidden', true);
+        $('#tab-overview #timezone').val(vars('default_timezone'));
+        $('#tab-overview #language').val(vars('default_language'));
 
         $customerAppointments.empty();
 
@@ -267,19 +222,21 @@ App.Pages.Customers = (function () {
         $customers.find('#add-edit-delete-group').show();
         $customers.find('#save-cancel-group').hide();
 
-        $customers.find('.record-details .is-invalid').removeClass('is-invalid');
-        $customers.find('.record-details #form-message').hide();
+        $('#tab-overview .is-invalid').removeClass('is-invalid');
+        $('#tab-overview #form-message').hide();
 
         $filterCustomers.find('button').prop('disabled', false);
         $filterCustomers.find('.selected').removeClass('selected');
         $filterCustomers.find('.results').css('color', '');
+
+        if (App.Components.Documentation) {
+            App.Components.Documentation.onReset();
+        }
+
+        setTabsEnabled(true);
+        activateTab('tab-overview');
     }
 
-    /**
-     * Display a customer record into the form.
-     *
-     * @param {Object} customer Contains the customer record data.
-     */
     function display(customer) {
         $id.val(customer.id);
         $firstName.val(customer.first_name);
@@ -303,9 +260,7 @@ App.Pages.Customers = (function () {
         $customerAppointments.empty();
 
         if (!customer.appointments.length) {
-            $('<p/>', {
-                'text': lang('no_records_found'),
-            }).appendTo($customerAppointments);
+            $('<p/>', {'text': lang('no_records_found')}).appendTo($customerAppointments);
         }
 
         customer.appointments.forEach((appointment) => {
@@ -341,58 +296,32 @@ App.Pages.Customers = (function () {
                 'class': 'appointment-row',
                 'data-id': appointment.id,
                 'html': [
-                    // Service - Provider
-
                     $('<a/>', {
                         'href': App.Utils.Url.siteUrl(`calendar/reschedule/${appointment.hash}`),
                         'html': [
-                            $('<i/>', {
-                                'class': 'fas fa-edit me-1',
-                            }),
+                            $('<i/>', {'class': 'fas fa-edit me-1'}),
                             $('<strong/>', {
-                                'text':
-                                    appointment.service.name +
-                                    ' - ' +
-                                    appointment.provider.first_name +
-                                    ' ' +
-                                    appointment.provider.last_name,
+                                'text': appointment.service.name + ' - ' +
+                                    appointment.provider.first_name + ' ' + appointment.provider.last_name,
                             }),
                             $('<br/>'),
                         ],
                     }),
-
-                    // Start
-
-                    $('<small/>', {
-                        'text': start,
-                    }),
+                    $('<small/>', {'text': start}),
                     $('<br/>'),
-
-                    // End
-
-                    $('<small/>', {
-                        'text': end,
-                    }),
+                    $('<small/>', {'text': end}),
                     $('<br/>'),
-
-                    // Timezone
-
-                    $('<small/>', {
-                        'text': vars('timezones')[appointment.provider.timezone],
-                    }),
+                    $('<small/>', {'text': vars('timezones')[appointment.provider.timezone]}),
                 ],
             }).appendTo('#customer-appointments');
         });
+
+        // Delegate to documentation component
+        if (App.Components.Documentation) {
+            App.Components.Documentation.onCustomerSelected(customer.id, customer.appointments);
+        }
     }
 
-    /**
-     * Filter customer records.
-     *
-     * @param {String} keyword This keyword string is used to filter the customer records.
-     * @param {Number} selectId Optional, if set then after the filter operation the record with the given
-     * ID will be selected (but not displayed).
-     * @param {Boolean} show Optional (false), if true then the selected record will be displayed on the form.
-     */
     function filter(keyword, selectId = null, show = false) {
         App.Http.Customers.search(keyword, filterLimit).then((response) => {
             filterResults = response;
@@ -405,9 +334,7 @@ App.Pages.Customers = (function () {
 
             if (!response.length) {
                 $filterCustomers.find('.results').append(
-                    $('<em/>', {
-                        'text': lang('no_records_found'),
-                    }),
+                    $('<em/>', {'text': lang('no_records_found')}),
                 );
             } else if (response.length === filterLimit) {
                 $('<button/>', {
@@ -427,74 +354,61 @@ App.Pages.Customers = (function () {
         });
     }
 
-    /**
-     * Get the filter results row HTML code.
-     *
-     * @param {Object} customer Contains the customer data.
-     *
-     * @return {String} Returns the record HTML code.
-     */
     function getFilterHtml(customer) {
         const name = (customer.first_name || '[No First Name]') + ' ' + (customer.last_name || '[No Last Name]');
-
         let info = customer.email || '[No Email]';
-
         info = customer.phone_number ? info + ', ' + customer.phone_number : info;
 
         const html = [
-            $('<strong/>', {
-                'text': name,
-            }),
+            $('<strong/>', {'text': name}),
             $('<br/>'),
-            $('<small/>', {
-                'class': 'text-muted',
-                'text': info,
-            }),
+            $('<small/>', {'class': 'text-muted', 'text': info}),
             $('<br/>'),
         ];
 
         if (customer.id_number) {
             html.push(
-                $('<small/>', {
-                    'class': 'text-muted',
-                    'text': lang('id_number') + ': ' + customer.id_number,
-                }),
+                $('<small/>', {'class': 'text-muted', 'text': lang('id_number') + ': ' + customer.id_number}),
                 $('<br/>'),
             );
         }
 
-        return $('<div/>', {
-            'class': 'customer-row entry',
-            'data-id': customer.id,
-            'html': html,
-        });
+        return $('<div/>', {'class': 'customer-row entry', 'data-id': customer.id, 'html': html});
     }
 
-    /**
-     * Select a specific record from the current filter results.
-     *
-     * If the customer id does not exist in the list then no record will be selected.
-     *
-     * @param {Number} id The record id to be selected from the filter results.
-     * @param {Boolean} show Optional (false), if true then the method will display the record on the form.
-     */
     function select(id, show = false) {
         $('#filter-customers .selected').removeClass('selected');
-
         $('#filter-customers .entry[data-id="' + id + '"]').addClass('selected');
 
         if (show) {
             const customer = filterResults.find((filterResult) => Number(filterResult.id) === Number(id));
-
             App.Pages.Customers.display(customer);
-
             $('#edit-customer, #delete-customer').prop('disabled', false);
         }
     }
 
-    /**
-     * Initialize the module.
-     */
+    // --- Tab Management ---
+
+    function setTabsEnabled(enabled) {
+        const $tabs = $('#customer-tabs .nav-link').not('#tab-overview-btn').not('#tab-billing-btn');
+
+        if (enabled) {
+            $tabs.removeClass('disabled');
+        } else {
+            $tabs.addClass('disabled');
+            activateTab('tab-overview');
+        }
+    }
+
+    function activateTab(tabId) {
+        const tabEl = document.getElementById(tabId + '-btn');
+
+        if (tabEl) {
+            const tab = new bootstrap.Tab(tabEl);
+            tab.show();
+        }
+    }
+
     function initialize() {
         App.Pages.Customers.resetForm();
         App.Pages.Customers.addEventListeners();

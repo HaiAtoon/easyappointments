@@ -169,3 +169,15 @@ if (!function_exists('vars')) {
         return html_vars($key) ?? (script_vars($key) ?? $default);
     }
 }
+
+if (!function_exists('is_rtl')) {
+    /**
+     * Check if the current language is a right-to-left language.
+     *
+     * @return bool
+     */
+    function is_rtl(): bool
+    {
+        return in_array(config('language'), ['hebrew', 'arabic', 'persian']);
+    }
+}

@@ -70,12 +70,36 @@
 
             <input id="customer-id" type="hidden">
 
-            <div class="row">
-                <div class="col-12 col-md-6" style="margin-left: 0;">
-                    <h4 class="text-black-50 mb-3 fw-light">
-                        <?= lang('details') ?>
-                    </h4>
+            <ul class="nav nav-tabs mb-3" id="customer-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-overview-btn" data-bs-toggle="tab"
+                            data-bs-target="#tab-overview" type="button" role="tab">
+                        <?= lang('overview') ?>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-appointments-btn" data-bs-toggle="tab"
+                            data-bs-target="#tab-appointments" type="button" role="tab">
+                        <?= lang('appointments') ?>
+                    </button>
+                </li>
+                <?php if (vars('role_slug') === DB_SLUG_ADMIN || vars('role_slug') === DB_SLUG_PROVIDER): ?>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab-documentation-btn" data-bs-toggle="tab"
+                                data-bs-target="#tab-documentation" type="button" role="tab">
+                            <?= lang('documentation') ?>
+                        </button>
+                    </li>
+                <?php endif; ?>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link disabled" id="tab-billing-btn" type="button" role="tab">
+                        <?= lang('billing') ?>
+                    </button>
+                </li>
+            </ul>
 
+            <div class="tab-content" id="customer-tab-content">
+                <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
                     <div id="form-message" class="alert" style="display:none;"></div>
 
                     <?php if (vars('display_id_number')): ?>
@@ -221,14 +245,126 @@
                     <?php slot('after_primary_fields'); ?>
                 </div>
 
-                <div class="col-12 col-md-6">
-                    <h4 class="text-black-50 mb-3 fw-light">
-                        <?= lang('appointments') ?>
-                    </h4>
-
+                <div class="tab-pane fade" id="tab-appointments" role="tabpanel">
                     <div id="customer-appointments" class="card bg-white border"></div>
 
                     <?php slot('after_secondary_fields'); ?>
+                </div>
+
+                <?php if (vars('role_slug') === DB_SLUG_ADMIN || vars('role_slug') === DB_SLUG_PROVIDER): ?>
+                    <div class="tab-pane fade" id="tab-documentation" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="text-black-50 fw-light mb-0"><?= lang('documentation') ?></h5>
+                            <button id="add-documentation-entry" class="btn btn-sm btn-primary" disabled>
+                                <i class="fas fa-plus me-1"></i>
+                                <?= lang('new_entry') ?>
+                            </button>
+                        </div>
+
+                        <div id="documentation-entries">
+                            <em class="text-muted"><?= lang('no_documentation_entries') ?></em>
+                        </div>
+
+                        <div id="documentation-form" style="display:none;">
+                            <hr>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="doc-provider">
+                                    <?= lang('provider') ?>
+                                </label>
+                                <select id="doc-provider" class="form-select" disabled>
+                                    <?php foreach (vars('providers_list') ?? [] as $prov): ?>
+                                        <option value="<?= $prov['id'] ?>"><?= $prov['name'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="doc-appointment">
+                                    <?= lang('linked_appointment') ?>
+                                </label>
+                                <select id="doc-appointment" class="form-select">
+                                    <option value=""><?= lang('no_linked_appointment') ?></option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <?= lang('session_summary') ?>
+                                </label>
+                                <textarea id="doc-session-summary"></textarea>
+                            </div>
+
+                            <input id="doc-entry-id" type="hidden">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button id="save-documentation-entry" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-check me-1"></i>
+                                    <?= lang('save') ?>
+                                </button>
+                                <button id="close-documentation-entry" class="btn btn-sm btn-outline-secondary"
+                                        title="<?= lang('close') ?>">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+
+                            <div id="entry-saved-section" style="display:none;">
+                                <hr>
+
+                                <div id="entry-actions" class="d-flex gap-2 mb-3">
+                                    <button id="view-entry-pdf" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-pdf me-1"></i>
+                                        <?= lang('view_as_pdf') ?>
+                                    </button>
+                                    <button id="send-entry-pdf" class="btn btn-sm btn-outline-success">
+                                        <i class="fas fa-envelope me-1"></i>
+                                        <?= lang('send_as_pdf') ?>
+                                    </button>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="text-black-50 fw-light mb-0"><?= lang('issued_documents') ?></h6>
+                                    <button id="add-issued-document" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-plus me-1"></i>
+                                        <?= lang('new_document') ?>
+                                    </button>
+                                </div>
+
+                                <div id="issued-documents-list" class="mb-3"></div>
+
+                                <div id="issued-document-form" style="display:none;">
+                                    <div class="card p-3 bg-light">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="idoc-type">
+                                                <?= lang('document_type') ?>
+                                            </label>
+                                            <select id="idoc-type" class="form-select">
+                                            </select>
+                                        </div>
+
+                                        <div id="idoc-extra-fields"></div>
+
+                                        <div class="d-flex gap-2">
+                                            <button id="save-issued-document" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-check me-1"></i>
+                                                <?= lang('save') ?>
+                                            </button>
+                                            <button id="cancel-issued-document" class="btn btn-secondary btn-sm">
+                                                <?= lang('cancel') ?>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <div class="tab-pane fade" id="tab-billing" role="tabpanel">
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-file-invoice-dollar fa-3x mb-3"></i>
+                        <h5><?= lang('coming_soon') ?></h5>
+                    </div>
                 </div>
             </div>
         </div>
@@ -240,6 +376,8 @@
 <?php section('scripts'); ?>
 
 <script src="<?= asset_url('assets/js/http/customers_http_client.js') ?>"></script>
+<script src="<?= asset_url('assets/js/http/documentation_entries_http_client.js') ?>"></script>
+<script src="<?= asset_url('assets/js/components/documentation.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/customers.js') ?>"></script>
 
 <?php end_section('scripts'); ?>
