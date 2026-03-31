@@ -525,4 +525,80 @@ $lang['cancelled'] = 'Cancelled';
 $lang['cancelled_by'] = 'Cancelled by';
 $lang['cancelled_by_me'] = 'Cancelled by me';
 $lang['service_and_provider'] = 'Услуга и пружалац';
+
+// Documentation
+\['overview'] = 'Overview';
+\['documentation'] = 'Documentation';
+\['billing'] = 'Billing';
+\['new_entry'] = 'New Entry';
+\['session_summary'] = 'Session Summary';
+\['linked_appointment'] = 'Linked Appointment';
+\['no_linked_appointment'] = 'No linked appointment';
+\['documentation_entry_saved'] = 'Documentation entry saved.';
+\['documentation_entry_deleted'] = 'Documentation entry deleted.';
+\['delete_documentation_entry'] = 'Delete Documentation Entry';
+\['coming_soon'] = 'Coming Soon';
+\['select_appointment'] = 'Select Appointment';
+\['created_by'] = 'Created By';
+\['no_documentation_entries'] = 'No documentation entries found.';
+\['edited'] = 'Edited';
+\['edit_history'] = 'Edit History';
+\['edited_by'] = 'Edited by';
+\['changed_field'] = 'Changed field';
+
+// PDF Generation
+\['generate_document'] = 'Generate Document';
+\['document_type'] = 'Document Type';
+\['general_letter'] = 'General Letter';
+\['referral'] = 'Referral';
+\['certificate'] = 'Certificate';
+\['destination'] = 'Destination';
+\['purpose'] = 'Purpose';
+\['download'] = 'Download';
+\['send_email'] = 'Send Email';
+\['pdf_sent_successfully'] = 'Document sent to client email.';
+\['pdf_password_notice'] = 'The attached PDF is password-protected. Your password is your ID number.';
+\['pdf_password_notice_phone'] = 'The attached PDF is password-protected. Your password is your phone number.';
+\['professional_title'] = 'Professional Title';
+\['license_number'] = 'License Number';
+\['signature'] = 'Signature';
+\['session_date'] = 'Session Date';
+\['document'] = 'Document';
+\['documentation_pdf_subject'] = 'Your Document';
+\['no_client_email'] = 'Client does not have an email address.';
+
+// Issued Documents
+\['issued_documents'] = 'Issued Documents';
+\['new_document'] = 'New Document';
+\['document_content'] = 'Document Content';
+\['document_saved'] = 'Document saved.';
+\['view_as_pdf'] = 'View as PDF';
+\['send_as_pdf'] = 'Send as PDF';
+\['document_title'] = 'Document Title';
+
+// Document Templates
+\['document_templates'] = 'Document Templates';
+\['template_name'] = 'Template Name';
+\['template_fields'] = 'Template Fields';
+\['field_name'] = 'Field Name';
+\['field_label'] = 'Field Label';
+\['field_type'] = 'Field Type';
+\['add_field'] = 'Add Field';
+\['default_content'] = 'Default Content';
+\['template_saved'] = 'Template saved.';
+\['template_deleted'] = 'Template deleted.';
+\['add_template'] = 'Add Template';
+\['delete_template'] = 'Delete Template';
+\['text'] = 'Text';
+\['textarea'] = 'Textarea';
+
+// DOCX Template Engine
+\['upload_template'] = 'Upload Template';
+\['template_file'] = 'Template File (.docx)';
+\['field_mappings'] = 'Field Mappings';
+\['free_text'] = 'Free Text';
+\['user_display'] = 'Show to User';
+\['system_variable'] = 'System Variable';
+\['no_template_file'] = 'No template file uploaded.';
+\['free_textarea'] = 'Rich Text';
 // End

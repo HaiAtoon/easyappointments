@@ -240,6 +240,36 @@ class Email_messages
      *
      * @throws Exception
      */
+    public function send_documentation_pdf(
+        array $customer,
+        string $pdf_stream,
+        string $document_type,
+        string $password_field = 'id_number',
+    ): void {
+        $settings = [
+            'company_name' => setting('company_name'),
+            'company_email' => setting('company_email'),
+            'company_link' => setting('company_link'),
+            'company_color' => setting('company_color') ?: '#429a82',
+        ];
+
+        $html = $this->CI->load->view('emails/documentation_pdf_email', [
+            'customer' => $customer,
+            'settings' => $settings,
+            'document_type' => $document_type,
+            'password_field' => $password_field,
+        ], true);
+
+        $subject = lang('documentation_pdf_subject') . ' - ' . $settings['company_name'];
+
+        $php_mailer = $this->get_php_mailer($customer['email'], $subject, $html);
+
+        $filename = lang('document') . '_' . date('Y-m-d') . '.pdf';
+        $php_mailer->addStringAttachment($pdf_stream, $filename, PHPMailer::ENCODING_BASE64, 'application/pdf');
+
+        $php_mailer->send();
+    }
+
     private function get_php_mailer(
         ?string $recipient_email = null,
         ?string $subject = null,

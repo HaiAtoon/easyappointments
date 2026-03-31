@@ -26,5 +26,9 @@
 !/storage/sessions/index.html
 /storage/uploads/*
 !/storage/uploads/index.html
+/storage/document-templates/*
+!/storage/document-templates/.htaccess
+!/storage/document-templates/index.html
 /metafile
+/composer.phar
 .DS_Store
