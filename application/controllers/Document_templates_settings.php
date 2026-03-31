@@ -158,15 +158,23 @@ class Document_templates_settings extends EA_Controller
             $template['field_mappings'] = [];
 
             if (is_array($decoded)) {
+                $valid_types = $this->get_valid_mapping_types();
+
                 foreach ($decoded as $mapping) {
                     if (empty($mapping['label'])) {
                         continue;
                     }
 
+                    $type = $mapping['type'] ?? 'free_text';
+
+                    if (!in_array($type, $valid_types)) {
+                        $type = 'free_text';
+                    }
+
                     $template['field_mappings'][] = [
-                        'label' => preg_replace('/[^a-zA-Z0-9_]/', '', $mapping['label'] ?? ''),
-                        'name' => $mapping['name'] ?? '',
-                        'type' => $mapping['type'] ?? 'free_text',
+                        'label' => preg_replace('/[^a-zA-Z0-9_]/', '', $mapping['label']),
+                        'name' => mb_substr(strip_tags($mapping['name'] ?? ''), 0, 256),
+                        'type' => $type,
                         'user_display' => !empty($mapping['user_display']),
                     ];
                 }
@@ -236,5 +244,27 @@ class Document_templates_settings extends EA_Controller
             'id' => $template_id,
             'file_path' => STORAGE_DOCUMENT_TEMPLATES . $filename,
         ]);
+    }
+
+    /**
+     * Get the list of valid field mapping type values.
+     *
+     * @return array Flat array of valid type slugs.
+     */
+    private function get_valid_mapping_types(): array
+    {
+        $valid = ['free_text', 'free_textarea'];
+
+        $this->load->library('document_generator');
+
+        $categories = $this->document_generator->get_system_variables();
+
+        foreach ($categories as $category) {
+            foreach (array_keys($category['variables']) as $var_slug) {
+                $valid[] = $var_slug;
+            }
+        }
+
+        return $valid;
     }
 }
