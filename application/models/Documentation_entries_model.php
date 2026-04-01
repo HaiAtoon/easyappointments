@@ -109,7 +109,7 @@ class Documentation_entries_model extends EA_Model
 
         foreach ($entries as &$entry) {
             $this->cast($entry);
-            $this->decrypt_fields($entry);
+            Field_encryption::decrypt_record('documentation_entries', $entry);
         }
 
         return $entries;
@@ -126,19 +126,9 @@ class Documentation_entries_model extends EA_Model
         }
 
         $this->cast($entry);
-        $this->decrypt_fields($entry);
+        Field_encryption::decrypt_record('documentation_entries', $entry);
 
         return $entry;
-    }
-
-    /**
-     * Decrypt encrypted fields after reading from the database.
-     */
-    private function decrypt_fields(array &$entry): void
-    {
-        if (!empty($entry['session_summary'])) {
-            $entry['session_summary'] = field_decrypt($entry['session_summary']);
-        }
     }
 
     public function value(int $entry_id, string $field): mixed
@@ -178,10 +168,15 @@ class Documentation_entries_model extends EA_Model
         $entry['update_datetime'] = $now;
         $entry['is_edited'] = 0;
 
+        if (array_key_exists('id_appointments', $entry) && empty($entry['id_appointments'])) {
+            $entry['id_appointments'] = null;
+        }
+
         if (!empty($entry['session_summary'])) {
             $entry['session_summary'] = pure_html($entry['session_summary']);
-            $entry['session_summary'] = field_encrypt($entry['session_summary']);
         }
+
+        Field_encryption::encrypt_record('documentation_entries', $entry);
 
         if (!$this->db->insert('documentation_entries', $entry)) {
             throw new RuntimeException('Could not insert documentation entry.');
@@ -194,10 +189,15 @@ class Documentation_entries_model extends EA_Model
     {
         $entry['update_datetime'] = date('Y-m-d H:i:s');
 
+        if (array_key_exists('id_appointments', $entry) && empty($entry['id_appointments'])) {
+            $entry['id_appointments'] = null;
+        }
+
         if (!empty($entry['session_summary'])) {
             $entry['session_summary'] = pure_html($entry['session_summary']);
-            $entry['session_summary'] = field_encrypt($entry['session_summary']);
         }
+
+        Field_encryption::encrypt_record('documentation_entries', $entry);
 
         if (!$this->db->update('documentation_entries', $entry, ['id' => $entry['id']])) {
             throw new RuntimeException('Could not update documentation entry.');
@@ -263,7 +263,7 @@ class Documentation_entries_model extends EA_Model
      *
      * @return int Number of deleted rows.
      */
-    public function purge_edit_log(int $days = 365): int
+    public function purge_edit_log(int $days = 2555): int
     {
         $cutoff = date('Y-m-d H:i:s', strtotime("-{$days} days"));
 
@@ -284,12 +284,20 @@ class Documentation_entries_model extends EA_Model
             $entry['provider'] = $this->db
                 ->get_where('users', ['id' => $entry['id_users_provider']])
                 ->row_array();
+
+            if ($entry['provider']) {
+                Field_encryption::decrypt_record('users', $entry['provider']);
+            }
         }
 
         if (in_array('customer', $resources)) {
             $entry['customer'] = $this->db
                 ->get_where('users', ['id' => $entry['id_users_customer']])
                 ->row_array();
+
+            if ($entry['customer']) {
+                Field_encryption::decrypt_record('users', $entry['customer']);
+            }
         }
     }
 }

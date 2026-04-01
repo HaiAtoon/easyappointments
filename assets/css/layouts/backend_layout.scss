@@ -13,9 +13,6 @@
  * BACKEND CSS FILE FOR EASY!APPOINTMENTS
  */
 
-root {
-    display: block;
-}
 
 /* BACKEND GENERAL ELEMENTS
    -------------------------------------------------------------------- */
@@ -110,47 +107,12 @@ root {
     margin-right: 0 !important;
 }
 
-#loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
-    background: rgba(255, 255, 255, 0.75);
-}
-
-#loading img {
-    margin: auto;
-    display: block;
-    max-width: 100%;
-}
-
 .modal-message {
     margin-bottom: 10px;
 }
 
 body .modal .modal-title {
     color: white;
-}
-
-body .modal-header {
-    padding: 20px 15px;
-    background: #429a82;
-}
-
-body .modal-header h3 {
-    color: #fff;
-    font-size: 20px;
-    font-weight: lighter;
-}
-
-body .modal-header .close {
-    color: #12482a;
-}
-
-body .modal-content {
-    border: none;
 }
 
 /* Full screen modal */

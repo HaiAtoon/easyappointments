@@ -8,10 +8,6 @@
  * @link        https://easyappointments.org
  * @since       v1.5.0
  * ---------------------------------------------------------------------------- */
-root {
-  display: block;
-}
-
 html,
 body {
   height: 100%;

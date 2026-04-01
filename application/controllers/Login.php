@@ -62,6 +62,8 @@ class Login extends EA_Controller
     public function validate(): void
     {
         try {
+            rate_limit_auth($this->input->ip_address(), 'login');
+
             $username = request('username');
 
             if (empty($username)) {

@@ -61,6 +61,8 @@ class Customer_portal extends EA_Controller
     public function send_otp(): void
     {
         try {
+            rate_limit_auth($this->input->ip_address(), 'otp');
+
             $id_number = request('id_number');
 
             if (empty($id_number)) {
@@ -103,6 +105,8 @@ class Customer_portal extends EA_Controller
     public function verify_otp(): void
     {
         try {
+            rate_limit_auth($this->input->ip_address(), 'otp');
+
             $customer_id = (int) request('customer_id');
             $otp_code = request('otp_code');
 

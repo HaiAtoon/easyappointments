@@ -13,17 +13,6 @@ html {
   min-height: 100%;
 }
 
-header {
-  background: #daffeb;
-  margin-bottom: 25px;
-}
-
-header .page-title {
-  font-weight: lighter;
-  padding: 40px 0;
-  color: #429a82;
-}
-
 h3 {
   margin-bottom: 40px;
 }

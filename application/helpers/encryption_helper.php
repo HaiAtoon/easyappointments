@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+require_once APPPATH . 'libraries/Field_encryption.php';
+
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
  *
@@ -11,26 +13,37 @@
  * @since       v1.5.0
  * ---------------------------------------------------------------------------- */
 
+if (!function_exists('get_encryption_key')) {
+    function get_encryption_key(): string
+    {
+        if (!class_exists('Config', false)) {
+            $config_path = dirname(__DIR__, 2) . '/config.php';
+
+            if (file_exists($config_path)) {
+                require_once $config_path;
+            }
+        }
+
+        if (!class_exists('Config', false) || !defined('Config::ENCRYPTION_KEY')) {
+            return '';
+        }
+
+        $key = Config::ENCRYPTION_KEY;
+
+        return (!empty($key) && strlen($key) >= 64) ? $key : '';
+    }
+}
+
 if (!function_exists('field_encrypt')) {
-    /**
-     * Encrypt a value using AES-256-CBC with the application encryption key.
-     *
-     * Returns the IV + ciphertext as a base64-encoded string prefixed with "enc:".
-     * If the value is empty or encryption is not configured, returns the value as-is.
-     *
-     * @param string|null $value Plaintext value.
-     *
-     * @return string|null Encrypted value or original if empty.
-     */
     function field_encrypt(?string $value): ?string
     {
         if (empty($value)) {
             return $value;
         }
 
-        $key = defined('Config::ENCRYPTION_KEY') ? Config::ENCRYPTION_KEY : '';
+        $key = get_encryption_key();
 
-        if (empty($key) || strlen($key) < 64) {
+        if (empty($key)) {
             return $value;
         }
 
@@ -46,26 +59,33 @@ if (!function_exists('field_encrypt')) {
     }
 }
 
+if (!function_exists('field_hash')) {
+    function field_hash(?string $value): ?string
+    {
+        if (empty($value)) {
+            return $value;
+        }
+
+        $key = get_encryption_key();
+
+        if (empty($key)) {
+            return hash('sha256', $value);
+        }
+
+        return hash_hmac('sha256', $value, $key);
+    }
+}
+
 if (!function_exists('field_decrypt')) {
-    /**
-     * Decrypt a value encrypted by field_encrypt().
-     *
-     * Detects the "enc:" prefix to determine if decryption is needed.
-     * Returns the original value if not encrypted or if decryption fails.
-     *
-     * @param string|null $value Encrypted value (with "enc:" prefix) or plaintext.
-     *
-     * @return string|null Decrypted plaintext or original value.
-     */
     function field_decrypt(?string $value): ?string
     {
         if (empty($value) || !str_starts_with($value, 'enc:')) {
             return $value;
         }
 
-        $key = defined('Config::ENCRYPTION_KEY') ? Config::ENCRYPTION_KEY : '';
+        $key = get_encryption_key();
 
-        if (empty($key) || strlen($key) < 64) {
+        if (empty($key)) {
             return $value;
         }
 

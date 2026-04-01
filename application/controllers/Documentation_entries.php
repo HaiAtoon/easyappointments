@@ -45,12 +45,14 @@ class Documentation_entries extends EA_Controller
                 throw new InvalidArgumentException('Customer ID is required.');
             }
 
+            $prefix = $this->db->dbprefix;
+
             $this->db
-                ->select('
-                    documentation_entries.*,
-                    CONCAT(provider.first_name, " ", provider.last_name) AS provider_name,
-                    CONCAT(services.name, " - ", appointments.start_datetime) AS appointment_summary
-                ')
+                ->select("
+                    {$prefix}documentation_entries.*,
+                    CONCAT(provider.first_name, ' ', provider.last_name) AS provider_name,
+                    CONCAT({$prefix}services.name, ' - ', {$prefix}appointments.start_datetime) AS appointment_summary
+                ", false)
                 ->from('documentation_entries')
                 ->join('users AS provider', 'provider.id = documentation_entries.id_users_provider', 'left')
                 ->join('appointments', 'appointments.id = documentation_entries.id_appointments', 'left')
@@ -69,6 +71,7 @@ class Documentation_entries extends EA_Controller
 
             foreach ($entries as &$entry) {
                 $this->documentation_entries_model->cast($entry);
+                Field_encryption::decrypt_record('documentation_entries', $entry);
             }
 
             audit_log('VIEW_DOCUMENTATION', 'documentation_entries', null, $customer_id);
@@ -237,6 +240,9 @@ class Documentation_entries extends EA_Controller
             }
 
             $this->load->library('pdf_generator');
+            if (!class_exists('Pdf_utils', false)) {
+                require_once APPPATH . 'libraries/Pdf_utils.php';
+            }
             $this->load->library('email_messages');
 
             $password = Pdf_utils::generate_password();
@@ -365,6 +371,9 @@ class Documentation_entries extends EA_Controller
             }
 
             $this->load->library('pdf_generator');
+            if (!class_exists('Pdf_utils', false)) {
+                require_once APPPATH . 'libraries/Pdf_utils.php';
+            }
             $this->load->library('email_messages');
 
             $document = $this->issued_documents_model->find($document_id);

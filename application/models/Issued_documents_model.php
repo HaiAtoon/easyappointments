@@ -146,12 +146,20 @@ class Issued_documents_model extends EA_Model
             $document['provider'] = $this->db
                 ->get_where('users', ['id' => $document['id_users_provider']])
                 ->row_array();
+
+            if ($document['provider']) {
+                Field_encryption::decrypt_record('users', $document['provider']);
+            }
         }
 
         if (in_array('entry', $resources)) {
             $document['entry'] = $this->db
                 ->get_where('documentation_entries', ['id' => $document['id_documentation_entry']])
                 ->row_array();
+
+            if ($document['entry']) {
+                Field_encryption::decrypt_record('documentation_entries', $document['entry']);
+            }
         }
     }
 }

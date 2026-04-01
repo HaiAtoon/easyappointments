@@ -178,7 +178,7 @@ class Customers_model extends EA_Model
 
         foreach ($customers as &$customer) {
             $this->cast($customer);
-            $this->decrypt_sensitive_fields($customer);
+            Field_encryption::decrypt_record('users', $customer);
         }
 
         return $customers;
@@ -260,14 +260,20 @@ class Customers_model extends EA_Model
 
     public function find_by_id_number(string $id_number): ?array
     {
+        $hash = Field_encryption::hash_for_lookup($id_number);
+
         $customer = $this->db
             ->select('users.*')
             ->from('users')
             ->join('roles', 'roles.id = users.id_roles', 'inner')
-            ->where('users.id_number', $id_number)
+            ->where('users.id_number_hash', $hash)
             ->where('roles.slug', DB_SLUG_CUSTOMER)
             ->get()
             ->row_array();
+
+        if ($customer) {
+            Field_encryption::decrypt_record('users', $customer);
+        }
 
         return $customer ?: null;
     }
@@ -287,7 +293,7 @@ class Customers_model extends EA_Model
         $customer['update_datetime'] = date('Y-m-d H:i:s');
         $customer['id_roles'] = $this->get_customer_role_id();
 
-        $this->encrypt_sensitive_fields($customer);
+        Field_encryption::encrypt_record('users', $customer);
 
         if (!$this->db->insert('users', $customer)) {
             throw new RuntimeException('Could not insert customer.');
@@ -309,7 +315,7 @@ class Customers_model extends EA_Model
     {
         $customer['update_datetime'] = date('Y-m-d H:i:s');
 
-        $this->encrypt_sensitive_fields($customer);
+        Field_encryption::encrypt_record('users', $customer);
 
         if (!$this->db->update('users', $customer, ['id' => $customer['id']])) {
             throw new RuntimeException('Could not update customer.');
@@ -331,6 +337,49 @@ class Customers_model extends EA_Model
     }
 
     /**
+     * Anonymize a customer record for GDPR compliance while preserving
+     * medical documentation records (MOH 7-year retention requirement).
+     *
+     * @param int $customer_id Customer ID.
+     *
+     * @throws RuntimeException
+     */
+    public function anonymize(int $customer_id): void
+    {
+        $customer = $this->db->get_where('users', ['id' => $customer_id])->row_array();
+
+        if (!$customer) {
+            throw new InvalidArgumentException('Customer not found: ' . $customer_id);
+        }
+
+        $anonymized = [
+            'first_name' => 'Anonymized',
+            'last_name' => 'Patient',
+            'email' => 'anonymized_' . $customer_id . '@removed.invalid',
+            'phone_number' => '',
+            'mobile_number' => '',
+            'address' => '',
+            'city' => '',
+            'state' => '',
+            'zip_code' => '',
+            'id_number' => '',
+            'id_number_hash' => null,
+            'notes' => '',
+            'custom_field_1' => '',
+            'custom_field_2' => '',
+            'custom_field_3' => '',
+            'custom_field_4' => '',
+            'custom_field_5' => '',
+            'ldap_dn' => '',
+            'update_datetime' => date('Y-m-d H:i:s'),
+        ];
+
+        if (!$this->db->update('users', $anonymized, ['id' => $customer_id])) {
+            throw new RuntimeException('Could not anonymize customer.');
+        }
+    }
+
+    /**
      * Get a specific customer from the database.
      *
      * @param int $customer_id The ID of the record to be returned.
@@ -348,7 +397,7 @@ class Customers_model extends EA_Model
         }
 
         $this->cast($customer);
-        $this->decrypt_sensitive_fields($customer);
+        Field_encryption::decrypt_record('users', $customer);
 
         return $customer;
     }
@@ -435,7 +484,6 @@ class Customers_model extends EA_Model
             ->or_like('city', $keyword)
             ->or_like('state', $keyword)
             ->or_like('zip_code', $keyword)
-            ->or_like('id_number', $keyword)
             ->or_like('notes', $keyword)
             ->group_end()
             ->limit($limit)
@@ -446,7 +494,7 @@ class Customers_model extends EA_Model
 
         foreach ($customers as &$customer) {
             $this->cast($customer);
-            $this->decrypt_sensitive_fields($customer);
+            Field_encryption::decrypt_record('users', $customer);
         }
 
         return $customers;
@@ -581,35 +629,4 @@ class Customers_model extends EA_Model
         $customer = $decoded_resource;
     }
 
-    /**
-     * Encrypt sensitive patient fields before storing in the database.
-     *
-     * @param array $customer Customer data (modified in-place).
-     */
-    private function encrypt_sensitive_fields(array &$customer): void
-    {
-        $sensitive_fields = ['id_number'];
-
-        foreach ($sensitive_fields as $field) {
-            if (!empty($customer[$field]) && !str_starts_with($customer[$field], 'enc:')) {
-                $customer[$field] = field_encrypt($customer[$field]);
-            }
-        }
-    }
-
-    /**
-     * Decrypt sensitive patient fields after reading from the database.
-     *
-     * @param array $customer Customer data (modified in-place).
-     */
-    private function decrypt_sensitive_fields(array &$customer): void
-    {
-        $sensitive_fields = ['id_number'];
-
-        foreach ($sensitive_fields as $field) {
-            if (!empty($customer[$field])) {
-                $customer[$field] = field_decrypt($customer[$field]);
-            }
-        }
-    }
 }

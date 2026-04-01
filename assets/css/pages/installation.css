@@ -8,17 +8,6 @@
  * @link        https://easyappointments.org
  * @since       v1.5.0
  * ---------------------------------------------------------------------------- */
-header {
-  background: #daffeb;
-  margin-bottom: 25px;
-}
-
-header .page-title {
-  font-weight: lighter;
-  padding: 40px 0;
-  color: #429a82;
-}
-
 .content p {
   word-break: break-all;
 }
@@ -34,17 +23,3 @@ footer {
   border-top: 1px solid #eee;
 }
 
-#loading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999999;
-  background: rgba(255, 255, 255, 0.75);
-}
-
-#loading img {
-  margin: auto;
-  display: block;
-}

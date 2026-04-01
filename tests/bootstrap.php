@@ -59,6 +59,7 @@ if (!class_exists('Config')) {
         const BASE_URL = 'http://localhost/ea';
         const LANGUAGE = 'english';
         const DEBUG_MODE = true;
+        const ENCRYPTION_KEY = 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2';
     }
 }
 
@@ -126,6 +127,7 @@ require_once APPPATH . 'helpers/array_helper.php';
 require_once APPPATH . 'helpers/date_helper.php';
 require_once APPPATH . 'helpers/validation_helper.php';
 require_once APPPATH . 'helpers/password_helper.php';
+require_once APPPATH . 'helpers/encryption_helper.php';
 
 // Load HTMLPurifier
 require_once __DIR__ . '/../vendor/ezyang/htmlpurifier/library/HTMLPurifier.auto.php';
@@ -163,5 +165,6 @@ if (!function_exists('setting')) {
 require_once APPPATH . 'core/EA_Model.php';
 
 // Load libraries
+require_once APPPATH . 'libraries/Field_encryption.php';
 require_once APPPATH . 'libraries/Pdf_utils.php';
 require_once APPPATH . 'libraries/Document_generator.php';

@@ -56,7 +56,7 @@ class Privacy extends EA_Controller
                 );
             }
 
-            $this->customers_model->delete($customer_id);
+            $this->customers_model->anonymize($customer_id);
 
             json_response([
                 'success' => true,
